@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ivory: #fbf8ef;
+  --color-cream: #f3ead8;
+  --color-ink: #102033;
+  --color-muted: #627083;
+  --color-blue-deep: #12345b;
+  --color-blue-soft: #dbe9f7;
+  --color-gold-soft: #d7b46a;
+  --color-teal-soft: #6fb6a7;
+  --color-rose-muted: #d98b75;
+  --shadow-soft: 0 18px 50px rgba(18, 52, 91, 0.12);
+}
+
+:root {
+  --background: #fbf8ef;
+  --foreground: #102033;
+  --surface: #fffdf7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: clip;
+  background:
+    linear-gradient(180deg, rgba(219, 233, 247, 0.35), transparent 34rem),
+    var(--background);
+  color: var(--foreground);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  overflow-wrap: anywhere;
+}
+
+img,
+canvas,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+svg {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(215, 180, 106, 0.38);
+}
+
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus-visible {
+  outline-color: #12345b;
+}
+
+.responsive-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-scroll::-webkit-scrollbar {
+  height: 0.5rem;
+}
+
+.responsive-scroll::-webkit-scrollbar-thumb {
+  background: rgba(18, 52, 91, 0.18);
+  border-radius: 999px;
+}
+
+.responsive-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
