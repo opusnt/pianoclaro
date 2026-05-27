@@ -5,6 +5,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { trackKeySignatureEvent } from "@/lib/key-signature/analytics";
 import {
+  buildKeySignatureNoteAnswer,
+  buildKeySignatureOptionAnswer,
+  midiToKeySignatureQuestionNote,
+} from "@/lib/key-signature/answers";
+import {
   playKeySignatureComparison,
   playKeySignatureError,
   playKeySignatureNote,
@@ -15,17 +20,14 @@ import {
   generateKeySignatureQuestions,
   getComparisonScaleMidiNotes,
   getExerciseUnitCount,
-  getExpectedOptionForQuestion,
   getQuestionScaleMidiNotes,
 } from "@/lib/key-signature/questions";
 import {
   buildKeySignatureAttempt,
   getKeySignatureFeedback,
-  pointsForKeySignatureAnswer,
   scoreKeySignatureAnswers,
 } from "@/lib/key-signature/scoring";
 import {
-  getDisplayNoteName,
   getKeySignatureById,
   noteToMidi,
 } from "@/lib/key-signature/theory";
@@ -34,7 +36,6 @@ import type {
   KeySignatureAttempt,
   KeySignatureExercise,
   KeySignatureExerciseProgress,
-  KeySignatureQuestion,
 } from "@/types/key-signature";
 
 type KeySignatureExerciseState = "intro" | "active" | "completed" | "failed";
@@ -169,12 +170,12 @@ export function useKeySignatureEngine({
       currentQuestion.expectedMidiNotes?.[currentPlayedNotes.length];
     const expectedNote =
       typeof currentQuestion.selectedNoteTargetMidi === "number"
-        ? midiToQuestionNote(currentQuestion, currentQuestion.selectedNoteTargetMidi)
+        ? midiToKeySignatureQuestionNote(currentQuestion, currentQuestion.selectedNoteTargetMidi)
         : currentQuestion.expectedNotes?.[currentPlayedNotes.length];
 
     if (!expectedNote || typeof expectedMidi !== "number") return;
 
-    const answer = buildNoteAnswer({
+    const answer = buildKeySignatureNoteAnswer({
       question: currentQuestion,
       note,
       expectedNote,
@@ -217,7 +218,7 @@ export function useKeySignatureEngine({
   function answerWithOption(option: string) {
     if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
 
-    const answer = buildOptionAnswer({
+    const answer = buildKeySignatureOptionAnswer({
       question: currentQuestion,
       option,
       helpUsed: helpUsed || assistedMode,
@@ -309,100 +310,6 @@ export function useKeySignatureEngine({
     answerWithOption,
     nextQuestion,
   };
-}
-
-function buildNoteAnswer({
-  question,
-  note,
-  expectedNote,
-  selectedMidi,
-  expectedMidi,
-  playedNotes,
-  helpUsed,
-  replayUsed,
-}: {
-  question: KeySignatureQuestion;
-  note: string;
-  expectedNote: string;
-  selectedMidi: number;
-  expectedMidi: number;
-  playedNotes: string[];
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): KeySignatureAnswer {
-  const isCorrect = selectedMidi === expectedMidi;
-  return {
-    questionId: question.id,
-    selectedNote: note,
-    playedNotes: [...playedNotes, note],
-    isCorrect,
-    expectedAnswer: getDisplayNoteName(expectedNote),
-    userAnswer: getDisplayNoteName(note),
-    helpUsed,
-    replayUsed,
-    keyId: question.keyId,
-    points: pointsForKeySignatureAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          wrongNote: note,
-          expectedNote,
-          wrongStepIndex: playedNotes.length,
-        },
-  };
-}
-
-function buildOptionAnswer({
-  question,
-  option,
-  helpUsed,
-  replayUsed,
-}: {
-  question: KeySignatureQuestion;
-  option: string;
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): KeySignatureAnswer {
-  const expectedAnswer = getExpectedOptionForQuestion(question);
-  const isCorrect = option === expectedAnswer;
-  const key = getKeySignatureById(question.keyId);
-  const relative = question.comparisonKeyId
-    ? getKeySignatureById(key?.relativeKeyId ?? "")
-    : undefined;
-
-  return {
-    questionId: question.id,
-    selectedOption: option,
-    isCorrect,
-    expectedAnswer,
-    userAnswer: option,
-    helpUsed,
-    replayUsed,
-    keyId: question.keyId,
-    points: pointsForKeySignatureAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          expectedAccidentals: key?.accidentals,
-          selectedAccidentals: [option],
-          expectedRelativeKey:
-            question.taskType === "find_relative_key" || question.taskType === "relative_keys_compare"
-              ? relative?.displayName ?? (typeof question.expectedAnswer === "string" ? question.expectedAnswer : undefined)
-              : undefined,
-          selectedRelativeKey: option,
-        },
-  };
-}
-
-function midiToQuestionNote(question: KeySignatureQuestion, midi: number) {
-  const key = getKeySignatureById(question.keyId);
-  const index = key?.midiNotes.findIndex((scaleMidi) => scaleMidi === midi) ?? -1;
-
-  if (key && index >= 0) {
-    return `${key.scaleNotes[index]}${Math.floor(midi / 12) - 1}`;
-  }
-
-  return "";
 }
 
 function getFailureMessage(attempt: KeySignatureAttempt) {

@@ -5,6 +5,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { trackPentatonicEvent } from "@/lib/pentatonic/analytics";
 import {
+  buildPentatonicImprovisationAnswer,
+  buildPentatonicNoteAnswer,
+  buildPentatonicOptionAnswer,
+  isNoteAllowedInPentatonicScale,
+} from "@/lib/pentatonic/answers";
+import {
   playBackingLoop,
   playPentatonicError,
   playPentatonicNote,
@@ -15,19 +21,13 @@ import {
 import {
   generatePentatonicQuestions,
   getExerciseUnitCount,
-  getExpectedOptionForQuestion,
-  getQuestionScaleMidiNotes,
 } from "@/lib/pentatonic/questions";
 import {
   buildPentatonicAttempt,
   getPentatonicFeedback,
-  pointsForImprovisation,
-  pointsForPentatonicAnswer,
   scorePentatonicAnswers,
 } from "@/lib/pentatonic/scoring";
 import {
-  areRelativePentatonics,
-  getDisplayNoteName,
   getPentatonicScaleById,
   noteToMidi,
 } from "@/lib/pentatonic/theory";
@@ -36,7 +36,6 @@ import type {
   PentatonicAttempt,
   PentatonicExercise,
   PentatonicExerciseProgress,
-  PentatonicQuestion,
 } from "@/types/pentatonic";
 
 type PentatonicExerciseState = "intro" | "active" | "completed" | "failed";
@@ -146,8 +145,7 @@ export function usePentatonicEngine({
     void playPentatonicNote(getAudio(), selectedMidi, 230);
 
     if (currentQuestion.mode === "improvisation") {
-      const allowed = new Set(scale.midiNotes.map((midi) => midi % 12));
-      if (!allowed.has(selectedMidi % 12)) {
+      if (!isNoteAllowedInPentatonicScale(currentQuestion.scaleId, selectedMidi)) {
         setMessage("Esa nota no pertenece a esta pentatónica.");
         void playPentatonicError(getAudio());
         return;
@@ -164,7 +162,7 @@ export function usePentatonicEngine({
     const expectedNote = currentQuestion.expectedNotes?.[currentPlayedNotes.length];
     if (!expectedNote || typeof expectedMidi !== "number") return;
 
-    const answer = buildNoteAnswer({
+    const answer = buildPentatonicNoteAnswer({
       question: currentQuestion,
       note,
       expectedNote,
@@ -201,7 +199,7 @@ export function usePentatonicEngine({
   function answerWithOption(option: string) {
     if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
 
-    const answer = buildOptionAnswer({
+    const answer = buildPentatonicOptionAnswer({
       question: currentQuestion,
       option,
       helpUsed: helpUsed || assistedMode,
@@ -219,23 +217,14 @@ export function usePentatonicEngine({
 
   function completeImprovisation() {
     if (!currentQuestion || currentQuestion.mode !== "improvisation" || currentAnswer) return;
-    const uniqueNotesUsed = new Set(improvisedNotes.map((note) => note.replace(/\d/g, ""))).size;
-    const notesPlayed = improvisedNotes.length;
-    const outsideNotes = 0;
-    const isCorrect = notesPlayed >= 12 && uniqueNotesUsed >= 3;
-    const answer: PentatonicAnswer = {
-      questionId: currentQuestion.id,
+    const answer = buildPentatonicImprovisationAnswer({
+      question: currentQuestion,
       playedNotes: improvisedNotes,
-      isCorrect,
-      expectedAnswer: "12 notas y 3 notas distintas",
-      userAnswer: `${notesPlayed} notas, ${uniqueNotesUsed} distintas`,
       helpUsed: helpUsed || assistedMode,
       replayUsed,
-      scaleId: currentQuestion.scaleId,
-      pentatonicType: getPentatonicScaleById(currentQuestion.scaleId)?.type ?? "major",
-      points: pointsForImprovisation({ notesPlayed, uniqueNotesUsed, outsideNotes }),
-      improvisationMetrics: { notesPlayed, uniqueNotesUsed, outsideNotes },
-    };
+    });
+    const notesPlayed = answer.improvisationMetrics?.notesPlayed ?? 0;
+    const uniqueNotesUsed = answer.improvisationMetrics?.uniqueNotesUsed ?? 0;
     const nextAnswers = [...answers, answer];
 
     setAnswers(nextAnswers);
@@ -248,7 +237,7 @@ export function usePentatonicEngine({
       scaleId: answer.scaleId,
       notesPlayed,
       uniqueNotesUsed,
-      isCorrect,
+      isCorrect: answer.isCorrect,
     });
   }
 
@@ -322,87 +311,5 @@ export function usePentatonicEngine({
     answerWithOption,
     completeImprovisation,
     nextQuestion,
-  };
-}
-
-function buildNoteAnswer({
-  question,
-  note,
-  expectedNote,
-  selectedMidi,
-  expectedMidi,
-  playedNotes,
-  helpUsed,
-  replayUsed,
-}: {
-  question: PentatonicQuestion;
-  note: string;
-  expectedNote: string;
-  selectedMidi: number;
-  expectedMidi: number;
-  playedNotes: string[];
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): PentatonicAnswer {
-  const scale = getPentatonicScaleById(question.scaleId);
-  const isCorrect = selectedMidi === expectedMidi;
-
-  return {
-    questionId: question.id,
-    selectedNote: note,
-    playedNotes: [...playedNotes, note],
-    isCorrect,
-    expectedAnswer: getDisplayNoteName(expectedNote),
-    userAnswer: getDisplayNoteName(note),
-    helpUsed,
-    replayUsed,
-    scaleId: question.scaleId,
-    pentatonicType: scale?.type ?? "major",
-    points: pointsForPentatonicAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          wrongNote: note,
-          expectedNote,
-          wrongStepIndex: playedNotes.length,
-        },
-  };
-}
-
-function buildOptionAnswer({
-  question,
-  option,
-  helpUsed,
-  replayUsed,
-}: {
-  question: PentatonicQuestion;
-  option: string;
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): PentatonicAnswer {
-  const scale = getPentatonicScaleById(question.scaleId);
-  const expectedAnswer = getExpectedOptionForQuestion(question);
-  const isCorrect = option === expectedAnswer;
-  const expectedRelative = question.comparisonScaleId
-    ? getPentatonicScaleById(scale?.relativeScaleId ?? "")?.displayName
-    : undefined;
-
-  return {
-    questionId: question.id,
-    selectedOption: option,
-    isCorrect,
-    expectedAnswer,
-    userAnswer: option,
-    helpUsed,
-    replayUsed,
-    scaleId: question.scaleId,
-    pentatonicType: scale?.type ?? "major",
-    points: pointsForPentatonicAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          expectedRelativeScale: expectedRelative,
-          selectedRelativeScale: option,
-        },
   };
 }

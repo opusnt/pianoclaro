@@ -96,8 +96,8 @@ export function HarmonicFieldExerciseScreen({
         <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      <div className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
-        <div className="space-y-4">
+      <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
+        <div className="min-w-0 space-y-4">
           <QuestionPanel question={question} />
           <HarmonicFieldVisualizer fieldId={question?.fieldId} activeDegree={question?.degree} />
 
@@ -148,7 +148,7 @@ export function HarmonicFieldExerciseScreen({
           <HarmonicFieldFeedback message={engine.message} answer={engine.currentAnswer} />
         </div>
 
-        <aside className="space-y-4">
+        <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
           <HarmonicFieldBadge fieldId={question?.fieldId} degree={question?.degree} />
           <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
             <p className="text-xs font-bold uppercase text-muted">Controles</p>
@@ -159,7 +159,7 @@ export function HarmonicFieldExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
               >
                 <Volume2 aria-hidden="true" className="h-4 w-4" />
-                Repetir audio
+                <span className="whitespace-nowrap">Repetir audio</span>
               </button>
               <button
                 type="button"
@@ -167,7 +167,7 @@ export function HarmonicFieldExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
               >
                 <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                Ayuda visual
+                <span className="whitespace-nowrap">Ayuda visual</span>
               </button>
               <button
                 type="button"
@@ -176,7 +176,9 @@ export function HarmonicFieldExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
-                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                <span className="whitespace-nowrap">
+                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                </span>
               </button>
             </div>
           </div>

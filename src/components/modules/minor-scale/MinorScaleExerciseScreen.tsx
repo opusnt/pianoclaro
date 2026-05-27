@@ -112,8 +112,8 @@ export function MinorScaleExerciseScreen({
         <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
       </div>
 
-      <div className="mt-5 grid gap-5 xl:grid-cols-[1.35fr_0.65fr]">
-        <div className="space-y-4">
+      <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
+        <div className="min-w-0 space-y-4">
           <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-5">
             <p className="text-xs font-bold uppercase text-muted">Pregunta</p>
             <h3 className="mt-2 text-2xl font-bold text-blue-deep">
@@ -175,7 +175,7 @@ export function MinorScaleExerciseScreen({
           ) : null}
         </div>
 
-        <aside className="space-y-4">
+        <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
           <MinorScaleFeedback message={engine.message} answer={engine.currentAnswer} />
 
           <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">

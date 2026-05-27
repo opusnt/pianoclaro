@@ -10,7 +10,7 @@ import {
   collectMissedBeats,
   defaultTimingWindows,
   generateBeatEvents,
-  getBeatIntervalMs,
+  getActiveBeatClockState,
 } from "@/lib/rhythm/timing";
 import type {
   BeatEvent,
@@ -165,20 +165,13 @@ export function useRhythmEngine({
       return;
     }
 
-    const rawActiveIndex = currentEvents.findIndex(
-      (beat) => now < beat.expectedTimestamp + getBeatIntervalMs(beat.bpm),
-    );
-    const nextIndex = rawActiveIndex === -1 ? currentEvents.length - 1 : Math.max(0, rawActiveIndex);
-    const activeBeat = currentEvents[nextIndex] ?? lastBeat;
-    const previousBeat = currentEvents[Math.max(0, nextIndex - 1)] ?? firstBeat;
-    const interval = getBeatIntervalMs(activeBeat.bpm);
-    const progress = Math.min(
-      1,
-      Math.max(0, (now - (previousBeat.expectedTimestamp ?? firstBeat.expectedTimestamp)) / interval),
-    );
+    const clockState = getActiveBeatClockState({
+      currentTimestamp: now,
+      beatEvents: currentEvents,
+    });
 
-    setCurrentBeatIndex(nextIndex);
-    setPulseProgress(progress);
+    setCurrentBeatIndex(clockState.activeBeatIndex);
+    setPulseProgress(clockState.pulseProgress);
 
     currentEvents.forEach((beat) => {
       if (now >= beat.expectedTimestamp && !tickedBeatIdsRef.current.has(beat.beatIndex)) {

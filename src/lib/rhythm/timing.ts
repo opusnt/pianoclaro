@@ -23,6 +23,11 @@ export const assistedTimingWindows: TimingWindows = {
   earlyLateMs: 180,
 };
 
+export type TimingEvaluationOptions = {
+  windows?: TimingWindows;
+  inputLatencyOffsetMs?: number;
+};
+
 export function getBeatIntervalMs(bpm: number) {
   return 60_000 / bpm;
 }
@@ -131,12 +136,25 @@ export function findClosestUnevaluatedBeat(userTimestamp: number, beatEvents: Be
   return candidates[0]?.beat;
 }
 
+export function adjustInputTimestamp(
+  rawUserTimestamp: number,
+  inputLatencyOffsetMs = INPUT_LATENCY_OFFSET_MS,
+) {
+  return rawUserTimestamp - inputLatencyOffsetMs;
+}
+
 export function evaluateHit(
   userHit: UserHitEvent,
   beatEvents: BeatEvent[],
-  windows: TimingWindows = defaultTimingWindows,
+  windowsOrOptions: TimingWindows | TimingEvaluationOptions = defaultTimingWindows,
 ): TimingResult | null {
-  const adjustedTimestamp = userHit.timestamp - INPUT_LATENCY_OFFSET_MS;
+  const options =
+    "perfectMs" in windowsOrOptions ? { windows: windowsOrOptions } : windowsOrOptions;
+  const windows = options.windows ?? defaultTimingWindows;
+  const adjustedTimestamp = adjustInputTimestamp(
+    userHit.timestamp,
+    options.inputLatencyOffsetMs ?? INPUT_LATENCY_OFFSET_MS,
+  );
   const candidate = findClosestUnevaluatedBeat(adjustedTimestamp, beatEvents);
 
   if (!candidate) {
@@ -155,6 +173,44 @@ export function evaluateHit(
     grade,
     points: pointsForGrade(grade),
     shouldTap: candidate.shouldTap,
+  };
+}
+
+export function getActiveBeatClockState({
+  currentTimestamp,
+  beatEvents,
+}: {
+  currentTimestamp: number;
+  beatEvents: BeatEvent[];
+}) {
+  const firstBeat = beatEvents[0];
+  const lastBeat = beatEvents.at(-1);
+
+  if (!firstBeat || !lastBeat) {
+    return {
+      activeBeatIndex: 0,
+      pulseProgress: 0,
+      isAfterLastBeat: false,
+    };
+  }
+
+  const rawActiveIndex = beatEvents.findIndex(
+    (beat) => currentTimestamp < beat.expectedTimestamp + getBeatIntervalMs(beat.bpm),
+  );
+  const activeBeatIndex =
+    rawActiveIndex === -1 ? beatEvents.length - 1 : Math.max(0, rawActiveIndex);
+  const activeBeat = beatEvents[activeBeatIndex] ?? lastBeat;
+  const previousBeat = beatEvents[Math.max(0, activeBeatIndex - 1)] ?? firstBeat;
+  const interval = getBeatIntervalMs(activeBeat.bpm);
+  const pulseProgress = Math.min(
+    1,
+    Math.max(0, (currentTimestamp - previousBeat.expectedTimestamp) / interval),
+  );
+
+  return {
+    activeBeatIndex,
+    pulseProgress,
+    isAfterLastBeat: currentTimestamp > lastBeat.expectedTimestamp + MISS_WINDOW_MS,
   };
 }
 

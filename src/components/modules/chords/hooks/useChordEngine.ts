@@ -5,6 +5,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { trackChordEvent } from "@/lib/chords/analytics";
 import {
+  buildChordNotesAnswer,
+  buildChordOptionAnswer,
+} from "@/lib/chords/answers";
+import {
   playArpeggiatedChord,
   playChord,
   playChordById,
@@ -16,22 +20,15 @@ import {
 import {
   generateChordQuestions,
   getExerciseUnitCount,
-  getExpectedOptionForQuestion,
 } from "@/lib/chords/questions";
 import {
   buildChordAttempt,
   getChordFeedback,
-  pointsForChordAnswer,
   scoreChordAnswers,
 } from "@/lib/chords/scoring";
 import {
-  countCorrectChordNotes,
   getChordById,
-  getChordQualityLabel,
-  getDisplayNoteName,
-  normalizePitchSet,
   stripOctave,
-  validateChordNotes,
 } from "@/lib/chords/theory";
 import type {
   ChordAnswer,
@@ -150,58 +147,26 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
     if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active") return;
     const chord = getChordById(currentQuestion.chordId);
     if (!chord) return;
-    const expectedNotes = chord.midiNotes.map((midi) => {
-      const expected = currentQuestion.expectedNotes?.find((note) => normalizePitchSet([note])[0] === midi % 12);
-      return expected ?? chord.notes[chord.midiNotes.indexOf(midi)];
-    });
-    const isCorrect = validateChordNotes(expectedNotes, selectedNotes);
-    const correctNotesCount = countCorrectChordNotes(expectedNotes, selectedNotes);
-    const expectedPitchSet = new Set(normalizePitchSet(expectedNotes));
-    const selectedPitchSet = new Set(normalizePitchSet(selectedNotes));
-    const missingNotes = expectedNotes.filter((note) => !selectedPitchSet.has(normalizePitchSet([note])[0]));
-    const wrongNote = selectedNotes.find((note) => !expectedPitchSet.has(normalizePitchSet([note])[0]));
-    const answer: ChordAnswer = {
-      questionId: currentQuestion.id,
+    const answer = buildChordNotesAnswer({
+      question: currentQuestion,
       selectedNotes,
-      isCorrect,
-      expectedAnswer: chord.notes.map(getDisplayNoteName),
-      userAnswer: selectedNotes.map(getDisplayNoteName),
-      correctNotesCount,
       helpUsed: helpUsed || assistedMode,
       replayUsed,
-      chordId: currentQuestion.chordId,
-      chordQuality: chord.quality,
-      points: pointsForChordAnswer({ isCorrect, helpUsed: helpUsed || assistedMode, replayUsed, correctNotesCount }),
-      errorDetails: isCorrect ? undefined : { wrongNote, missingNotes },
-    };
+    });
+    if (!answer) return;
     commitAnswer(answer);
     void playChord(getAudio(), selectedNotes);
   }
 
   function answerWithOption(option: string) {
     if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
-    const chord = getChordById(currentQuestion.chordId);
-    if (!chord) return;
-    const expectedAnswer = getExpectedOptionForQuestion(currentQuestion);
-    const isCorrect = option === expectedAnswer;
-    const answer: ChordAnswer = {
-      questionId: currentQuestion.id,
-      selectedOption: option,
-      isCorrect,
-      expectedAnswer,
-      userAnswer: option,
+    const answer = buildChordOptionAnswer({
+      question: currentQuestion,
+      option,
       helpUsed: helpUsed || assistedMode,
       replayUsed,
-      chordId: currentQuestion.chordId,
-      chordQuality: chord.quality,
-      points: pointsForChordAnswer({ isCorrect, helpUsed: helpUsed || assistedMode, replayUsed }),
-      errorDetails: isCorrect
-        ? undefined
-        : {
-            selectedQuality: option === "mayor" ? "major" : option === "menor" ? "minor" : undefined,
-            expectedQuality: chord.quality,
-          },
-    };
+    });
+    if (!answer) return;
     commitAnswer(answer);
   }
 

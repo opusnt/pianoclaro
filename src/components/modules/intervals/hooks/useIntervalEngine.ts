@@ -4,6 +4,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import {
+  buildIntervalNoteAnswer,
+  buildIntervalOptionAnswer,
+  canAnswerIntervalWithNote,
+} from "@/lib/intervals/answers";
+import {
   playHarmonicInterval,
   playIntervalError,
   playIntervalNote,
@@ -15,22 +20,13 @@ import { generateIntervalQuestions } from "@/lib/intervals/questions";
 import {
   buildIntervalAttempt,
   getIntervalFeedback,
-  pointsForIntervalAnswer,
   scoreIntervalAnswers,
 } from "@/lib/intervals/scoring";
-import {
-  evaluateIntervalAnswer,
-  getExpectedOptionForQuestion,
-  getIntervalName,
-  getIntervalSemitones,
-  getNoteLabel,
-} from "@/lib/intervals/theory";
 import type {
   IntervalAnswer,
   IntervalAttempt,
   IntervalExercise,
   IntervalExerciseProgress,
-  IntervalQuestion,
 } from "@/types/intervals";
 
 type IntervalExerciseState = "intro" | "active" | "completed" | "failed";
@@ -152,12 +148,18 @@ export function useIntervalEngine({
   }
 
   function answerWithNote(note: string) {
-    if (!canAnswerWithNote(currentQuestion)) {
+    if (!canAnswerIntervalWithNote(currentQuestion)) {
       return;
     }
 
     void playIntervalNote(getAudio(), note, 320);
-    submitAnswer(buildNoteAnswer(currentQuestion, note, showHint || assistedMode));
+    submitAnswer(
+      buildIntervalNoteAnswer({
+        question: currentQuestion,
+        selectedNote: note,
+        usedHint: showHint || assistedMode,
+      }),
+    );
   }
 
   function answerWithOption(option: string) {
@@ -165,7 +167,13 @@ export function useIntervalEngine({
       return;
     }
 
-    submitAnswer(buildOptionAnswer(currentQuestion, option, showHint || assistedMode));
+    submitAnswer(
+      buildIntervalOptionAnswer({
+        question: currentQuestion,
+        selectedOption: option,
+        usedHint: showHint || assistedMode,
+      }),
+    );
   }
 
   function submitAnswer(answer: IntervalAnswer) {
@@ -247,68 +255,6 @@ export function useIntervalEngine({
     answerWithNote,
     answerWithOption,
     nextQuestion,
-  };
-}
-
-function canAnswerWithNote(question?: IntervalQuestion) {
-  if (!question) {
-    return false;
-  }
-
-  return (
-    question.taskType === "semitone_distance" ||
-    question.taskType === "find_interval" ||
-    (question.taskType === "final_challenge" && !question.answerOptions)
-  );
-}
-
-function buildNoteAnswer(
-  question: IntervalQuestion,
-  selectedNote: string,
-  usedHint: boolean,
-): IntervalAnswer {
-  const isCorrect = evaluateIntervalAnswer({
-    baseNote: question.baseNote,
-    userNote: selectedNote,
-    expectedSemitones: question.intervalSemitones,
-    direction: question.direction,
-  });
-  const intervalError = getIntervalSemitones(question.baseNote, selectedNote);
-  const intervalName = getIntervalName(question.intervalSemitones);
-
-  return {
-    questionId: question.id,
-    selectedNote,
-    isCorrect,
-    expectedAnswer: question.targetNote ? getNoteLabel(question.targetNote) : intervalName,
-    userAnswer: getNoteLabel(selectedNote),
-    intervalError,
-    intervalSemitones: question.intervalSemitones,
-    intervalName,
-    points: pointsForIntervalAnswer({ isCorrect, usedHint }),
-    usedHint,
-  };
-}
-
-function buildOptionAnswer(
-  question: IntervalQuestion,
-  selectedOption: string,
-  usedHint: boolean,
-): IntervalAnswer {
-  const expectedOption = getExpectedOptionForQuestion(question);
-  const isCorrect = selectedOption === expectedOption;
-  const intervalName = getIntervalName(question.intervalSemitones);
-
-  return {
-    questionId: question.id,
-    selectedOption,
-    isCorrect,
-    expectedAnswer: expectedOption,
-    userAnswer: selectedOption,
-    intervalSemitones: question.intervalSemitones,
-    intervalName,
-    points: pointsForIntervalAnswer({ isCorrect, usedHint }),
-    usedHint,
   };
 }
 

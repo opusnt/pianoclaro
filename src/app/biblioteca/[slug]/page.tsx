@@ -39,7 +39,7 @@ export default async function SongPracticePage({ params }: SongPracticePageProps
   const nextLesson = playableSongLessons[currentIndex + 1];
 
   return (
-    <main className="px-4 py-8 sm:px-6 lg:px-8">
+    <main className="px-3 py-5 sm:px-4 md:px-5 xl:px-8 xl:py-8">
       <div className="mx-auto max-w-7xl">
         <LessonLayout
           lesson={lesson}

@@ -4,6 +4,13 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import {
+  buildMinorScaleNoteAnswer,
+  buildMinorScaleOptionAnswer,
+  getMinorQuestionScaleMidiNotes,
+  getMinorScaleNextInterval,
+  midiToMinorScaleNote,
+} from "@/lib/minor-scale/answers";
+import {
   playMinorScaleError,
   playMinorScaleNote,
   playMinorScaleSequence,
@@ -15,18 +22,13 @@ import {
   generateMinorScaleQuestions,
   getComparisonMidiNotes,
   getExerciseUnitCount,
-  getExpectedOptionForQuestion,
 } from "@/lib/minor-scale/questions";
 import {
   buildMinorScaleAttempt,
   getMinorScaleFeedback,
-  pointsForMinorScaleAnswer,
   scoreMinorScaleAnswers,
 } from "@/lib/minor-scale/scoring";
 import {
-  getDisplayNoteName,
-  getDisplayPitchName,
-  getIntervalBetweenMidiNotes,
   getMinorScaleById,
   noteToMidi,
 } from "@/lib/minor-scale/theory";
@@ -35,7 +37,6 @@ import type {
   MinorScaleAttempt,
   MinorScaleExercise,
   MinorScaleExerciseProgress,
-  MinorScaleQuestion,
 } from "@/types/minor-scale";
 
 type MinorScaleExerciseState = "intro" | "active" | "completed" | "failed";
@@ -136,7 +137,7 @@ export function useMinorScaleEngine({
       await playScaleComparison({
         audio: getAudio(),
         firstScaleMidiNotes: comparisonMidi,
-        secondScaleMidiNotes: getQuestionScaleMidiNotes(currentQuestion),
+        secondScaleMidiNotes: getMinorQuestionScaleMidiNotes(currentQuestion),
         noteDurationMs: 240,
       });
       return;
@@ -144,7 +145,7 @@ export function useMinorScaleEngine({
 
     await playMinorScaleSequence({
       audio: getAudio(),
-      midiNotes: currentQuestion.expectedMidiNotes ?? getQuestionScaleMidiNotes(currentQuestion),
+      midiNotes: currentQuestion.expectedMidiNotes ?? getMinorQuestionScaleMidiNotes(currentQuestion),
       noteDurationMs: 280,
     });
   }
@@ -154,7 +155,7 @@ export function useMinorScaleEngine({
     setReplayUsed(true);
     await playMinorScaleSequence({
       audio: getAudio(),
-      midiNotes: getQuestionScaleMidiNotes(currentQuestion),
+      midiNotes: getMinorQuestionScaleMidiNotes(currentQuestion),
       noteDurationMs: 280,
     });
   }
@@ -174,12 +175,12 @@ export function useMinorScaleEngine({
       currentQuestion.expectedMidiNotes?.[currentPlayedNotes.length];
     const expectedNote =
       typeof currentQuestion.selectedNoteTargetMidi === "number"
-        ? midiToScaleNote(currentQuestion, currentQuestion.selectedNoteTargetMidi)
+        ? midiToMinorScaleNote(currentQuestion, currentQuestion.selectedNoteTargetMidi)
         : currentQuestion.expectedNotes?.[currentPlayedNotes.length];
 
     if (!expectedNote || typeof expectedMidi !== "number") return;
 
-    const answer = buildNoteAnswer({
+    const answer = buildMinorScaleNoteAnswer({
       question: currentQuestion,
       note,
       expectedNote,
@@ -216,7 +217,7 @@ export function useMinorScaleEngine({
       return;
     }
 
-    const nextInterval = getNextInterval(currentQuestion, nextPlayedNotes.length);
+    const nextInterval = getMinorScaleNextInterval(currentQuestion, nextPlayedNotes.length);
     setMessage(
       nextInterval === 1
         ? "Correcto: ese era el semitono."
@@ -229,7 +230,7 @@ export function useMinorScaleEngine({
   function answerWithOption(option: string) {
     if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
 
-    const answer = buildOptionAnswer({
+    const answer = buildMinorScaleOptionAnswer({
       question: currentQuestion,
       option,
       helpUsed: helpUsed || assistedMode,
@@ -321,121 +322,6 @@ export function useMinorScaleEngine({
     answerWithOption,
     nextQuestion,
   };
-}
-
-function buildNoteAnswer({
-  question,
-  note,
-  expectedNote,
-  selectedMidi,
-  expectedMidi,
-  playedNotes,
-  helpUsed,
-  replayUsed,
-}: {
-  question: MinorScaleQuestion;
-  note: string;
-  expectedNote: string;
-  selectedMidi: number;
-  expectedMidi: number;
-  playedNotes: string[];
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): MinorScaleAnswer {
-  const isCorrect = selectedMidi === expectedMidi;
-  const scale = getMinorScaleById(question.scaleId);
-  const previousMidi =
-    playedNotes.length > 0
-      ? noteToMidi(playedNotes[playedNotes.length - 1])
-      : scale?.midiNotes[0] ?? question.expectedMidiNotes?.[0] ?? expectedMidi;
-  const actualInterval = getIntervalBetweenMidiNotes(previousMidi, selectedMidi);
-  const expectedInterval = getIntervalBetweenMidiNotes(previousMidi, expectedMidi);
-
-  return {
-    questionId: question.id,
-    selectedNote: note,
-    playedNotes: [...playedNotes, note],
-    isCorrect,
-    expectedAnswer: getDisplayNoteName(expectedNote),
-    userAnswer: getDisplayNoteName(note),
-    helpUsed,
-    replayUsed,
-    scaleId: question.scaleId,
-    scaleType: question.scaleType,
-    points: pointsForMinorScaleAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          wrongNote: note,
-          expectedNote,
-          wrongStepIndex: currentWrongStep(question, playedNotes.length),
-          expectedInterval,
-          actualInterval,
-        },
-  };
-}
-
-function buildOptionAnswer({
-  question,
-  option,
-  helpUsed,
-  replayUsed,
-}: {
-  question: MinorScaleQuestion;
-  option: string;
-  helpUsed: boolean;
-  replayUsed: boolean;
-}): MinorScaleAnswer {
-  const expectedAnswer = getExpectedOptionForQuestion(question);
-  const isCorrect = option === expectedAnswer;
-
-  return {
-    questionId: question.id,
-    selectedOption: option,
-    isCorrect,
-    expectedAnswer,
-    userAnswer: option,
-    helpUsed,
-    replayUsed,
-    scaleId: question.scaleId,
-    scaleType: question.scaleType,
-    points: pointsForMinorScaleAnswer({ isCorrect, helpUsed, replayUsed }),
-    errorDetails: isCorrect
-      ? undefined
-      : {
-          wrongStepIndex: question.missingNoteIndex,
-          expectedScaleType: question.scaleType,
-        },
-  };
-}
-
-function getQuestionScaleMidiNotes(question: MinorScaleQuestion) {
-  const scale = getMinorScaleById(question.scaleId);
-  return scale?.midiNotes ?? [];
-}
-
-function midiToScaleNote(question: MinorScaleQuestion, midi: number) {
-  const scale = getMinorScaleById(question.scaleId);
-  const index = scale?.midiNotes.findIndex((scaleMidi) => scaleMidi === midi) ?? -1;
-
-  if (scale && index >= 0) {
-    return `${scale.notes[index]}${Math.floor(midi / 12) - 1}`;
-  }
-
-  return "";
-}
-
-function getNextInterval(question: MinorScaleQuestion, nextPlayedCount: number) {
-  const scale = getMinorScaleById(question.scaleId);
-  const sequenceStartsOnTonic = question.expectedMidiNotes?.[0] === scale?.midiNotes[0];
-  const intervalIndex = sequenceStartsOnTonic ? nextPlayedCount - 1 : nextPlayedCount;
-  return scale?.formula[Math.max(0, Math.min(6, intervalIndex))] ?? 2;
-}
-
-function currentWrongStep(question: MinorScaleQuestion, playedCount: number) {
-  const scale = getMinorScaleById(question.scaleId);
-  const sequenceStartsOnTonic = question.expectedMidiNotes?.[0] === scale?.midiNotes[0];
-  return sequenceStartsOnTonic ? Math.max(0, playedCount - 1) : playedCount;
 }
 
 function getFailureMessage(attempt: MinorScaleAttempt) {

@@ -6,7 +6,6 @@ import { useMemo } from "react";
 import {
   buildKeyboardNotes,
   getChordById,
-  getDisplayNoteName,
   noteToMidi,
 } from "@/lib/chords/theory";
 
@@ -41,24 +40,27 @@ export function ChordKeyboard({
 
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs font-bold uppercase text-muted">Teclado de acordes</p>
-        <p className="flex items-center gap-2 text-xs font-bold text-blue-deep">
+        <p className="flex items-center gap-2 whitespace-nowrap text-xs font-bold text-blue-deep">
           <CircleDot aria-hidden="true" className="h-4 w-4 text-gold-soft" />
           Selección múltiple
         </p>
       </div>
 
-      <div className="responsive-scroll mt-4 pb-2">
-        <div className="relative h-48 min-w-[680px]">
-          <div className="grid h-full grid-cols-[repeat(12,minmax(40px,1fr))] gap-1 pb-1">
+      <div className="responsive-scroll mt-4 overflow-x-auto pb-2">
+        <div className="relative h-48" style={{ minWidth: `${whiteKeys.length * 64}px` }}>
+          <div
+            className="grid h-full gap-1 pb-1"
+            style={{ gridTemplateColumns: `repeat(${whiteKeys.length}, minmax(56px, 1fr))` }}
+          >
             {whiteKeys.map((keyNote) => (
               <button
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring relative flex h-full min-w-[44px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass({
+                className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass({
                   midi: keyNote.midi,
                   selectedPitchClasses,
                   chordPitchClasses,
@@ -78,7 +80,9 @@ export function ChordKeyboard({
                   fifthPitchClass,
                   helpVisible,
                 })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{keyNote.displayName.replace(/\d/g, "")}</span>
+                <span className={showLabels ? "whitespace-nowrap opacity-100" : "opacity-0"}>
+                  {keyNote.displayName.replace(/\d/g, "")}
+                </span>
               </button>
             ))}
           </div>
@@ -93,7 +97,7 @@ export function ChordKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 w-[5.2%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
+                className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
                   midi: keyNote.midi,
                   selectedPitchClasses,
                   chordPitchClasses,
@@ -103,7 +107,7 @@ export function ChordKeyboard({
                   helpVisible,
                   answerCorrect,
                 })}`}
-                style={{ left: `${left}%` }}
+                style={{ left: `${left}%`, width: `calc(100% / ${whiteKeys.length} * 0.58)` }}
                 aria-label={`Seleccionar ${keyNote.displayName}`}
               >
                 {getBadge({
@@ -114,7 +118,9 @@ export function ChordKeyboard({
                   fifthPitchClass,
                   helpVisible,
                 })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{keyNote.displayName.replace(/\d/g, "")}</span>
+                <span className={showLabels ? "whitespace-nowrap opacity-100" : "opacity-0"}>
+                  {keyNote.displayName.replace(/\d/g, "")}
+                </span>
               </button>
             );
           })}
@@ -199,14 +205,8 @@ function getBadge({
   if (!text) return null;
 
   return (
-    <span className="absolute left-1/2 top-2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-2 py-1 text-[0.58rem] font-bold text-blue-deep shadow-sm">
-      {text === "seleccionada" ? getDisplayNoteName(midiToComparableName(midi)) : text}
+    <span className="absolute left-1/2 top-2 max-w-[calc(100%-0.4rem)] -translate-x-1/2 truncate rounded-full bg-white/90 px-2 py-1 text-[0.58rem] font-bold text-blue-deep shadow-sm">
+      {text === "seleccionada" ? "selecc." : text}
     </span>
   );
-}
-
-function midiToComparableName(midi: number) {
-  const pitch = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"][midi % 12];
-  const octave = Math.floor(midi / 12) - 1;
-  return `${pitch}${octave}`;
 }

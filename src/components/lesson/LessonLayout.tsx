@@ -145,7 +145,7 @@ export function LessonLayout({
 
         <StudyRoutineStrip items={studyRoutine} />
 
-        <div className="grid gap-5 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <div className="grid gap-5 xl:grid-cols-[280px_minmax(0,1fr)]">
           <LessonSidebar
             lesson={lesson}
             activeStep={activeStep}

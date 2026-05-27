@@ -47,7 +47,7 @@ export function LessonSidebar({
   onCompleteLesson,
 }: LessonSidebarProps) {
   return (
-    <aside className="space-y-4 lg:sticky lg:top-28 lg:self-start">
+    <aside className="space-y-4 xl:sticky xl:top-28 xl:self-start">
       <LessonStepPanel
         steps={lesson.steps}
         activeStepIndex={activeStepIndex}

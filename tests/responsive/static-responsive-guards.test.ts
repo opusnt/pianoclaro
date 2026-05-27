@@ -77,3 +77,20 @@ test("no se usa h-screen en experiencias educativas largas", () => {
   assert.deepEqual(offenders, [], `Usar min-h-screen o layout flexible en vez de h-screen: ${offenders.join(", ")}`);
 });
 
+test("las lecciones no pasan a layout de escritorio en iPad landscape", () => {
+  const lessonLayout = files.find(({ path }) => path === "src/components/lesson/LessonLayout.tsx");
+  const lessonSidebar = files.find(({ path }) => path === "src/components/lesson/LessonSidebar.tsx");
+
+  assert.ok(lessonLayout, "No se encontró LessonLayout.tsx");
+  assert.ok(lessonSidebar, "No se encontró LessonSidebar.tsx");
+  assert.equal(
+    lessonLayout.source.includes("lg:grid-cols-[280px_minmax(0,1fr)]"),
+    false,
+    "Las lecciones deben apilarse en tablet; usar xl:grid-cols para sidebar + práctica.",
+  );
+  assert.equal(
+    lessonSidebar.source.includes("lg:sticky"),
+    false,
+    "El sidebar sticky de lecciones debe activarse desde xl, no desde lg.",
+  );
+});

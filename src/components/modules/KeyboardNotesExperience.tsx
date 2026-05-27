@@ -5,111 +5,41 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import type { PianoNoteName, SharpNoteName } from "@/lib/music/notes";
-import { pianoLabelByNote, solfegeByNote } from "@/lib/music/notes";
+import {
+  buildKeyboard,
+  getKeyboardNotesAccuracy,
+  getKeyboardNotesStageProgress,
+  isCorrectBlackKeyGroup,
+  isCorrectCKey,
+  nextCOctave,
+  nextPatternTarget,
+} from "@/lib/keyboard-notes/theory";
+import {
+  buildKeyboardNotesProgressSnapshot,
+  createInitialKeyboardNotesProgress,
+  readKeyboardNotesProgress,
+  writeKeyboardNotesProgress,
+} from "@/lib/keyboard-notes/progress";
 import type { DetailedLearningModule } from "@/types/curriculum";
-import type { NoteName } from "@/types/music";
-
-type ModuleStage = "pattern" | "find-c" | "complete";
-type FeedbackState = "idle" | "correct" | "error";
-type WhiteKey = {
-  id: string;
-  note: NoteName;
-  octave: number;
-  label: string;
-  frequency: number;
-};
-type BlackKey = {
-  id: string;
-  note: SharpNoteName;
-  octave: number;
-  label: string;
-  groupType: 2 | 3;
-  groupIndex: number;
-  leftPercent: number;
-  frequency: number;
-};
-
-const whiteNoteOrder: NoteName[] = ["C", "D", "E", "F", "G", "A", "B"];
-const blackKeyPattern: Array<{
-  note: SharpNoteName;
-  afterWhiteIndex: number;
-  groupType: 2 | 3;
-}> = [
-  { note: "C#", afterWhiteIndex: 0, groupType: 2 },
-  { note: "D#", afterWhiteIndex: 1, groupType: 2 },
-  { note: "F#", afterWhiteIndex: 3, groupType: 3 },
-  { note: "G#", afterWhiteIndex: 4, groupType: 3 },
-  { note: "A#", afterWhiteIndex: 5, groupType: 3 },
-];
-const baseFrequencies: Record<PianoNoteName, number> = {
-  C: 261.63,
-  "C#": 277.18,
-  D: 293.66,
-  "D#": 311.13,
-  E: 329.63,
-  F: 349.23,
-  "F#": 369.99,
-  G: 392,
-  "G#": 415.3,
-  A: 440,
-  "A#": 466.16,
-  B: 493.88,
-};
-
-function frequencyFor(note: PianoNoteName, octave: number) {
-  return baseFrequencies[note] * 2 ** (octave - 4);
-}
-
-function buildKeyboard(octaves: number[]) {
-  const whiteKeys = octaves.flatMap((octave) =>
-    whiteNoteOrder.map((note) => ({
-      id: `${note}${octave}`,
-      note,
-      octave,
-      label: solfegeByNote[note],
-      frequency: frequencyFor(note, octave),
-    })),
-  );
-  const blackKeys = octaves.flatMap((octave, octaveIndex) =>
-    blackKeyPattern.map((key, index) => {
-      const absoluteWhiteIndex = octaveIndex * 7 + key.afterWhiteIndex;
-
-      return {
-        id: `${key.note}${octave}`,
-        note: key.note,
-        octave,
-        label: pianoLabelByNote[key.note],
-        groupType: key.groupType,
-        groupIndex: key.groupType === 2 ? octaveIndex * 2 : octaveIndex * 2 + 1,
-        leftPercent: ((absoluteWhiteIndex + 0.68) / whiteKeys.length) * 100,
-        frequency: frequencyFor(key.note, octave),
-      };
-    }),
-  );
-
-  return { whiteKeys, blackKeys };
-}
-
-function nextPatternTarget(previous?: 2 | 3): 2 | 3 {
-  return previous === 2 ? 3 : 2;
-}
-
-function nextCOctave(previous: number) {
-  return previous === 4 ? 5 : 4;
-}
+import type {
+  KeyboardNotesBlackKey,
+  KeyboardNotesFeedbackState,
+  KeyboardNotesStage,
+  KeyboardNotesWhiteKey,
+} from "@/types/keyboard-notes";
 
 export function KeyboardNotesExperience({ module }: { module: DetailedLearningModule }) {
-  const [stage, setStage] = useState<ModuleStage>("pattern");
+  const [stage, setStage] = useState<KeyboardNotesStage>("pattern");
   const [patternTarget, setPatternTarget] = useState<2 | 3>(2);
   const [targetCOctave, setTargetCOctave] = useState(4);
   const [xp, setXp] = useState(0);
   const [combo, setCombo] = useState(0);
+  const [comboMax, setComboMax] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [patternHits, setPatternHits] = useState(0);
   const [cHits, setCHits] = useState(0);
-  const [feedback, setFeedback] = useState<FeedbackState>("idle");
+  const [feedback, setFeedback] = useState<KeyboardNotesFeedbackState>("idle");
   const [message, setMessage] = useState("Busca el patrón de dos teclas negras.");
   const [showLabels, setShowLabels] = useState(true);
   const [hintLevel, setHintLevel] = useState(0);
@@ -117,15 +47,47 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
 
   const { whiteKeys, blackKeys } = useMemo(() => buildKeyboard([4, 5]), []);
   const targetCKey = whiteKeys.find((key) => key.note === "C" && key.octave === targetCOctave);
-  const accuracy = attempts > 0 ? Math.round((correct / attempts) * 100) : 100;
-  const stageProgress =
-    stage === "pattern" ? Math.min(100, (patternHits / 4) * 100) : stage === "find-c" ? Math.min(100, (cHits / 5) * 100) : 100;
+  const accuracy = getKeyboardNotesAccuracy(correct, attempts);
+  const stageProgress = getKeyboardNotesStageProgress({ stage, patternHits, cHits });
 
   useEffect(() => {
+    const storedProgress = readKeyboardNotesProgress();
+    setStage(storedProgress.stage);
+    setXp(storedProgress.xp);
+    setComboMax(storedProgress.comboMax);
+    setAttempts(storedProgress.attempts);
+    setCorrect(storedProgress.correct);
+    setPatternHits(storedProgress.patternHits);
+    setCHits(storedProgress.cHits);
+
+    if (storedProgress.stage === "find-c") {
+      setMessage("Continúa encontrando Do antes del grupo de dos teclas negras.");
+    }
+
+    if (storedProgress.stage === "complete") {
+      setMessage("Módulo inicial completado: el teclado ya tiene mapa.");
+    }
+
     return () => {
       audioRef.current?.close();
     };
   }, []);
+
+  useEffect(() => {
+    writeKeyboardNotesProgress(
+      buildKeyboardNotesProgressSnapshot({
+        stage,
+        xp,
+        combo,
+        comboMax,
+        attempts,
+        correct,
+        patternHits,
+        cHits,
+        accuracy,
+      }),
+    );
+  }, [accuracy, attempts, cHits, combo, comboMax, correct, patternHits, stage, xp]);
 
   function getAudio() {
     if (!audioRef.current) {
@@ -143,7 +105,11 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
     setFeedback("correct");
     setAttempts((value) => value + 1);
     setCorrect((value) => value + 1);
-    setCombo((value) => value + 1);
+    setCombo((value) => {
+      const nextCombo = value + 1;
+      setComboMax((currentMax) => Math.max(currentMax, nextCombo));
+      return nextCombo;
+    });
     setXp((value) => value + xpReward + (combo > 0 && (combo + 1) % 5 === 0 ? 15 : 0));
     setHintLevel(0);
     setMessage(nextMessage);
@@ -157,7 +123,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
     setMessage(nextMessage);
   }
 
-  function handleBlackKeyPress(key: BlackKey) {
+  function handleBlackKeyPress(key: KeyboardNotesBlackKey) {
     void playFrequency(key.frequency, 260);
 
     if (stage !== "pattern") {
@@ -165,7 +131,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
       return;
     }
 
-    if (key.groupType === patternTarget) {
+    if (isCorrectBlackKeyGroup(key, patternTarget)) {
       const nextHits = patternHits + 1;
       markCorrect(
         nextHits >= 4
@@ -189,7 +155,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
     markError(`Ese grupo tiene ${key.groupType} teclas negras. Necesitamos un grupo de ${patternTarget}.`);
   }
 
-  function handleWhiteKeyPress(key: WhiteKey) {
+  function handleWhiteKeyPress(key: KeyboardNotesWhiteKey) {
     void playFrequency(key.frequency, 320);
 
     if (stage === "pattern") {
@@ -202,7 +168,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
       return;
     }
 
-    const isCorrectC = key.note === "C" && key.octave === targetCOctave;
+    const isCorrectC = isCorrectCKey(key, targetCOctave);
 
     if (isCorrectC) {
       const nextHits = cHits + 1;
@@ -239,6 +205,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
     setTargetCOctave(4);
     setXp(0);
     setCombo(0);
+    setComboMax(0);
     setAttempts(0);
     setCorrect(0);
     setPatternHits(0);
@@ -247,6 +214,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
     setHintLevel(0);
     setShowLabels(true);
     setMessage("Busca el patrón de dos teclas negras.");
+    writeKeyboardNotesProgress(createInitialKeyboardNotesProgress());
   }
 
   const currentTitle =
@@ -408,15 +376,15 @@ function InteractiveKeyboard({
   onWhiteKeyPress,
   onBlackKeyPress,
 }: {
-  whiteKeys: WhiteKey[];
-  blackKeys: BlackKey[];
+  whiteKeys: KeyboardNotesWhiteKey[];
+  blackKeys: KeyboardNotesBlackKey[];
   showLabels: boolean;
   hintLevel: number;
-  stage: ModuleStage;
+  stage: KeyboardNotesStage;
   patternTarget: 2 | 3;
   targetCKeyId?: string;
-  onWhiteKeyPress: (key: WhiteKey) => void;
-  onBlackKeyPress: (key: BlackKey) => void;
+  onWhiteKeyPress: (key: KeyboardNotesWhiteKey) => void;
+  onBlackKeyPress: (key: KeyboardNotesBlackKey) => void;
 }) {
   return (
     <div id="keyboard" className="responsive-scroll mt-6 pb-3">

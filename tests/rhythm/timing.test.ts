@@ -3,9 +3,11 @@ import test from "node:test";
 
 import { rhythmExercises } from "@/data/rhythm-basics";
 import {
+  adjustInputTimestamp,
   collectMissedBeats,
   evaluateHit,
   generateBeatEvents,
+  getActiveBeatClockState,
   getBeatIntervalMs,
 } from "@/lib/rhythm/timing";
 
@@ -39,6 +41,35 @@ test("evalúa inputs contra el beat más cercano sin doble conteo", () => {
   assert.equal(evaluateHit({ timestamp: 2080, inputType: "keyboard" }, events)?.grade, "good");
   assert.equal(evaluateHit({ timestamp: 2880, inputType: "keyboard" }, events)?.grade, "early");
   assert.equal(evaluateHit({ timestamp: 4150, inputType: "keyboard" }, events)?.grade, "late");
+});
+
+test("permite compensar latencia de entrada de forma explícita", () => {
+  const exercise = { ...rhythmExercises[0], totalBeats: 1 };
+  const events = generateBeatEvents({ exercise, startTimestamp: 1000 });
+
+  assert.equal(adjustInputTimestamp(1060, 60), 1000);
+  assert.equal(
+    evaluateHit(
+      { timestamp: 1060, inputType: "keyboard" },
+      events,
+      { inputLatencyOffsetMs: 60 },
+    )?.grade,
+    "perfect",
+  );
+});
+
+test("calcula estado visual del reloj de ritmo sin depender de React", () => {
+  const exercise = { ...rhythmExercises[0], totalBeats: 4 };
+  const events = generateBeatEvents({ exercise, startTimestamp: 1000 });
+
+  const clockState = getActiveBeatClockState({
+    currentTimestamp: 1500,
+    beatEvents: events,
+  });
+
+  assert.equal(clockState.activeBeatIndex, 0);
+  assert.equal(clockState.pulseProgress, 0.5);
+  assert.equal(clockState.isAfterLastBeat, false);
 });
 
 test("registra misses automáticos al superar la ventana esperada", () => {

@@ -34,8 +34,11 @@ Reglas:
 
 - Toda página debe tener `max-w-*` o una grilla controlada.
 - En mobile, los layouts de app se apilan en una columna.
-- En desktop, las páginas de práctica pueden usar dos o tres columnas.
-- Los paneles `sticky` solo deben activarse desde `lg`.
+- En tablet, incluidas vistas tipo iPad landscape, las lecciones largas deben
+  seguir apiladas salvo que una prueba visual demuestre que el foco musical no
+  pierde espacio.
+- En desktop ancho, las páginas de práctica pueden usar dos o tres columnas.
+- Los paneles `sticky` de lecciones solo deben activarse desde `xl`.
 - No usar `h-screen` para pantallas con contenido educativo largo; preferir
   `min-h-screen`.
 

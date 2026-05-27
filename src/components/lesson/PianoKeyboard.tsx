@@ -45,12 +45,12 @@ export function PianoKeyboard({
   onBlackKeyPress,
 }: PianoKeyboardProps) {
   return (
-    <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]">
+    <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-3 shadow-[0_12px_30px_rgba(18,52,91,0.08)] sm:p-5">
       <div>
         <p className="text-xs font-bold uppercase text-muted">Teclado visual</p>
         <h2 className="mt-1 text-xl font-bold text-blue-deep">Una octava: Do a Si</h2>
       </div>
-      <div className="relative mt-5 h-44 overflow-hidden rounded-2xl border border-blue-deep/15 bg-blue-deep/10 sm:h-56">
+      <div className="relative mt-4 h-36 overflow-hidden rounded-2xl border border-blue-deep/15 bg-blue-deep/10 sm:h-44 xl:h-56">
         <div className="flex h-full">
           {whiteKeys.map((key) => {
             const isActive = activeNotes.includes(key.note);
