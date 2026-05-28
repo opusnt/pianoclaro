@@ -3,6 +3,7 @@
 import { Music2 } from "lucide-react";
 import { useMemo } from "react";
 
+import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 import {
   buildKeyboardNotes,
   getDisplayNoteName,
@@ -98,7 +99,7 @@ export function PentatonicKeyboard({
 
           {blackKeys.map((keyNote) => {
             const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < keyNote.midi);
-            const left = ((previousWhiteIndex + 1) / whiteKeys.length) * 100;
+            const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
             const outsideScale = Boolean(lockToScale && !allowedPitchClasses.has(keyNote.midi % 12));
 
             return (

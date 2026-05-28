@@ -3,6 +3,7 @@
 import { CircleDot } from "lucide-react";
 import { useMemo } from "react";
 
+import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 import {
   buildKeyboardNotes,
   getDisplayNoteName,
@@ -79,7 +80,7 @@ export function ChordInversionKeyboard({
 
           {blackKeys.map((keyNote) => {
             const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < keyNote.midi);
-            const left = ((previousWhiteIndex + 1) / whiteKeys.length) * 100;
+            const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
               <button

@@ -13,6 +13,7 @@ export type RhythmTendency = "early" | "late" | "unstable" | "balanced";
 
 export type RhythmExerciseState =
   | "intro"
+  | "previewing"
   | "countdown"
   | "playing"
   | "paused"

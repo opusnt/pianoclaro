@@ -7,6 +7,7 @@ import { KeySignatureFeedback } from "@/components/modules/key-signature/KeySign
 import { KeySignatureKeyboard } from "@/components/modules/key-signature/KeySignatureKeyboard";
 import { KeySignatureScorePanel } from "@/components/modules/key-signature/KeySignatureScorePanel";
 import { useKeySignatureEngine } from "@/components/modules/key-signature/hooks/useKeySignatureEngine";
+import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import {
   getCompletedUnits,
 } from "@/lib/scale-practice/progress-units";
@@ -35,7 +36,8 @@ export function KeySignatureExerciseScreen({
   onAttemptComplete,
 }: KeySignatureExerciseScreenProps) {
   const engine = useKeySignatureEngine({ exercise, progress, onAttemptComplete });
-  const question = engine.currentQuestion;
+  const isIntro = engine.state === "intro";
+  const question = isIntro ? undefined : engine.currentQuestion;
   const key = question ? getKeySignatureById(question.keyId) : undefined;
   const currentProgressUnits = getCompletedUnits({
     questions: engine.questions,
@@ -52,7 +54,7 @@ export function KeySignatureExerciseScreen({
   const completedMidiNotes = engine.currentPlayedNotes.map(noteToMidi);
   const routeMidiNotes = question?.expectedMidiNotes ?? key?.midiNotes ?? [];
   const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer);
+    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
 
   return (
     <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-soft">
@@ -63,14 +65,14 @@ export function KeySignatureExerciseScreen({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{exercise.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {engine.state === "intro" || engine.isComplete ? (
+          {engine.isComplete ? (
             <button
               type="button"
               onClick={engine.startExercise}
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl bg-blue-deep px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949]"
             >
               <Play aria-hidden="true" className="h-4 w-4" />
-              {engine.isComplete ? "Reintentar" : "Iniciar"}
+              Reintentar
             </button>
           ) : null}
           <button
@@ -84,6 +86,17 @@ export function KeySignatureExerciseScreen({
         </div>
       </div>
 
+      {isIntro ? (
+        <ExerciseStartPanel
+          moduleKind="key-signature"
+          title={exercise.title}
+          description={exercise.description}
+          rounds={exercise.totalRounds}
+          assistedMode={engine.assistedMode}
+          onStart={engine.startExercise}
+        />
+      ) : (
+        <>
       <div className="mt-5">
         <KeySignatureScorePanel
           score={engine.scoring.score}
@@ -154,7 +167,7 @@ export function KeySignatureExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
               >
                 <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Ayuda visual</span>
+                <span className="whitespace-nowrap">Ver notas</span>
               </button>
               <button
                 type="button"
@@ -164,7 +177,7 @@ export function KeySignatureExerciseScreen({
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
                 <span className="whitespace-nowrap">
-                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
                 </span>
               </button>
             </div>
@@ -173,6 +186,8 @@ export function KeySignatureExerciseScreen({
           {key ? <KeySummary keyId={key.id} /> : null}
         </aside>
       </div>
+        </>
+      )}
     </section>
   );
 }

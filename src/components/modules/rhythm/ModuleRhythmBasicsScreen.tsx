@@ -6,7 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ExerciseProgressCard } from "@/components/modules/rhythm/ExerciseProgressCard";
 import { RhythmExerciseScreen } from "@/components/modules/rhythm/RhythmExerciseScreen";
 import { useExerciseProgress } from "@/components/modules/rhythm/hooks/useExerciseProgress";
+import { LessonNarrativePanel } from "@/components/modules/shared/LessonNarrativePanel";
 import { ModuleMetric } from "@/components/modules/shared/ModuleMetric";
+import { NextLessonCard } from "@/components/modules/shared/NextLessonCard";
 import { trackAttempt, trackEvent } from "@/lib/rhythm/analytics";
 import type { ExerciseAttempt, RhythmModule } from "@/types/rhythm";
 
@@ -94,6 +96,8 @@ export function ModuleRhythmBasicsScreen({ module }: ModuleRhythmBasicsScreenPro
           <div className="mt-6 h-2 overflow-hidden rounded-full bg-blue-deep/10">
             <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
           </div>
+
+          <LessonNarrativePanel moduleId={module.id} />
         </section>
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[0.85fr_1.65fr]">
@@ -119,6 +123,8 @@ export function ModuleRhythmBasicsScreen({ module }: ModuleRhythmBasicsScreenPro
             />
           ) : null}
         </section>
+
+        <NextLessonCard currentModuleId={module.id} isCompleted={progress.completed} />
       </div>
     </main>
   );

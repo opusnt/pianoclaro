@@ -6,7 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ExerciseProgressCard } from "@/components/modules/minor-scale/ExerciseProgressCard";
 import { MinorScaleExerciseScreen } from "@/components/modules/minor-scale/MinorScaleExerciseScreen";
 import { useMinorScaleProgress } from "@/components/modules/minor-scale/hooks/useMinorScaleProgress";
+import { LessonNarrativePanel } from "@/components/modules/shared/LessonNarrativePanel";
 import { ModuleMetric } from "@/components/modules/shared/ModuleMetric";
+import { NextLessonCard } from "@/components/modules/shared/NextLessonCard";
 import { trackMinorScaleAttempt, trackMinorScaleEvent } from "@/lib/minor-scale/analytics";
 import type { MinorScaleAttempt, MinorScaleModule } from "@/types/minor-scale";
 
@@ -94,6 +96,8 @@ export function ModuleMinorScaleScreen({ module }: ModuleMinorScaleScreenProps) 
           <div className="mt-6 h-2 overflow-hidden rounded-full bg-blue-deep/10">
             <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
           </div>
+
+          <LessonNarrativePanel moduleId={module.id} />
         </section>
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[0.85fr_1.65fr]">
@@ -119,6 +123,8 @@ export function ModuleMinorScaleScreen({ module }: ModuleMinorScaleScreenProps) 
             />
           ) : null}
         </section>
+
+        <NextLessonCard currentModuleId={module.id} isCompleted={progress.completed} />
       </div>
     </main>
   );

@@ -59,7 +59,7 @@ export function buildKeyboard(octaves: number[]) {
         label: pianoLabelByNote[key.note],
         groupType: key.groupType,
         groupIndex: key.groupType === 2 ? octaveIndex * 2 : octaveIndex * 2 + 1,
-        leftPercent: ((absoluteWhiteIndex + 0.68) / whiteKeys.length) * 100,
+        leftPercent: ((absoluteWhiteIndex + 1) / whiteKeys.length) * 100,
         frequency: frequencyFor(key.note, octave),
       };
     }),

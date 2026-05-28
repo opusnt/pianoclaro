@@ -80,7 +80,7 @@ export function HarmonicFieldKeyboard({
                 >
                   {isTonic ? <span className="absolute left-1 top-2 rounded-full bg-blue-deep px-2 py-0.5 text-[10px] text-white">tónica</span> : null}
                   {helpVisible && inChord ? <span className="text-[10px] uppercase">acorde</span> : null}
-                  {showLabels || selected || inChord ? <span>{note.displayName}</span> : null}
+                  {showLabels ? <span>{note.displayName}</span> : null}
                 </button>
               );
             })}
@@ -116,7 +116,7 @@ export function HarmonicFieldKeyboard({
                           : "border-slate-800 bg-slate-950"
                   } disabled:cursor-not-allowed disabled:opacity-75`}
                 >
-                  {showLabels || selected || inChord ? blackNote.displayName : ""}
+                  {showLabels ? blackNote.displayName : ""}
                 </button>
               );
             })}

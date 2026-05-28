@@ -7,6 +7,7 @@ import { MinorScaleKeyboard } from "@/components/modules/minor-scale/MinorScaleK
 import { MinorScalePattern } from "@/components/modules/minor-scale/MinorScalePattern";
 import { MinorScaleScorePanel } from "@/components/modules/minor-scale/MinorScaleScorePanel";
 import { useMinorScaleEngine } from "@/components/modules/minor-scale/hooks/useMinorScaleEngine";
+import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import {
   getDisplayPitchName,
   getMinorScaleById,
@@ -38,7 +39,8 @@ export function MinorScaleExerciseScreen({
   onAttemptComplete,
 }: MinorScaleExerciseScreenProps) {
   const engine = useMinorScaleEngine({ exercise, progress, onAttemptComplete });
-  const question = engine.currentQuestion;
+  const isIntro = engine.state === "intro";
+  const question = isIntro ? undefined : engine.currentQuestion;
   const scale = question ? getMinorScaleById(question.scaleId) : undefined;
   const currentProgressUnits = getCompletedUnits({
     questions: engine.questions,
@@ -66,7 +68,7 @@ export function MinorScaleExerciseScreen({
     playedCount: engine.currentPlayedNotes.length,
   });
   const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer);
+    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
 
   return (
     <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-soft">
@@ -77,14 +79,14 @@ export function MinorScaleExerciseScreen({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{exercise.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {engine.state === "intro" || engine.isComplete ? (
+          {engine.isComplete ? (
             <button
               type="button"
               onClick={engine.startExercise}
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl bg-blue-deep px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949]"
             >
               <Play aria-hidden="true" className="h-4 w-4" />
-              {engine.isComplete ? "Reintentar" : "Iniciar"}
+              Reintentar
             </button>
           ) : null}
           <button
@@ -98,6 +100,17 @@ export function MinorScaleExerciseScreen({
         </div>
       </div>
 
+      {isIntro ? (
+        <ExerciseStartPanel
+          moduleKind="minor-scale"
+          title={exercise.title}
+          description={exercise.description}
+          rounds={exercise.totalRounds}
+          assistedMode={engine.assistedMode}
+          onStart={engine.startExercise}
+        />
+      ) : (
+        <>
       <div className="mt-5">
         <MinorScaleScorePanel
           score={engine.scoring.score}
@@ -111,6 +124,8 @@ export function MinorScaleExerciseScreen({
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
         <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
       </div>
+
+      <MinorScaleExerciseGuide type={exercise.type} />
 
       <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
         <div className="min-w-0 space-y-4">
@@ -206,7 +221,7 @@ export function MinorScaleExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Eye aria-hidden="true" className="h-4 w-4" />
-                Mostrar ayuda
+                Ver notas
               </button>
               <button
                 type="button"
@@ -215,7 +230,7 @@ export function MinorScaleExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#cda85d] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
-                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
               </button>
             </div>
           </div>
@@ -251,7 +266,65 @@ export function MinorScaleExerciseScreen({
           ) : null}
         </aside>
       </div>
+        </>
+      )}
     </section>
+  );
+}
+
+function MinorScaleExerciseGuide({ type }: { type: MinorScaleExercise["type"] }) {
+  const copy: Record<MinorScaleExercise["type"], [string, string, string]> = {
+    major_vs_minor: [
+      "Escucha primero la escala mayor.",
+      "Luego escucha la menor y compara la tercera nota.",
+      "Responde por diferencia sonora y visual, no por memoria aislada.",
+    ],
+    discover_natural_pattern: [
+      "Parte desde LA como tónica.",
+      "Sigue T - S - T - T - S - T - T.",
+      "Avanza 2 teclas en tono y 1 tecla en semitono.",
+    ],
+    play_a_minor_natural: [
+      "Toca LA menor natural como una ruta completa.",
+      "La secuencia usa LA SI DO RE MI FA SOL LA.",
+      "Completa la octava antes de pasar de ronda.",
+    ],
+    build_natural_from_tonic: [
+      "Identifica la tónica de la ronda.",
+      "Aplica el patrón menor natural desde esa nota.",
+      "Fíjate especialmente en los semitonos.",
+    ],
+    missing_note: [
+      "Mira la escala menor incompleta.",
+      "Ubica qué grado falta.",
+      "Elige la nota que mantiene el tipo menor correcto.",
+    ],
+    natural_vs_harmonic: [
+      "Compara menor natural con menor armónica.",
+      "Observa el séptimo grado: ahí aparece el cambio.",
+      "Toca o elige la nota elevada cuando corresponda.",
+    ],
+    natural_vs_melodic: [
+      "Compara menor natural con melódica ascendente.",
+      "Observa sexto y séptimo grado.",
+      "Recuerda que en este módulo la melódica se usa solo al subir.",
+    ],
+    final_challenge: [
+      "Identifica si la ronda compara, construye o completa.",
+      "Usa el tipo de escala para decidir qué patrón aplica.",
+      "Responde con atención a las notas que cambian.",
+    ],
+  };
+
+  return (
+    <div className="mt-5 grid gap-3 rounded-2xl border border-blue-deep/10 bg-ivory p-3 md:grid-cols-3">
+      {copy[type].map((step, index) => (
+        <div key={step} className="rounded-xl border border-blue-deep/10 bg-white/75 p-3">
+          <p className="text-xs font-black uppercase text-gold-soft">Paso {index + 1}</p>
+          <p className="mt-1 text-sm font-bold leading-6 text-blue-deep">{step}</p>
+        </div>
+      ))}
+    </div>
   );
 }
 

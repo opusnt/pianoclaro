@@ -4,6 +4,8 @@ import { AudioSettings } from "@/components/lesson/AudioSettings";
 import { ComputerKeyboardToggle } from "@/components/lesson/ComputerKeyboardToggle";
 import { PianoKeyboard } from "@/components/lesson/PianoKeyboard";
 import { PracticeModeSelector } from "@/components/lesson/PracticeModeSelector";
+import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 import type { SharpNoteName } from "@/lib/music/notes";
 import type { Lesson, NoteName, PracticeMode } from "@/types/lesson";
 
@@ -42,6 +44,8 @@ export function LessonToolsPanel({
   onMutedChange,
   onMetronomeChange,
 }: LessonToolsPanelProps) {
+  const [showNoteLabels, setShowNoteLabels] = useState(false);
+
   return (
     <details className="rounded-2xl border border-blue-deep/10 bg-white/75 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]">
       <summary className="cursor-pointer text-sm font-bold text-blue-deep">
@@ -51,12 +55,24 @@ export function LessonToolsPanel({
         <PianoKeyboard
           activeNotes={activeNotes}
           activeBlackNotes={activeBlackNotes}
-          showLabels
+          showLabels={showNoteLabels}
           showComputerKeys={computerKeyboardEnabled}
           onKeyPress={onNaturalKeyPress}
           onBlackKeyPress={onSharpKeyPress}
         />
         <div className="space-y-5">
+          <button
+            type="button"
+            onClick={() => setShowNoteLabels((current) => !current)}
+            className="focus-ring inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
+          >
+            {showNoteLabels ? (
+              <EyeOff aria-hidden="true" className="h-4 w-4" />
+            ) : (
+              <Eye aria-hidden="true" className="h-4 w-4" />
+            )}
+            {showNoteLabels ? "Ocultar notas" : "Ver notas"}
+          </button>
           <ComputerKeyboardToggle
             enabled={computerKeyboardEnabled}
             onChange={onComputerKeyboardChange}

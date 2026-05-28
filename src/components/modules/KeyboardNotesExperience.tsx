@@ -5,6 +5,8 @@ import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { LessonNarrativePanel } from "@/components/modules/shared/LessonNarrativePanel";
+import { NextLessonCard } from "@/components/modules/shared/NextLessonCard";
 import {
   buildKeyboard,
   getKeyboardNotesAccuracy,
@@ -41,7 +43,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
   const [cHits, setCHits] = useState(0);
   const [feedback, setFeedback] = useState<KeyboardNotesFeedbackState>("idle");
   const [message, setMessage] = useState("Busca el patrón de dos teclas negras.");
-  const [showLabels, setShowLabels] = useState(true);
+  const [showLabels, setShowLabels] = useState(false);
   const [hintLevel, setHintLevel] = useState(0);
   const audioRef = useRef<PianoAudioEngine | null>(null);
 
@@ -279,7 +281,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
             >
               <Eye aria-hidden="true" className="h-4 w-4" />
-              {showLabels ? "Ocultar nombres" : "Mostrar nombres"}
+              {showLabels ? "Ocultar notas" : "Ver notas"}
             </button>
             <button
               type="button"
@@ -290,6 +292,7 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
               Repetir
             </button>
           </div>
+
         </aside>
 
         <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4 shadow-soft sm:p-6">
@@ -339,28 +342,32 @@ export function KeyboardNotesExperience({ module }: { module: DetailedLearningMo
         </section>
       </section>
 
-      <section className="mt-6 rounded-2xl border border-blue-deep/10 bg-blue-deep p-6 text-white shadow-soft">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase text-gold-soft">Siguiente microlección</p>
-            <h2 className="mt-2 text-2xl font-bold">
-              {stage === "complete" ? "Ritmo básico" : "Tu primera firma sonora"}
-            </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/75">
-              {stage === "complete"
-                ? "Ahora que sabes dónde están las notas, aprenderás cuándo tocarlas."
-                : "Cuando completes el mapa, crearás una mini idea musical con las notas que ya conoces."}
-            </p>
+      <div className="mt-6">
+        <LessonNarrativePanel moduleId={module.id} />
+      </div>
+
+      {stage === "complete" ? (
+        <NextLessonCard currentModuleId={module.id} isCompleted={stage === "complete"} />
+      ) : (
+        <section className="mt-6 rounded-2xl border border-blue-deep/10 bg-blue-deep p-6 text-white shadow-soft">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase text-gold-soft">Antes de la siguiente lección</p>
+              <h2 className="mt-2 text-2xl font-bold">Termina el mapa del teclado</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-white/75">
+                Cuando completes el mapa, el botón de siguiente lección te llevará directo a Ritmo básico.
+              </p>
+            </div>
+            <a
+              href="#keyboard"
+              className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-blue-deep transition hover:bg-cream"
+            >
+              Seguir practicando
+              <ChevronRight aria-hidden="true" className="h-4 w-4" />
+            </a>
           </div>
-          <a
-            href={stage === "complete" ? "/rutas" : "#keyboard"}
-            className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-white px-5 py-3 text-sm font-bold text-blue-deep transition hover:bg-cream"
-          >
-            {stage === "complete" ? "Ver rutas" : "Seguir practicando"}
-            <ChevronRight aria-hidden="true" className="h-4 w-4" />
-          </a>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   );
 }
@@ -407,7 +414,7 @@ function InteractiveKeyboard({
                   }`}
                   aria-label={`Tocar ${key.label} octava ${key.octave}`}
                 >
-                  {showLabels || showCGuide || isTarget ? (
+                  {showLabels ? (
                     <span className="rounded-lg bg-white/70 px-2 py-1">
                       {key.label}
                       <span className="ml-1 text-[10px] opacity-70">{key.octave}</span>

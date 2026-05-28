@@ -199,13 +199,67 @@ export function useRhythmEngine({
 
   }
 
+  function monitorPreviewClock() {
+    const now = performance.now();
+    const currentEvents = beatEventsRef.current;
+    const lastBeat = currentEvents.at(-1);
+
+    if (!lastBeat) {
+      return;
+    }
+
+    const clockState = getActiveBeatClockState({
+      currentTimestamp: now,
+      beatEvents: currentEvents,
+    });
+
+    setCurrentBeatIndex(clockState.activeBeatIndex);
+    setPulseProgress(clockState.pulseProgress);
+
+    currentEvents.forEach((beat) => {
+      if (now >= beat.expectedTimestamp && !tickedBeatIdsRef.current.has(beat.beatIndex)) {
+        tickedBeatIdsRef.current.add(beat.beatIndex);
+        void getAudio().playMetronomeTick(beat.shouldTap);
+      }
+    });
+
+    if (now > lastBeat.expectedTimestamp + 520) {
+      stopClock();
+      setState("intro");
+      setCurrentBeatIndex(0);
+      setPulseProgress(0);
+      setFeedback("Ya escuchaste el ritmo. Ahora practica: espera la cuenta y replica el patrón.");
+    }
+  }
+
+  function previewExercise() {
+    resetRuntime();
+    const startTimestamp = performance.now() + 420;
+    const events = generateBeatEvents({
+      exercise: effectiveExercise,
+      startTimestamp,
+    });
+
+    beatEventsRef.current = events;
+    setBeatEvents(events);
+    setEffectiveBpm(events[0]?.bpm ?? effectiveExercise.bpm);
+    setState("previewing");
+    setFeedback("Escucha primero. Los beats fuertes indican cuándo deberás tocar.");
+    trackEvent("rhythm_exercise_preview_started", {
+      moduleId: exercise.moduleId,
+      exerciseId: exercise.id,
+      bpm: events[0]?.bpm ?? exercise.bpm,
+    });
+    startMetronome(monitorPreviewClock);
+  }
+
   function startExercise() {
     resetRuntime();
     setState("countdown");
     setFeedback(
       failedAttempts >= 2
         ? "Modo ayuda activo: tempo un poco más lento y ventana de precisión más amable."
-        : "Prepárate. Toca cuando el anillo llegue al centro.",
+        : "Prepárate. Escucha la cuenta y replica el ritmo que acabas de estudiar.",
     );
     countdownValues.forEach((value, index) => {
       const timer = window.setTimeout(() => {
@@ -268,13 +322,17 @@ export function useRhythmEngine({
   }
 
   function pauseExercise() {
-    if (state !== "playing" && state !== "countdown") {
+    if (state !== "playing" && state !== "countdown" && state !== "previewing") {
       return;
     }
 
     stopClock();
     setState("paused");
-    setFeedback("Pausa activa. Al continuar reiniciaremos el intento para mantener el timing limpio.");
+    setFeedback(
+      state === "previewing"
+        ? "Escucha detenida. Puedes volver a escuchar el patrón o practicar cuando estés listo."
+        : "Pausa activa. Al continuar reiniciaremos el intento para mantener el timing limpio.",
+    );
   }
 
   function resetRuntime() {
@@ -295,7 +353,7 @@ export function useRhythmEngine({
     resetRuntime();
     setState("intro");
     setEffectiveBpm(effectiveExercise.bpm);
-    setFeedback("Pulsa iniciar y toca cuando el anillo llegue al centro.");
+    setFeedback("Primero escucha el patrón. Luego practica y toca cuando el anillo llegue al centro.");
   }
 
   return {
@@ -311,6 +369,7 @@ export function useRhythmEngine({
     effectiveBpm,
     scoring,
     windows,
+    previewExercise,
     startExercise,
     submitInput,
     pauseExercise,

@@ -3,6 +3,7 @@ import { appendLocalAnalyticsEvent } from "@/lib/analytics/local-analytics";
 
 export type RhythmAnalyticsEventName =
   | "rhythm_module_started"
+  | "rhythm_exercise_preview_started"
   | "rhythm_exercise_started"
   | "rhythm_hit_evaluated"
   | "rhythm_exercise_completed"

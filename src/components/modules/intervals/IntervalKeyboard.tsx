@@ -3,6 +3,7 @@
 import { Music2 } from "lucide-react";
 import { useMemo } from "react";
 
+import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 import {
   buildKeyboardNotes,
   getNoteLabel,
@@ -46,7 +47,7 @@ export function IntervalKeyboard({
     baseNote && targetNote
       ? Math.max(centerByNote[baseNote] ?? 0, centerByNote[targetNote] ?? 0)
       : 0;
-  const shouldShowArc = Boolean(baseNote && targetNote && (showLabels || selectedNote));
+  const shouldShowArc = Boolean(baseNote && targetNote && showLabels);
 
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
@@ -74,7 +75,7 @@ export function IntervalKeyboard({
         ) : null}
 
         <div className="relative h-44">
-          <div className="grid h-full grid-cols-8 gap-1">
+          <div className="grid h-full grid-cols-8">
             {whiteKeys.map((key) => (
               <button
                 key={key.id}
@@ -99,7 +100,7 @@ export function IntervalKeyboard({
 
           {blackKeys.map((key) => {
             const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < key.midi);
-            const left = ((previousWhiteIndex + 0.68) / whiteKeys.length) * 100;
+            const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
               <button
@@ -107,7 +108,7 @@ export function IntervalKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.id)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 w-[8.5%] -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.68rem] font-bold shadow-md transition ${getBlackKeyClass({
+                className={`focus-ring absolute top-0 z-10 flex h-28 w-[7.5%] min-w-8 max-w-14 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.68rem] font-bold shadow-md transition ${getBlackKeyClass({
                   note: key.id,
                   baseNote,
                   targetNote,
@@ -147,7 +148,7 @@ function getKeyClass({
     return "border-red-400 bg-red-100 text-red-950";
   }
 
-  if ((selectedNote === note && isCorrect) || ((showLabels || selectedNote) && targetNote === note)) {
+  if ((selectedNote === note && isCorrect) || (showLabels && targetNote === note)) {
     return "border-emerald-500 bg-emerald-100 text-emerald-950";
   }
 
@@ -190,7 +191,7 @@ function getKeyBadge({
       ? "base"
       : selectedNote === note && isCorrect === false
         ? "tu respuesta"
-        : (selectedNote === note && isCorrect) || ((showLabels || selectedNote) && targetNote === note)
+        : (selectedNote === note && isCorrect) || (showLabels && targetNote === note)
           ? "correcta"
           : "";
 

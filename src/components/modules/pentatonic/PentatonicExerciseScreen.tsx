@@ -7,6 +7,7 @@ import { PentatonicKeyboard } from "@/components/modules/pentatonic/PentatonicKe
 import { PentatonicScaleBadge } from "@/components/modules/pentatonic/PentatonicScaleBadge";
 import { PentatonicScorePanel } from "@/components/modules/pentatonic/PentatonicScorePanel";
 import { usePentatonicEngine } from "@/components/modules/pentatonic/hooks/usePentatonicEngine";
+import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
 import {
   getDisplayPitchName,
@@ -33,7 +34,8 @@ export function PentatonicExerciseScreen({
   onAttemptComplete,
 }: PentatonicExerciseScreenProps) {
   const engine = usePentatonicEngine({ exercise, progress, onAttemptComplete });
-  const question = engine.currentQuestion;
+  const isIntro = engine.state === "intro";
+  const question = isIntro ? undefined : engine.currentQuestion;
   const scale = question ? getPentatonicScaleById(question.scaleId) : undefined;
   const currentProgressUnits = getCompletedUnits({
     questions: engine.questions,
@@ -50,7 +52,7 @@ export function PentatonicExerciseScreen({
   const completedMidiNotes = engine.currentPlayedNotes.map(noteToMidi);
   const routeMidiNotes = question?.expectedMidiNotes ?? scale?.midiNotes ?? [];
   const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer);
+    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
   const isImprovisation = question?.mode === "improvisation";
 
   return (
@@ -62,14 +64,14 @@ export function PentatonicExerciseScreen({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{exercise.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {engine.state === "intro" || engine.isComplete ? (
+          {engine.isComplete ? (
             <button
               type="button"
               onClick={engine.startExercise}
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl bg-blue-deep px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949]"
             >
               <Play aria-hidden="true" className="h-4 w-4" />
-              {engine.isComplete ? "Reintentar" : "Iniciar"}
+              Reintentar
             </button>
           ) : null}
           <button
@@ -83,6 +85,17 @@ export function PentatonicExerciseScreen({
         </div>
       </div>
 
+      {isIntro ? (
+        <ExerciseStartPanel
+          moduleKind="pentatonic"
+          title={exercise.title}
+          description={exercise.description}
+          rounds={exercise.totalRounds}
+          assistedMode={engine.assistedMode}
+          onStart={engine.startExercise}
+        />
+      ) : (
+        <>
       <div className="mt-5">
         <PentatonicScorePanel
           score={engine.scoring.score}
@@ -163,7 +176,7 @@ export function PentatonicExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
               >
                 <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Ayuda visual</span>
+                <span className="whitespace-nowrap">Ver notas</span>
               </button>
               <button
                 type="button"
@@ -173,7 +186,7 @@ export function PentatonicExerciseScreen({
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
                 <span className="whitespace-nowrap">
-                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
                 </span>
               </button>
             </div>
@@ -182,6 +195,8 @@ export function PentatonicExerciseScreen({
           {scale ? <ScaleSummary scaleId={scale.id} /> : null}
         </aside>
       </div>
+        </>
+      )}
     </section>
   );
 }

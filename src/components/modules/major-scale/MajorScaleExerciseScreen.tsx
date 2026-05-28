@@ -14,6 +14,7 @@ import { MajorScaleKeyboard } from "@/components/modules/major-scale/MajorScaleK
 import { MajorScalePattern } from "@/components/modules/major-scale/MajorScalePattern";
 import { MajorScaleScorePanel } from "@/components/modules/major-scale/MajorScaleScorePanel";
 import { useMajorScaleEngine } from "@/components/modules/major-scale/hooks/useMajorScaleEngine";
+import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import {
   getDisplayPitchName,
   getScaleById,
@@ -48,7 +49,8 @@ export function MajorScaleExerciseScreen({
     progress,
     onAttemptComplete,
   });
-  const question = engine.currentQuestion;
+  const isIntro = engine.state === "intro";
+  const question = isIntro ? undefined : engine.currentQuestion;
   const scale = question ? getScaleById(question.scaleId) : undefined;
   const currentProgressUnits = getCompletedUnits({
     questions: engine.questions,
@@ -74,7 +76,7 @@ export function MajorScaleExerciseScreen({
     playedCount: engine.currentPlayedNotes.length,
   });
   const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer);
+    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
 
   return (
     <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-soft">
@@ -85,14 +87,14 @@ export function MajorScaleExerciseScreen({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{exercise.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {engine.state === "intro" || engine.isComplete ? (
+          {engine.isComplete ? (
             <button
               type="button"
               onClick={engine.startExercise}
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl bg-blue-deep px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949]"
             >
               <Play aria-hidden="true" className="h-4 w-4" />
-              {engine.isComplete ? "Reintentar" : "Iniciar"}
+              Reintentar
             </button>
           ) : null}
           <button
@@ -106,6 +108,17 @@ export function MajorScaleExerciseScreen({
         </div>
       </div>
 
+      {isIntro ? (
+        <ExerciseStartPanel
+          moduleKind="major-scale"
+          title={exercise.title}
+          description={exercise.description}
+          rounds={exercise.totalRounds}
+          assistedMode={engine.assistedMode}
+          onStart={engine.startExercise}
+        />
+      ) : (
+        <>
       <div className="mt-5">
         <MajorScaleScorePanel
           score={engine.scoring.score}
@@ -119,6 +132,8 @@ export function MajorScaleExerciseScreen({
       <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
         <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
       </div>
+
+      <MajorScaleExerciseGuide type={exercise.type} />
 
       <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
         <div className="min-w-0 space-y-4">
@@ -209,7 +224,7 @@ export function MajorScaleExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Eye aria-hidden="true" className="h-4 w-4" />
-                Mostrar ayuda
+                Ver notas
               </button>
               <button
                 type="button"
@@ -218,7 +233,7 @@ export function MajorScaleExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#cda85d] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
-                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
               </button>
             </div>
           </div>
@@ -249,7 +264,60 @@ export function MajorScaleExerciseScreen({
           ) : null}
         </aside>
       </div>
+        </>
+      )}
     </section>
+  );
+}
+
+function MajorScaleExerciseGuide({ type }: { type: MajorScaleExercise["type"] }) {
+  const copy: Record<MajorScaleExercise["type"], [string, string, string]> = {
+    discover_pattern: [
+      "Empieza en la tónica iluminada.",
+      "Lee el bloque actual: tono o semitono.",
+      "Avanza 2 teclas para tono y 1 tecla para semitono.",
+    ],
+    play_c_major: [
+      "Toca DO mayor como una escalera ascendente.",
+      "Sigue solo teclas blancas: DO RE MI FA SOL LA SI DO.",
+      "No avances si una nota no corresponde.",
+    ],
+    ascending_descending: [
+      "Sube hasta la octava sin saltarte notas.",
+      "Luego vuelve por el mismo camino en sentido contrario.",
+      "Mantén continuidad: cada nota prepara la siguiente.",
+    ],
+    missing_note: [
+      "Mira la escala incompleta.",
+      "Identifica qué posición quedó vacía.",
+      "Responde con la nota que conserva el patrón mayor.",
+    ],
+    build_from_tonic: [
+      "No memorices la lista de notas.",
+      "Aplica T - T - S - T - T - T - S desde la tónica.",
+      "Cada respuesta correcta construye la ruta de la escala.",
+    ],
+    audio_recognition: [
+      "Escucha la escala completa.",
+      "Decide si conserva el sonido estable de escala mayor.",
+      "Si algo suena fuera, piensa en una nota interna alterada.",
+    ],
+    final_challenge: [
+      "Identifica el tipo de tarea antes de responder.",
+      "Usa tónica, patrón y octava como referencias.",
+      "Construye o reconoce sin depender siempre de las etiquetas.",
+    ],
+  };
+
+  return (
+    <div className="mt-5 grid gap-3 rounded-2xl border border-blue-deep/10 bg-ivory p-3 md:grid-cols-3">
+      {copy[type].map((step, index) => (
+        <div key={step} className="rounded-xl border border-blue-deep/10 bg-white/75 p-3">
+          <p className="text-xs font-black uppercase text-gold-soft">Paso {index + 1}</p>
+          <p className="mt-1 text-sm font-bold leading-6 text-blue-deep">{step}</p>
+        </div>
+      ))}
+    </div>
   );
 }
 

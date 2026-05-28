@@ -8,6 +8,7 @@ import { HarmonicFieldKeyboard } from "@/components/modules/harmonic-field/Harmo
 import { HarmonicFieldScorePanel } from "@/components/modules/harmonic-field/HarmonicFieldScorePanel";
 import { HarmonicFieldVisualizer } from "@/components/modules/harmonic-field/HarmonicFieldVisualizer";
 import { useHarmonicFieldEngine } from "@/components/modules/harmonic-field/hooks/useHarmonicFieldEngine";
+import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
 import {
   getChordByDegree,
@@ -35,7 +36,8 @@ export function HarmonicFieldExerciseScreen({
   onAttemptComplete,
 }: HarmonicFieldExerciseScreenProps) {
   const engine = useHarmonicFieldEngine({ exercise, progress, onAttemptComplete });
-  const question = engine.currentQuestion;
+  const isIntro = engine.state === "intro";
+  const question = isIntro ? undefined : engine.currentQuestion;
   const currentProgressUnits = getCompletedUnits({
     questions: engine.questions,
     currentIndex: engine.currentIndex,
@@ -47,7 +49,7 @@ export function HarmonicFieldExerciseScreen({
   const progressPercent =
     engine.totalUnits > 0 ? Math.min(100, (currentProgressUnits / engine.totalUnits) * 100) : 0;
   const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer);
+    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
   const selectedText = engine.selectedNotes.length
     ? engine.selectedNotes.map(getDisplayNoteName).join(" · ")
     : "Sin notas";
@@ -61,14 +63,14 @@ export function HarmonicFieldExerciseScreen({
           <p className="mt-2 max-w-2xl text-sm leading-6 text-muted">{exercise.description}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {engine.state === "intro" || engine.isComplete ? (
+          {engine.isComplete ? (
             <button
               type="button"
               onClick={engine.startExercise}
               className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl bg-blue-deep px-5 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949]"
             >
               <Play aria-hidden="true" className="h-4 w-4" />
-              {engine.isComplete ? "Reintentar" : "Iniciar"}
+              Reintentar
             </button>
           ) : null}
           <button
@@ -82,6 +84,17 @@ export function HarmonicFieldExerciseScreen({
         </div>
       </div>
 
+      {isIntro ? (
+        <ExerciseStartPanel
+          moduleKind="harmonic-field"
+          title={exercise.title}
+          description={exercise.description}
+          rounds={exercise.totalRounds}
+          assistedMode={engine.assistedMode}
+          onStart={engine.startExercise}
+        />
+      ) : (
+        <>
       <div className="mt-5">
         <HarmonicFieldScorePanel
           score={engine.scoring.score}
@@ -106,7 +119,7 @@ export function HarmonicFieldExerciseScreen({
             degree={question?.degree}
             selectedNotes={engine.selectedNotes}
             showLabels={showLabels}
-            helpVisible={engine.helpUsed || engine.assistedMode || Boolean(engine.currentAnswer)}
+            helpVisible={engine.helpUsed || engine.assistedMode}
             answerCorrect={engine.currentAnswer ? engine.currentAnswer.isCorrect : undefined}
             disabled={engine.state !== "active" || Boolean(question?.answerOptions) || Boolean(engine.currentAnswer)}
             onNoteToggle={engine.toggleNote}
@@ -167,7 +180,7 @@ export function HarmonicFieldExerciseScreen({
                 className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
               >
                 <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Ayuda visual</span>
+                <span className="whitespace-nowrap">Ver notas</span>
               </button>
               <button
                 type="button"
@@ -177,13 +190,15 @@ export function HarmonicFieldExerciseScreen({
               >
                 <SkipForward aria-hidden="true" className="h-4 w-4" />
                 <span className="whitespace-nowrap">
-                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar" : "Siguiente"}
+                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
                 </span>
               </button>
             </div>
           </div>
         </aside>
       </div>
+        </>
+      )}
     </section>
   );
 }

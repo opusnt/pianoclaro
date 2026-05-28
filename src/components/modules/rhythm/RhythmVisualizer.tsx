@@ -5,6 +5,9 @@ type RhythmVisualizerProps = {
   currentBeatIndex: number;
   pulseProgress: number;
   lastResult: TimingResult | null;
+  mode?: "idle" | "listen" | "play";
+  pulseDisabled?: boolean;
+  onPulsePress?: () => void;
 };
 
 export function RhythmVisualizer({
@@ -12,10 +15,19 @@ export function RhythmVisualizer({
   currentBeatIndex,
   pulseProgress,
   lastResult,
+  mode = "idle",
+  pulseDisabled = true,
+  onPulsePress,
 }: RhythmVisualizerProps) {
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-5">
-      <BeatPulse pulseProgress={pulseProgress} lastResult={lastResult} />
+      <BeatPulse
+        pulseProgress={pulseProgress}
+        lastResult={lastResult}
+        mode={mode}
+        disabled={pulseDisabled}
+        onPulsePress={onPulsePress}
+      />
       {beatEvents.length > 0 ? (
         <RhythmTimeline beatEvents={beatEvents} currentBeatIndex={currentBeatIndex} />
       ) : (
@@ -32,9 +44,15 @@ export function RhythmVisualizer({
 function BeatPulse({
   pulseProgress,
   lastResult,
+  mode,
+  disabled,
+  onPulsePress,
 }: {
   pulseProgress: number;
   lastResult: TimingResult | null;
+  mode: "idle" | "listen" | "play";
+  disabled: boolean;
+  onPulsePress?: () => void;
 }) {
   const ringScale = 1.35 - Math.min(1, pulseProgress) * 0.35;
   const resultLabel = lastResult
@@ -45,7 +63,11 @@ function BeatPulse({
         late: "Muy tarde",
         miss: "Miss",
       }[lastResult.grade]
-    : "Escucha el pulso";
+    : mode === "listen"
+      ? "Escuchando"
+      : mode === "play"
+        ? "Tu turno"
+        : "Escucha el pulso";
   const resultClass =
     lastResult?.grade === "perfect"
       ? "bg-teal-soft text-blue-deep"
@@ -65,9 +87,19 @@ function BeatPulse({
           style={{ transform: `scale(${ringScale})`, opacity: 0.35 + pulseProgress * 0.45 }}
         />
         <div className="absolute h-32 w-32 rounded-full bg-blue-soft shadow-[0_20px_60px_rgba(18,52,91,0.16)]" />
-        <div className="relative flex h-24 w-24 items-center justify-center rounded-full bg-blue-deep text-center text-sm font-bold text-white">
-          toca
-        </div>
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={onPulsePress}
+          className={`focus-ring relative flex h-24 w-24 items-center justify-center rounded-full px-3 text-center text-sm font-bold text-white shadow-[0_16px_34px_rgba(18,52,91,0.24)] transition ${
+            disabled
+              ? "cursor-default bg-blue-deep"
+              : "cursor-pointer bg-blue-deep hover:scale-105 hover:bg-[#0d2949] active:scale-95"
+          }`}
+          aria-label={mode === "play" ? "Tocar pulso" : "Pulso"}
+        >
+          {mode === "listen" ? "escucha" : mode === "play" ? "toca" : "pulso"}
+        </button>
       </div>
       <span className={`rounded-full px-4 py-2 text-sm font-bold ${resultClass}`}>
         {resultLabel}

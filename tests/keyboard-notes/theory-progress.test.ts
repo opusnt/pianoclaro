@@ -21,6 +21,7 @@ test("construye el teclado base del módulo 1 con dos octavas", () => {
   assert.equal(keyboard.whiteKeys[0]?.label, "Do");
   assert.equal(keyboard.blackKeys[0]?.id, "C#4");
   assert.equal(keyboard.blackKeys[0]?.groupType, 2);
+  assert.equal(keyboard.blackKeys[0]?.leftPercent, (1 / keyboard.whiteKeys.length) * 100);
 });
 
 test("evalúa patrones visuales y búsqueda de Do fuera de React", () => {

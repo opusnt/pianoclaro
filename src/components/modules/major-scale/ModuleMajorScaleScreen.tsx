@@ -6,7 +6,9 @@ import { useEffect, useMemo, useState } from "react";
 import { ExerciseProgressCard } from "@/components/modules/major-scale/ExerciseProgressCard";
 import { MajorScaleExerciseScreen } from "@/components/modules/major-scale/MajorScaleExerciseScreen";
 import { useMajorScaleProgress } from "@/components/modules/major-scale/hooks/useMajorScaleProgress";
+import { LessonNarrativePanel } from "@/components/modules/shared/LessonNarrativePanel";
 import { ModuleMetric } from "@/components/modules/shared/ModuleMetric";
+import { NextLessonCard } from "@/components/modules/shared/NextLessonCard";
 import { trackMajorScaleAttempt, trackMajorScaleEvent } from "@/lib/major-scale/analytics";
 import type { MajorScaleAttempt, MajorScaleModule } from "@/types/major-scale";
 
@@ -94,6 +96,8 @@ export function ModuleMajorScaleScreen({ module }: ModuleMajorScaleScreenProps) 
           <div className="mt-6 h-2 overflow-hidden rounded-full bg-blue-deep/10">
             <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
           </div>
+
+          <LessonNarrativePanel moduleId={module.id} />
         </section>
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[0.85fr_1.65fr]">
@@ -119,6 +123,8 @@ export function ModuleMajorScaleScreen({ module }: ModuleMajorScaleScreenProps) 
             />
           ) : null}
         </section>
+
+        <NextLessonCard currentModuleId={module.id} isCompleted={progress.completed} />
       </div>
     </main>
   );

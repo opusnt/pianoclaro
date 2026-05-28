@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BarChart3, BookOpen, ChevronDown, Keyboard, Layers3, Library, Music2, Route, WalletCards } from "lucide-react";
 
 const navItems = [
@@ -47,14 +47,36 @@ const placeholderUserInitials = "TU";
 export function SiteHeader() {
   const pathname = usePathname();
   const [isLearningMenuOpen, setIsLearningMenuOpen] = useState(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isLearningActive = pathname.startsWith("/rutas") || pathname.startsWith("/modulos");
+
+  function openLearningMenu() {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsLearningMenuOpen(true);
+  }
+
+  function scheduleLearningMenuClose() {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => {
+      setIsLearningMenuOpen(false);
+      closeTimerRef.current = null;
+    }, 180);
+  }
+
+  function closeLearningMenu() {
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+      closeTimerRef.current = null;
+    }
+    setIsLearningMenuOpen(false);
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-blue-deep/10 bg-ivory/94 shadow-[0_1px_0_rgba(18,52,91,0.04)] backdrop-blur-xl">
-      <div
-        className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2 sm:px-4 lg:px-6 xl:px-8"
-        onMouseLeave={() => setIsLearningMenuOpen(false)}
-      >
+      <div className="relative mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-2 sm:px-4 lg:px-6 xl:px-8">
         <Link
           href="/"
           className="focus-ring group inline-flex min-w-0 shrink-0 items-center gap-2 rounded-xl pr-1 sm:gap-3"
@@ -73,7 +95,12 @@ export function SiteHeader() {
           aria-label="Navegación principal"
           className="flex min-w-0 items-center justify-end rounded-2xl border border-blue-deep/10 bg-white/62 p-1 shadow-[0_10px_24px_rgba(18,52,91,0.06)]"
         >
-          <div className="relative" onMouseEnter={() => setIsLearningMenuOpen(true)}>
+          <div
+            className="relative"
+            onMouseEnter={openLearningMenu}
+            onMouseLeave={scheduleLearningMenuClose}
+            onFocus={openLearningMenu}
+          >
             <button
               type="button"
               aria-label="Abrir menú de aprendizaje"
@@ -82,7 +109,7 @@ export function SiteHeader() {
               onClick={() => setIsLearningMenuOpen((current) => !current)}
               onKeyDown={(event) => {
                 if (event.key === "Escape") {
-                  setIsLearningMenuOpen(false);
+                  closeLearningMenu();
                 }
               }}
               className={`focus-ring inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-2 rounded-xl px-2.5 text-sm font-bold transition sm:px-3 md:min-w-0 md:px-4 ${
@@ -138,10 +165,11 @@ export function SiteHeader() {
         {isLearningMenuOpen ? (
           <div
             role="menu"
-            onMouseEnter={() => setIsLearningMenuOpen(true)}
-            className="absolute left-3 right-3 top-[calc(100%+0.5rem)] z-50 rounded-3xl border border-blue-deep/10 bg-white/96 p-3 shadow-[0_24px_70px_rgba(18,52,91,0.18)] backdrop-blur-xl sm:left-4 sm:right-4 lg:left-auto lg:right-6 lg:w-[760px] xl:right-8"
+            onMouseEnter={openLearningMenu}
+            onMouseLeave={scheduleLearningMenuClose}
+            className="absolute left-3 right-3 top-full z-50 pt-2 sm:left-4 sm:right-4 lg:left-auto lg:right-6 lg:w-[760px] xl:right-8"
           >
-            <div className="grid gap-2 md:grid-cols-3">
+            <div className="grid gap-2 rounded-3xl border border-blue-deep/10 bg-white/96 p-3 shadow-[0_24px_70px_rgba(18,52,91,0.18)] backdrop-blur-xl md:grid-cols-3">
               {learningMenuSections.map((section) => {
                 const Icon = section.icon;
                 return (
@@ -158,7 +186,7 @@ export function SiteHeader() {
                           key={item.href}
                           href={item.href}
                           role="menuitem"
-                          onClick={() => setIsLearningMenuOpen(false)}
+                          onClick={closeLearningMenu}
                           className="focus-ring block rounded-xl px-3 py-2 transition hover:bg-white"
                         >
                           <span className="block text-sm font-bold text-blue-deep">{item.label}</span>

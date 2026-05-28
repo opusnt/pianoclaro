@@ -39,7 +39,7 @@ const blackKeys: {
 export function PianoKeyboard({
   activeNotes = [],
   activeBlackNotes = [],
-  showLabels = true,
+  showLabels = false,
   showComputerKeys = false,
   onKeyPress,
   onBlackKeyPress,
