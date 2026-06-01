@@ -9,7 +9,6 @@ import { HarmonicFieldScorePanel } from "@/components/modules/harmonic-field/Har
 import { HarmonicFieldVisualizer } from "@/components/modules/harmonic-field/HarmonicFieldVisualizer";
 import { useHarmonicFieldEngine } from "@/components/modules/harmonic-field/hooks/useHarmonicFieldEngine";
 import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
-import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
 import {
   getChordByDegree,
   getChordDisplaySequence,
@@ -17,6 +16,7 @@ import {
   getQualityLabel,
   requireField,
 } from "@/lib/harmonic-field/theory";
+import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
 import type {
   HarmonicFieldAttempt,
   HarmonicFieldExercise,
@@ -48,8 +48,7 @@ export function HarmonicFieldExerciseScreen({
   const progressLabel = `${Math.min(currentProgressUnits, engine.totalUnits)}/${engine.totalUnits}`;
   const progressPercent =
     engine.totalUnits > 0 ? Math.min(100, (currentProgressUnits / engine.totalUnits) * 100) : 0;
-  const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
+  const showLabels = exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
   const selectedText = engine.selectedNotes.length
     ? engine.selectedNotes.map(getDisplayNoteName).join(" · ")
     : "Sin notas";
@@ -95,108 +94,128 @@ export function HarmonicFieldExerciseScreen({
         />
       ) : (
         <>
-      <div className="mt-5">
-        <HarmonicFieldScorePanel
-          score={engine.scoring.score}
-          accuracy={engine.scoring.accuracy}
-          combo={engine.scoring.combo}
-          comboMax={engine.scoring.comboMax}
-          progressLabel={progressLabel}
-        />
-      </div>
-
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
-        <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
-      </div>
-
-      <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
-        <div className="min-w-0 space-y-4">
-          <QuestionPanel question={question} />
-          <HarmonicFieldVisualizer fieldId={question?.fieldId} activeDegree={question?.degree} />
-
-          <HarmonicFieldKeyboard
-            fieldId={question?.fieldId}
-            degree={question?.degree}
-            selectedNotes={engine.selectedNotes}
-            showLabels={showLabels}
-            helpVisible={engine.helpUsed || engine.assistedMode}
-            answerCorrect={engine.currentAnswer ? engine.currentAnswer.isCorrect : undefined}
-            disabled={engine.state !== "active" || Boolean(question?.answerOptions) || Boolean(engine.currentAnswer)}
-            onNoteToggle={engine.toggleNote}
-          />
-
-          {question?.answerOptions ? (
-            <OptionGrid
-              question={question}
-              selectedOption={engine.currentAnswer?.selectedOption}
-              disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
-              onAnswer={engine.answerWithOption}
+          <div className="mt-5">
+            <HarmonicFieldScorePanel
+              score={engine.scoring.score}
+              accuracy={engine.scoring.accuracy}
+              combo={engine.scoring.combo}
+              comboMax={engine.scoring.comboMax}
+              progressLabel={progressLabel}
             />
-          ) : (
-            <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
-              <p className="text-xs font-bold uppercase text-muted">Selección</p>
-              <p className="mt-2 text-lg font-bold text-blue-deep">{selectedText}</p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <button
-                  type="button"
-                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer) || engine.selectedNotes.length === 0}
-                  onClick={engine.clearSelection}
-                  className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-55"
-                >
-                  <Trash2 aria-hidden="true" className="h-4 w-4" />
-                  Limpiar selección
-                </button>
-                <button
-                  type="button"
-                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer) || engine.selectedNotes.length === 0}
-                  onClick={engine.confirmChord}
-                  className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
-                >
-                  Confirmar acorde
-                </button>
-              </div>
-            </div>
-          )}
-
-          <HarmonicFieldFeedback message={engine.message} answer={engine.currentAnswer} />
-        </div>
-
-        <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
-          <HarmonicFieldBadge fieldId={question?.fieldId} degree={question?.degree} />
-          <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
-            <p className="text-xs font-bold uppercase text-muted">Controles</p>
-            <div className="mt-3 grid gap-2">
-              <button
-                type="button"
-                onClick={() => void engine.playQuestionAudio()}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
-              >
-                <Volume2 aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Repetir audio</span>
-              </button>
-              <button
-                type="button"
-                onClick={engine.revealHint}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
-              >
-                <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Ver notas</span>
-              </button>
-              <button
-                type="button"
-                disabled={!engine.questionComplete}
-                onClick={engine.nextQuestion}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
-              >
-                <SkipForward aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">
-                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
-                </span>
-              </button>
-            </div>
           </div>
-        </aside>
-      </div>
+
+          <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
+            <div
+              className="h-full rounded-full bg-gold-soft transition-all"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
+            <div className="min-w-0 space-y-4">
+              <QuestionPanel question={question} />
+              <HarmonicFieldVisualizer
+                fieldId={question?.fieldId}
+                activeDegree={question?.degree}
+              />
+
+              <HarmonicFieldKeyboard
+                fieldId={question?.fieldId}
+                degree={question?.degree}
+                selectedNotes={engine.selectedNotes}
+                showLabels={showLabels}
+                helpVisible={engine.helpUsed || engine.assistedMode}
+                answerCorrect={engine.currentAnswer ? engine.currentAnswer.isCorrect : undefined}
+                disabled={
+                  engine.state !== "active" ||
+                  Boolean(question?.answerOptions) ||
+                  Boolean(engine.currentAnswer)
+                }
+                onNoteToggle={engine.toggleNote}
+              />
+
+              {question?.answerOptions ? (
+                <OptionGrid
+                  question={question}
+                  selectedOption={engine.currentAnswer?.selectedOption}
+                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
+                  onAnswer={engine.answerWithOption}
+                />
+              ) : (
+                <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
+                  <p className="text-xs font-bold uppercase text-muted">Selección</p>
+                  <p className="mt-2 text-lg font-bold text-blue-deep">{selectedText}</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      disabled={
+                        engine.state !== "active" ||
+                        Boolean(engine.currentAnswer) ||
+                        engine.selectedNotes.length === 0
+                      }
+                      onClick={engine.clearSelection}
+                      className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-55"
+                    >
+                      <Trash2 aria-hidden="true" className="h-4 w-4" />
+                      Limpiar selección
+                    </button>
+                    <button
+                      type="button"
+                      disabled={
+                        engine.state !== "active" ||
+                        Boolean(engine.currentAnswer) ||
+                        engine.selectedNotes.length === 0
+                      }
+                      onClick={engine.confirmChord}
+                      className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
+                    >
+                      Confirmar acorde
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <HarmonicFieldFeedback message={engine.message} answer={engine.currentAnswer} />
+            </div>
+
+            <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
+              <HarmonicFieldBadge fieldId={question?.fieldId} degree={question?.degree} />
+              <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
+                <p className="text-xs font-bold uppercase text-muted">Controles</p>
+                <div className="mt-3 grid gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void engine.playQuestionAudio()}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
+                  >
+                    <Volume2 aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">Repetir audio</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={engine.revealHint}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
+                  >
+                    <HelpCircle aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">Ver notas</span>
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!engine.questionComplete}
+                    onClick={engine.nextQuestion}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
+                  >
+                    <SkipForward aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">
+                      {engine.currentIndex >= engine.questions.length - 1
+                        ? "Finalizar ejercicio"
+                        : "Siguiente pregunta"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </aside>
+          </div>
         </>
       )}
     </section>
@@ -215,10 +234,22 @@ function QuestionPanel({ question }: { question?: HarmonicFieldQuestion }) {
       </h3>
       {question && field ? (
         <div className="mt-4 grid gap-3 text-sm font-semibold text-muted sm:grid-cols-3">
-          <p><span className="font-bold text-blue-deep">Tonalidad:</span> {field.displayName}</p>
-          <p><span className="font-bold text-blue-deep">Grado:</span> {question.degree ?? "mixto"}</p>
-          <p><span className="font-bold text-blue-deep">Acorde:</span> {chord ? `${chord.displayName} (${getQualityLabel(chord.quality)})` : "por escuchar"}</p>
-          {chord ? <p className="sm:col-span-3"><span className="font-bold text-blue-deep">Notas:</span> {getChordDisplaySequence(chord)}</p> : null}
+          <p>
+            <span className="font-bold text-blue-deep">Tonalidad:</span> {field.displayName}
+          </p>
+          <p>
+            <span className="font-bold text-blue-deep">Grado:</span> {question.degree ?? "mixto"}
+          </p>
+          <p>
+            <span className="font-bold text-blue-deep">Acorde:</span>{" "}
+            {chord ? `${chord.displayName} (${getQualityLabel(chord.quality)})` : "por escuchar"}
+          </p>
+          {chord ? (
+            <p className="sm:col-span-3">
+              <span className="font-bold text-blue-deep">Notas:</span>{" "}
+              {getChordDisplaySequence(chord)}
+            </p>
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -236,7 +267,9 @@ function OptionGrid({
   disabled: boolean;
   onAnswer: (option: string) => void;
 }) {
-  const expected = Array.isArray(question.expectedAnswer) ? question.expectedAnswer.join(" - ") : question.expectedAnswer;
+  const expected = Array.isArray(question.expectedAnswer)
+    ? question.expectedAnswer.join(" - ")
+    : question.expectedAnswer;
 
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">

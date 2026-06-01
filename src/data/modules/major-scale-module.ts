@@ -1,3 +1,4 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import type { DetailedLearningModule } from "@/types/curriculum";
 
 export const majorScaleDetailedModule: DetailedLearningModule = {
@@ -31,7 +32,7 @@ export const majorScaleDetailedModule: DetailedLearningModule = {
   },
   estimatedMinutes: 55,
   difficulty: "base",
-  prerequisites: ["keyboard-notes", "basic-rhythm", "intervals"],
+  prerequisites: [firstFiveNotesModuleId, "basic-rhythm", "intervals"],
   expectedResult:
     "El usuario puede explicar y tocar una escala mayor como patrón de tonos y semitonos, empezando por DO, SOL, RE y FA.",
   laterUnlockedSkills: [
@@ -115,11 +116,17 @@ export const majorScaleDetailedModule: DetailedLearningModule = {
     },
   ],
   ux: {
-    entryExperience: "El módulo muestra el patrón mayor como mapa central antes de pedir teoría extensa.",
+    entryExperience:
+      "El módulo muestra el patrón mayor como mapa central antes de pedir teoría extensa.",
     firstScreen: "Lista progresiva de ejercicios, métricas y el ejercicio disponible.",
     conceptDelivery: "Una instrucción corta por ronda y feedback inmediato por nota.",
     animationMoments: ["Pulso de nota esperada", "Ruta de escala", "Bloques T/S completados"],
-    audioMoments: ["Nota individual", "Escala completa", "Escala alterada", "Feedback positivo/error"],
+    audioMoments: [
+      "Nota individual",
+      "Escala completa",
+      "Escala alterada",
+      "Feedback positivo/error",
+    ],
     cognitiveLoadRules: [
       "No introducir pentagrama",
       "No enseñar armaduras",
@@ -127,9 +134,18 @@ export const majorScaleDetailedModule: DetailedLearningModule = {
     ],
     progressFeeling: ["Barra por unidades", "Combo", "Desbloqueo secuencial", "Escalas dominadas"],
     visualFeedback: ["Tónica azul", "Siguiente dorado", "Completada verde", "Error rojo con texto"],
-    soundFeedback: ["Oscilador tipo piano", "Secuencias de escala", "Tono positivo", "Tono de error"],
+    soundFeedback: [
+      "Oscilador tipo piano",
+      "Secuencias de escala",
+      "Tono positivo",
+      "Tono de error",
+    ],
     celebrations: ["Ejercicio aprobado", "Constructor de escalas completado"],
-    errorHandling: ["Mostrar nota esperada", "Mostrar intervalo real tocado", "Recordar el paso T/S"],
+    errorHandling: [
+      "Mostrar nota esperada",
+      "Mostrar intervalo real tocado",
+      "Recordar el paso T/S",
+    ],
     smartHints: [
       "Tono = 2 teclas",
       "Semitono = 1 tecla",
@@ -206,13 +222,25 @@ export const majorScaleDetailedModule: DetailedLearningModule = {
     successSound: "Pulso corto positivo.",
     errorSound: "Pulso grave corto.",
     guidedVoice: "No usar voz por defecto.",
-    earTraining: ["Escala correcta vs alterada", "Sensación de tónica", "Movimiento ascendente/descendente"],
+    earTraining: [
+      "Escala correcta vs alterada",
+      "Sensación de tónica",
+      "Movimiento ascendente/descendente",
+    ],
     spatialSoundLearning: ["La escala sube al avanzar a la derecha", "La octava cierra la ruta"],
   },
   adaptivity: {
-    frustrationSignals: ["accuracy < 60%", "más de 3 errores en el mismo paso", "fallos en teclas negras"],
+    frustrationSignals: [
+      "accuracy < 60%",
+      "más de 3 errores en el mismo paso",
+      "fallos en teclas negras",
+    ],
     lowerDifficultyActions: ["Mostrar etiquetas", "Reducir a DO mayor", "Marcar próxima nota"],
-    raiseDifficultyActions: ["Ocultar etiquetas", "Incluir escalas con alteración", "Reducir ayudas visuales"],
+    raiseDifficultyActions: [
+      "Ocultar etiquetas",
+      "Incluir escalas con alteración",
+      "Reducir ayudas visuales",
+    ],
     repetitionRules: ["Repetir escalas o pasos con errores frecuentes"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],
   },
@@ -244,7 +272,12 @@ export const majorScaleDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: constructor de escalas",
     setup: "20 unidades mixtas con escalas DO, SOL, RE y FA mayor.",
-    tasks: ["Tocar escala completa", "Completar nota faltante", "Construir desde tónica", "Reconocer escala auditiva"],
+    tasks: [
+      "Tocar escala completa",
+      "Completar nota faltante",
+      "Construir desde tónica",
+      "Reconocer escala auditiva",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 5 errores", "completar todas las unidades"],
     celebration: "Completaste tu primer mapa de tonalidad.",
     summary: ["Patrón T-T-S-T-T-T-S", "Tónica y octava", "Escalas DO, SOL, RE y FA mayor"],

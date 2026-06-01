@@ -1,3 +1,4 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import type { DetailedLearningModule } from "@/types/curriculum";
 
 export const basicRhythmDetailedModule: DetailedLearningModule = {
@@ -19,7 +20,7 @@ export const basicRhythmDetailedModule: DetailedLearningModule = {
   recognitionExercises: ["follow-rhythm"],
   creativeMiniChallenge: "Crear un pulso estable y repetir un patrón corto sin perder el beat.",
   finalAssessment: "Mini performance rítmica con beats activos y silencios.",
-  unlockCriteria: [{ type: "module-completed", moduleId: "keyboard-notes" }],
+  unlockCriteria: [{ type: "module-completed", moduleId: firstFiveNotesModuleId }],
   contributesToSkills: {
     rhythm: 45,
     keyboard: 10,
@@ -28,7 +29,7 @@ export const basicRhythmDetailedModule: DetailedLearningModule = {
   },
   estimatedMinutes: 35,
   difficulty: "inicial",
-  prerequisites: ["keyboard-notes"],
+  prerequisites: [firstFiveNotesModuleId],
   expectedResult:
     "El usuario puede escuchar un pulso, anticipar el beat, tocar cerca del tiempo esperado y respetar silencios simples.",
   laterUnlockedSkills: [
@@ -110,7 +111,12 @@ export const basicRhythmDetailedModule: DetailedLearningModule = {
       "Un objetivo temporal por ejercicio",
     ],
     progressFeeling: ["Score", "Combo", "Accuracy", "Desbloqueo de siguiente ejercicio"],
-    visualFeedback: ["Perfect verde con texto", "Good azul", "Muy pronto/tarde amarillo", "Miss rojo"],
+    visualFeedback: [
+      "Perfect verde con texto",
+      "Good azul",
+      "Muy pronto/tarde amarillo",
+      "Miss rojo",
+    ],
     soundFeedback: ["Click", "Tick acentuado", "Sonido de acierto", "Sonido de error"],
     celebrations: ["Ejercicio aprobado", "Combo cada cinco aciertos", "Módulo completado"],
     errorHandling: ["Indicar si se adelantó o atrasó", "Sugerir tempo más lento si hay misses"],
@@ -162,7 +168,11 @@ export const basicRhythmDetailedModule: DetailedLearningModule = {
     spatialSoundLearning: ["El beat prepara el momento de tocar"],
   },
   adaptivity: {
-    frustrationSignals: ["2 intentos fallidos", "misses altos", "averageTimingErrorMs fuera de ±70ms"],
+    frustrationSignals: [
+      "2 intentos fallidos",
+      "misses altos",
+      "averageTimingErrorMs fuera de ±70ms",
+    ],
     lowerDifficultyActions: ["Bajar BPM 10%", "Ampliar ventanas", "Mostrar ayuda contextual"],
     raiseDifficultyActions: ["Subir BPM 5% en intento opcional"],
     repetitionRules: ["Repetir si no alcanza accuracy requerida"],

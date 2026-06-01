@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { lessons } from "@/data/lessons";
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import {
   getBeatsPerMeasure,
   getPracticeEventsInScope,
@@ -13,7 +14,7 @@ import { getMeasureEvents } from "@/lib/music/notation";
 import type { ScoreMock } from "@/types/lesson";
 
 test("convierte una lección en canción practicable con eventos ordenados", () => {
-  const lesson = lessons.find((item) => item.slug === "tus-primeras-5-notas");
+  const lesson = lessons.find((item) => item.slug === keyboardNotesLessonSlug);
   assert.ok(lesson);
 
   const song = lessonToPracticeSong(lesson);
@@ -87,7 +88,7 @@ test("mantiene el pulso al convertir silencios en una partitura normalizada", ()
 });
 
 test("normaliza medidas legacy a eventos de nota", () => {
-  const lesson = lessons.find((item) => item.slug === "tus-primeras-5-notas");
+  const lesson = lessons.find((item) => item.slug === keyboardNotesLessonSlug);
   assert.ok(lesson);
 
   const events = getMeasureEvents(lesson.score.measures[0]);

@@ -10,7 +10,14 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
     "Aprende posición fundamental, primera inversión y segunda inversión para tocar acordes con menos movimiento.",
   objective:
     "Enseñar que una tríada conserva identidad si mantiene sus notas, y que la inversión depende de la nota más grave.",
-  mainConcepts: ["inversión", "posición fundamental", "primera inversión", "segunda inversión", "bajo", "tríada"],
+  mainConcepts: [
+    "inversión",
+    "posición fundamental",
+    "primera inversión",
+    "segunda inversión",
+    "bajo",
+    "tríada",
+  ],
   practicalSkill: "Construir e identificar inversiones de tríadas mayores y menores.",
   keyboardVisualization:
     "Teclado con selección múltiple, bajo destacado, notas del acorde y comparación con posición fundamental.",
@@ -18,7 +25,8 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
   executionExercises: ["build-chord", "play-progression"],
   recognitionExercises: ["identify-chord"],
   creativeMiniChallenge: "Tocar C-G-Am-F con inversiones cercanas para reducir movimiento.",
-  finalAssessment: "Desafío mixto con construcción, reconocimiento auditivo y progresión con inversiones.",
+  finalAssessment:
+    "Desafío mixto con construcción, reconocimiento auditivo y progresión con inversiones.",
   unlockCriteria: [{ type: "module-completed", moduleId: "chord-construction" }],
   contributesToSkills: {
     chords: 30,
@@ -32,7 +40,12 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
   prerequisites: ["chord-construction"],
   expectedResult:
     "El usuario puede construir primera y segunda inversión, identificar el bajo y tocar progresiones simples con menos salto.",
-  laterUnlockedSkills: ["Campo armónico", "Progresiones populares", "Acompañamiento", "Conducción de voces"],
+  laterUnlockedSkills: [
+    "Campo armónico",
+    "Progresiones populares",
+    "Acompañamiento",
+    "Conducción de voces",
+  ],
   microLessons: [
     {
       id: "same-notes",
@@ -52,7 +65,8 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
       objective: "Reconocer que la nota más grave define la inversión.",
       idealMinutes: 5,
       mainConcept: "Bajo",
-      briefExplanation: "Primera inversión tiene la tercera abajo; segunda inversión tiene la quinta abajo.",
+      briefExplanation:
+        "Primera inversión tiene la tercera abajo; segunda inversión tiene la quinta abajo.",
       visualExample: "Teclado con la nota grave marcada como bajo.",
       suggestedInteraction: "Seleccionar notas y confirmar inversión.",
       exerciseType: "build-chord",
@@ -65,13 +79,21 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
     conceptDelivery: "Textos cortos centrados en bajo, notas y movimiento.",
     animationMoments: ["Bajo resaltado", "Notas reordenadas", "Confirmación de inversión"],
     audioMoments: ["Acorde simultáneo", "Arpegio grave a agudo", "Feedback"],
-    cognitiveLoadRules: ["No enseñar séptimas", "No usar bajo cifrado", "No introducir función armónica"],
+    cognitiveLoadRules: [
+      "No enseñar séptimas",
+      "No usar bajo cifrado",
+      "No introducir función armónica",
+    ],
     progressFeeling: ["Score", "Combo", "Desbloqueo secuencial"],
     visualFeedback: ["Bajo azul", "Notas del acorde doradas", "Selección verde", "Error rojo"],
     soundFeedback: ["Acorde simultáneo", "Arpegio grave-agudo", "Éxito/error"],
     celebrations: ["Primera inversión construida", "Progresión cercana completada"],
     errorHandling: ["Distinguir notas correctas con bajo incorrecto", "Mostrar notas faltantes"],
-    smartHints: ["Mueve la tónica una octava arriba", "La quinta debe quedar abajo", "Revisa la nota más grave"],
+    smartHints: [
+      "Mueve la tónica una octava arriba",
+      "La quinta debe quedar abajo",
+      "Revisa la nota más grave",
+    ],
   },
   keyboard: {
     visibleOctaves: { mobile: 2, desktop: 2 },
@@ -148,10 +170,16 @@ export const chordInversionsDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: mapa de inversiones",
     setup: "24 rondas mixtas con construcción, identificación y progresión.",
-    tasks: ["Comparar mismas notas", "Construir inversiones", "Identificar bajo", "Tocar C-G-Am-F cercano"],
+    tasks: [
+      "Comparar mismas notas",
+      "Construir inversiones",
+      "Identificar bajo",
+      "Tocar C-G-Am-F cercano",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 6 errores"],
     celebration: "Ya puedes tocar los mismos acordes en posiciones más cómodas.",
     summary: ["Posición fundamental", "Primera inversión", "Segunda inversión", "Bajo"],
-    nextModuleTeaser: "Después: campo armónico para entender qué acordes viven dentro de una tonalidad.",
+    nextModuleTeaser:
+      "Después: campo armónico para entender qué acordes viven dentro de una tonalidad.",
   },
 };

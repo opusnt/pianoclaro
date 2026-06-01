@@ -25,6 +25,7 @@ type LessonSidebarProps = {
   onLoopFocusChange: (enabled: boolean) => void;
   onTempoChange: (tempoMode: TempoMode) => void;
   onCompleteLesson: () => void;
+  itemLabel?: string;
 };
 
 export function LessonSidebar({
@@ -45,7 +46,12 @@ export function LessonSidebar({
   onLoopFocusChange,
   onTempoChange,
   onCompleteLesson,
+  itemLabel = "Lección",
 }: LessonSidebarProps) {
+  const completedLabel = itemLabel === "Módulo" ? "Módulo completado" : "Lección completada";
+  const markCompletedLabel =
+    itemLabel === "Módulo" ? "Marcar módulo como completado" : "Marcar como completada";
+
   return (
     <aside className="space-y-4 xl:sticky xl:top-28 xl:self-start">
       <LessonStepPanel
@@ -83,7 +89,7 @@ export function LessonSidebar({
         className="focus-ring inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-gold-soft px-5 py-3 text-sm font-bold text-[#543b12] shadow-[0_12px_30px_rgba(18,52,91,0.08)] transition hover:bg-[#cba250]"
       >
         <Check aria-hidden="true" className="h-4 w-4" />
-        {isLessonCompleted ? "Lección completada" : "Marcar como completada"}
+        {isLessonCompleted ? completedLabel : markCompletedLabel}
       </button>
     </aside>
   );

@@ -27,10 +27,7 @@ import {
   getKeySignatureFeedback,
   scoreKeySignatureAnswers,
 } from "@/lib/key-signature/scoring";
-import {
-  getKeySignatureById,
-  noteToMidi,
-} from "@/lib/key-signature/theory";
+import { getKeySignatureById, noteToMidi } from "@/lib/key-signature/theory";
 import type {
   KeySignatureAnswer,
   KeySignatureAttempt,
@@ -58,13 +55,18 @@ export function useKeySignatureEngine({
   const [currentPlayedNotes, setCurrentPlayedNotes] = useState<string[]>([]);
   const [answers, setAnswers] = useState<KeySignatureAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<KeySignatureAnswer | null>(null);
-  const [message, setMessage] = useState("Inicia el ejercicio para entender tonalidad como casa musical.");
+  const [message, setMessage] = useState(
+    "Inicia el ejercicio para entender tonalidad como casa musical.",
+  );
   const [helpUsed, setHelpUsed] = useState(false);
   const [replayUsed, setReplayUsed] = useState(false);
   const [startedAt, setStartedAt] = useState(new Date().toISOString());
   const audioRef = useRef<PianoAudioEngine | null>(null);
   const currentQuestion = questions[currentIndex];
-  const scoring = useMemo(() => scoreKeySignatureAnswers(answers, totalUnits), [answers, totalUnits]);
+  const scoring = useMemo(
+    () => scoreKeySignatureAnswers(answers, totalUnits),
+    [answers, totalUnits],
+  );
   const assistedMode = Boolean(progress?.lastAttempt && progress.lastAttempt.accuracy < 0.6);
   const isComplete = state === "completed" || state === "failed";
   const questionComplete = Boolean(
@@ -161,7 +163,8 @@ export function useKeySignatureEngine({
   }
 
   function answerWithNote(note: string) {
-    if (!currentQuestion || currentQuestion.answerOptions || state !== "active" || questionComplete) return;
+    if (!currentQuestion || currentQuestion.answerOptions || state !== "active" || questionComplete)
+      return;
 
     const selectedMidi = noteToMidi(note);
     void playKeySignatureNote(getAudio(), selectedMidi, 250);
@@ -208,7 +211,9 @@ export function useKeySignatureEngine({
     setCurrentPlayedNotes(nextPlayedNotes);
 
     if (nextPlayedNotes.length >= (currentQuestion.expectedNotes?.length ?? 0)) {
-      setMessage(`Bien: completaste ${getKeySignatureById(currentQuestion.keyId)?.displayName ?? "la escala"} respetando la armadura.`);
+      setMessage(
+        `Bien: completaste ${getKeySignatureById(currentQuestion.keyId)?.displayName ?? "la escala"} respetando la armadura.`,
+      );
       return;
     }
 
@@ -216,7 +221,8 @@ export function useKeySignatureEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
 
     const answer = buildKeySignatureOptionAnswer({
       question: currentQuestion,

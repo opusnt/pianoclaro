@@ -1,9 +1,6 @@
 import { ExerciseProgressCard as SharedExerciseProgressCard } from "@/components/modules/shared/ExerciseProgressCard";
 
-import type {
-  MajorScaleExercise,
-  MajorScaleExerciseProgress,
-} from "@/types/major-scale";
+import type { MajorScaleExercise, MajorScaleExerciseProgress } from "@/types/major-scale";
 
 type ExerciseProgressCardProps = {
   exercise: MajorScaleExercise;

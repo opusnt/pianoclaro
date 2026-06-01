@@ -1,5 +1,11 @@
-import { assertValid, isPlainObject, readNumber, readString, rejectClientControlledSecurityFields } from "@/server/validators/common";
-import type { ProgressMutationInput, OfficialProgressStatus } from "@/server/progress/types";
+import type { OfficialProgressStatus, ProgressMutationInput } from "@/server/progress/types";
+import {
+  assertValid,
+  isPlainObject,
+  readNumber,
+  readString,
+  rejectClientControlledSecurityFields,
+} from "@/server/validators/common";
 
 const allowedStatuses = new Set<OfficialProgressStatus>(["started", "completed", "review"]);
 

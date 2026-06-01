@@ -44,7 +44,10 @@ export function readNumber(input: Record<string, unknown>, key: string, errors: 
   return value;
 }
 
-export function rejectClientControlledSecurityFields(input: Record<string, unknown>, errors: string[]) {
+export function rejectClientControlledSecurityFields(
+  input: Record<string, unknown>,
+  errors: string[],
+) {
   ["userId", "ownerUserId", "role", "roles", "isAdmin", "admin", "permissions"].forEach((field) => {
     if (field in input) {
       errors.push(`${field} no puede ser enviado por el cliente`);

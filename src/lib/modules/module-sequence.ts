@@ -1,3 +1,5 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
+
 export type ModuleSequenceItem = {
   id: string;
   order: number;
@@ -8,11 +10,11 @@ export type ModuleSequenceItem = {
 
 export const moduleSequence: ModuleSequenceItem[] = [
   {
-    id: "keyboard-notes",
+    id: firstFiveNotesModuleId,
     order: 1,
-    title: "El teclado y las notas",
-    shortGoal: "ubicarse en el piano sin depender de etiquetas",
-    href: "/modulos/keyboard-notes",
+    title: "Tus primeras 5 notas",
+    shortGoal: "leer Do-Re-Mi-Fa-Sol y entender su movimiento inicial",
+    href: `/modulos/${firstFiveNotesModuleId}`,
   },
   {
     id: "basic-rhythm",

@@ -102,16 +102,22 @@ export function getWeakestScales(answers: MinorScaleAnswer[]) {
   return Object.entries(counts)
     .sort((a, b) => b[1] - a[1])
     .filter(([, count]) => count >= 2)
-    .map(([scaleId]) => minorScaleDefinitions.find((scale) => scale.id === scaleId)?.displayName ?? scaleId);
+    .map(
+      ([scaleId]) =>
+        minorScaleDefinitions.find((scale) => scale.id === scaleId)?.displayName ?? scaleId,
+    );
 }
 
 export function getWeakestScaleTypes(answers: MinorScaleAnswer[]): MinorScaleType[] {
-  const counts = answers.reduce<Record<MinorScaleType, number>>((acc, answer) => {
-    if (answer.isCorrect) return acc;
+  const counts = answers.reduce<Record<MinorScaleType, number>>(
+    (acc, answer) => {
+      if (answer.isCorrect) return acc;
 
-    acc[answer.scaleType] = (acc[answer.scaleType] ?? 0) + 1;
-    return acc;
-  }, {} as Record<MinorScaleType, number>);
+      acc[answer.scaleType] = (acc[answer.scaleType] ?? 0) + 1;
+      return acc;
+    },
+    {} as Record<MinorScaleType, number>,
+  );
 
   return Object.entries(counts)
     .sort((a, b) => b[1] - a[1])

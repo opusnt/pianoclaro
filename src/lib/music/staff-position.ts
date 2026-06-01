@@ -66,4 +66,3 @@ export function getStaffPosition({
     ledgerY: needsLedgerLine ? staffTopY + ledgerRow * rowHeight : undefined,
   };
 }
-

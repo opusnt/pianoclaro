@@ -39,4 +39,3 @@ export function useChordInversionProgress(moduleId: string, exercises: ChordInve
 
   return { progress, saveAttempt, resetProgress };
 }
-

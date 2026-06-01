@@ -16,6 +16,8 @@ test("la guía de desarrolladores documenta las fronteras críticas", () => {
     "src/server/progress",
     "src/lib/content",
     "src/lib/progress",
+    "src/data/learning-path.ts",
+    "src/lib/learning-path/learning-path.ts",
     "localStorage",
     "pnpm typecheck",
     "pnpm test",
@@ -34,6 +36,7 @@ test("el checklist exige actualizar guía, seguridad y registry", () => {
     "src/lib/modules/playable-module-registry.tsx",
     "No se acepta `userId`, `role`, `roles`, `isAdmin` ni `ownerUserId` desde cliente",
     "tests/modules/playable-module-registry.test.ts",
+    "tests/content/learning-path.test.ts",
     "tests/server",
   ].forEach((requiredText) => {
     assert.equal(checklist.includes(requiredText), true, `Falta en checklist: ${requiredText}`);

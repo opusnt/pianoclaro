@@ -7,10 +7,7 @@ import {
   requirePentatonicScale,
 } from "@/lib/pentatonic/theory";
 import { getQuestionUnitCount as getScalePracticeQuestionUnitCount } from "@/lib/scale-practice/progress-units";
-import type {
-  PentatonicExercise,
-  PentatonicQuestion,
-} from "@/types/pentatonic";
+import type { PentatonicExercise, PentatonicQuestion } from "@/types/pentatonic";
 
 const yesNoOptions = ["Sí", "No"];
 const missingNotePlan = [
@@ -53,15 +50,17 @@ export function generatePentatonicQuestions(exercise: PentatonicExercise): Penta
   }
 
   if (exercise.type === "relative_pentatonics") {
-    return relativePlan.slice(0, exercise.totalRounds).map(([first, second], index) =>
-      buildRelativeQuestion(exercise, first, second, index),
-    );
+    return relativePlan
+      .slice(0, exercise.totalRounds)
+      .map(([first, second], index) => buildRelativeQuestion(exercise, first, second, index));
   }
 
   if (exercise.type === "missing_note") {
-    return missingNotePlan.slice(0, exercise.totalRounds).map((plan, index) =>
-      buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
-    );
+    return missingNotePlan
+      .slice(0, exercise.totalRounds)
+      .map((plan, index) =>
+        buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
+      );
   }
 
   if (exercise.type === "guided_improvisation") {
@@ -185,7 +184,10 @@ function buildFinalChallengeQuestions(exercise: PentatonicExercise) {
       prompt: "Cierra con una mini improvisación de 16 beats usando DO pentatónica mayor.",
     },
   ];
-  const expanded = [...mixed, ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` }))];
+  const expanded = [
+    ...mixed,
+    ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` })),
+  ];
   return expanded.slice(0, exercise.totalRounds).map((question) => ({
     ...question,
     taskType: "final_challenge" as const,
@@ -205,7 +207,7 @@ export function getQuestionScaleMidiNotes(question: PentatonicQuestion) {
 
 export function getComparisonScaleMidiNotes(question: PentatonicQuestion) {
   return question.comparisonScaleId
-    ? getPentatonicScaleById(question.comparisonScaleId)?.midiNotes ?? []
+    ? (getPentatonicScaleById(question.comparisonScaleId)?.midiNotes ?? [])
     : [];
 }
 

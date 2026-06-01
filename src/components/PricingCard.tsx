@@ -14,9 +14,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
     >
       <div>
         <p
-          className={`text-sm font-bold ${
-            plan.highlighted ? "text-gold-soft" : "text-blue-deep"
-          }`}
+          className={`text-sm font-bold ${plan.highlighted ? "text-gold-soft" : "text-blue-deep"}`}
         >
           {plan.name}
         </p>
@@ -24,7 +22,9 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
           <span className="text-4xl font-bold">{plan.price}</span>
           <span className={plan.highlighted ? "text-white/70" : "text-muted"}>{plan.period}</span>
         </div>
-        <p className={`mt-4 text-sm leading-6 ${plan.highlighted ? "text-white/78" : "text-muted"}`}>
+        <p
+          className={`mt-4 text-sm leading-6 ${plan.highlighted ? "text-white/78" : "text-muted"}`}
+        >
           {plan.description}
         </p>
       </div>

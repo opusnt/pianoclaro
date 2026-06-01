@@ -1,4 +1,4 @@
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import type { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { getNoteFrequency, getPentatonicScaleById, noteToMidi } from "@/lib/pentatonic/theory";
 
 function wait(ms: number) {
@@ -43,7 +43,10 @@ export async function playPentatonicScale({
 }
 
 export async function playPentatonicScaleById(audio: PianoAudioEngine, scaleId: string) {
-  await playPentatonicSequence({ audio, midiNotes: getPentatonicScaleById(scaleId)?.midiNotes ?? [] });
+  await playPentatonicSequence({
+    audio,
+    midiNotes: getPentatonicScaleById(scaleId)?.midiNotes ?? [],
+  });
 }
 
 export async function playBackingLoop(audio: PianoAudioEngine, scaleId = "c-major-pentatonic") {

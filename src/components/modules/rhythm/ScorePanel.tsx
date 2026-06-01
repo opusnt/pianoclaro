@@ -9,14 +9,7 @@ type ScorePanelProps = {
   beatLabel: string;
 };
 
-export function ScorePanel({
-  score,
-  accuracy,
-  combo,
-  comboMax,
-  bpm,
-  beatLabel,
-}: ScorePanelProps) {
+export function ScorePanel({ score, accuracy, combo, comboMax, bpm, beatLabel }: ScorePanelProps) {
   return (
     <PerformanceScorePanel
       score={score}

@@ -1,13 +1,14 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import type { DetailedLearningModule } from "@/types/curriculum";
 
 export const keyboardNotesModule: DetailedLearningModule = {
-  id: "keyboard-notes",
+  id: firstFiveNotesModuleId,
   stageId: "stage-1-foundations",
   order: 1,
-  name: "El teclado y las notas",
-  subtitle: "Descubre el mapa visual del piano",
+  name: "Tus primeras 5 notas",
+  subtitle: "Do, Re, Mi, Fa y Sol en partitura",
   shortDescription:
-    "Una experiencia corta e interactiva para reconocer el patrón del teclado, ubicar Do y conectar posición física con altura sonora.",
+    "Teoría musical inicial para conectar cinco notas, pentagrama, clave de sol, ritmo de negra y movimiento ascendente.",
   objective:
     "Lograr que el usuario entienda visualmente el piano, identifique notas naturales y empiece a desarrollar memoria espacial y auditiva.",
   mainConcepts: [
@@ -25,8 +26,7 @@ export const keyboardNotesModule: DetailedLearningModule = {
   auditoryExercises: ["recognize-heard-note"],
   executionExercises: ["play-indicated-note"],
   recognitionExercises: ["play-indicated-note", "recognize-heard-note"],
-  creativeMiniChallenge:
-    "Crear una mini firma sonora de 3 notas usando dos Do y una nota vecina.",
+  creativeMiniChallenge: "Crear una mini firma sonora de 3 notas usando dos Do y una nota vecina.",
   finalAssessment:
     "Encontrar notas, reconocer grave/agudo y tocar una mini secuencia sin etiquetas permanentes.",
   unlockCriteria: [],
@@ -83,7 +83,8 @@ export const keyboardNotesModule: DetailedLearningModule = {
       briefExplanation:
         "Desde Do, las teclas blancas avanzan: Do, Re, Mi, Fa, Sol, La, Si. Luego vuelve Do.",
       visualExample: "Etiquetas aparecen una por una y luego se desvanecen.",
-      suggestedInteraction: "Tocar la escalera de teclas blancas hacia la derecha y hacia la izquierda.",
+      suggestedInteraction:
+        "Tocar la escalera de teclas blancas hacia la derecha y hacia la izquierda.",
       exerciseType: "play-indicated-note",
       successCriteria: ["Toca la secuencia completa", "Reconoce el regreso a Do"],
     },
@@ -106,8 +107,7 @@ export const keyboardNotesModule: DetailedLearningModule = {
       objective: "Entender que Do puede aparecer muchas veces en registros distintos.",
       idealMinutes: 3,
       mainConcept: "Octava",
-      briefExplanation:
-        "Dos teclas pueden llamarse Do, pero una suena más grave y otra más aguda.",
+      briefExplanation: "Dos teclas pueden llamarse Do, pero una suena más grave y otra más aguda.",
       visualExample: "Un arco conecta dos Do y reproduce ambos sonidos en secuencia.",
       suggestedInteraction: "Tocar pares de Do y comparar cuál es más grave o agudo.",
       exerciseType: "recognize-heard-note",
@@ -132,8 +132,7 @@ export const keyboardNotesModule: DetailedLearningModule = {
       objective: "Automatizar ubicación rápida de notas naturales.",
       idealMinutes: 4,
       mainConcept: "Memoria espacial",
-      briefExplanation:
-        "Ahora no pienses demasiado: mira el patrón, encuentra la nota y toca.",
+      briefExplanation: "Ahora no pienses demasiado: mira el patrón, encuentra la nota y toca.",
       visualExample: "Tarjetas rápidas: 'Do', 'Fa', 'La' con temporizador amable.",
       suggestedInteraction: "Rondas de 20 segundos encontrando notas indicadas.",
       exerciseType: "play-indicated-note",
@@ -145,8 +144,7 @@ export const keyboardNotesModule: DetailedLearningModule = {
       objective: "Usar las notas aprendidas en una mini idea musical.",
       idealMinutes: 4,
       mainConcept: "Aplicación musical inmediata",
-      briefExplanation:
-        "Saber notas sirve para crear. Toca una idea corta con Do, Re y Mi.",
+      briefExplanation: "Saber notas sirve para crear. Toca una idea corta con Do, Re y Mi.",
       visualExample: "Tres bloques de notas se convierten en una mini frase animada.",
       suggestedInteraction: "Elegir entre 3 patrones y luego crear uno propio.",
       exerciseType: "play-indicated-note",
@@ -252,17 +250,23 @@ export const keyboardNotesModule: DetailedLearningModule = {
     ],
     correctState: "La tecla suena, baja, se ilumina teal y suma XP.",
     errorState: "La tecla tocada marca borde rojo y la nota objetivo muestra una pista contextual.",
-    guidanceState: "Primero se ilumina el grupo de negras relevante; luego aparece la tecla objetivo.",
+    guidanceState:
+      "Primero se ilumina el grupo de negras relevante; luego aparece la tecla objetivo.",
   },
   exercises: [
     {
       id: "find-black-groups",
       name: "Detecta el patrón",
       objective: "Reconocer grupos de 2 y 3 teclas negras.",
-      mechanic: "La app pide 'toca un grupo de 2' o 'toca un grupo de 3' y acepta cualquier tecla negra de ese grupo.",
+      mechanic:
+        "La app pide 'toca un grupo de 2' o 'toca un grupo de 3' y acepta cualquier tecla negra de ese grupo.",
       interactionPattern: "pattern-scan",
       expectedInput: ["virtual-keyboard", "web-midi"],
-      feedback: ["Grupo correcto iluminado", "Pista si toca una blanca", "Combo por grupos consecutivos"],
+      feedback: [
+        "Grupo correcto iluminado",
+        "Pista si toca una blanca",
+        "Combo por grupos consecutivos",
+      ],
       difficulty: "inicial",
       variants: ["solo grupos de 2", "mezcla 2/3", "sin colores previos"],
       evaluationCriteria: ["precisión", "tiempo de localización", "errores por grupo"],
@@ -298,7 +302,8 @@ export const keyboardNotesModule: DetailedLearningModule = {
       id: "low-high-ear",
       name: "¿Grave o agudo?",
       objective: "Relacionar sonido con posición izquierda/derecha.",
-      mechanic: "Suenan dos notas; el usuario elige cuál está más a la derecha o si la segunda subió/bajó.",
+      mechanic:
+        "Suenan dos notas; el usuario elige cuál está más a la derecha o si la segunda subió/bajó.",
       interactionPattern: "listen-and-choose",
       expectedInput: ["audio-choice", "multiple-choice"],
       feedback: ["Animación izquierda/derecha", "Repetición auditiva", "Comparación visual"],
@@ -356,7 +361,11 @@ export const keyboardNotesModule: DetailedLearningModule = {
       feedback: ["Playback", "nombre de las notas usadas", "celebración si repite el patrón"],
       difficulty: "inicial",
       variants: ["Do-Re-Mi", "Do-Mi-Sol", "grave/agudo", "pregunta/respuesta"],
-      evaluationCriteria: ["usa notas permitidas", "repite patrón", "explora sin errores bloqueantes"],
+      evaluationCriteria: [
+        "usa notas permitidas",
+        "repite patrón",
+        "explora sin errores bloqueantes",
+      ],
       difficultyVariables: ["notas disponibles", "longitud", "con/sin pulso"],
     },
   ],
@@ -452,7 +461,8 @@ export const keyboardNotesModule: DetailedLearningModule = {
       id: "black-key-confusion",
       error: "Confundir grupo de 2 con grupo de 3 teclas negras.",
       detection: "Toca una tecla dentro del grupo incorrecto ante una consigna de patrón.",
-      correction: "Aislar visualmente grupos negros y pedir solo clasificar 2 vs 3 sin notas blancas.",
+      correction:
+        "Aislar visualmente grupos negros y pedir solo clasificar 2 vs 3 sin notas blancas.",
     },
     {
       id: "lost-orientation",
@@ -504,8 +514,7 @@ export const keyboardNotesModule: DetailedLearningModule = {
       "Distingue grave/agudo en 3 de 4 intentos",
       "Completa la firma sonora",
     ],
-    celebration:
-      "El skill tree ilumina la rama Teclado y se abre el nodo 'Ritmo básico'.",
+    celebration: "El skill tree ilumina la rama Teclado y se abre el nodo 'Ritmo básico'.",
     summary: [
       "Reconoces el patrón de 2 y 3 teclas negras",
       "Encuentras Do sin depender de etiquetas",

@@ -31,7 +31,9 @@ const relativeComparisonPlan = [
   ["bb-major", "g-minor", "Sí"],
 ] as const;
 
-export function generateKeySignatureQuestions(exercise: KeySignatureExercise): KeySignatureQuestion[] {
+export function generateKeySignatureQuestions(
+  exercise: KeySignatureExercise,
+): KeySignatureQuestion[] {
   if (exercise.type === "find_tonic") {
     return ["c-major", "a-minor", "c-major", "a-minor", "g-major", "e-minor"]
       .slice(0, exercise.totalRounds)
@@ -45,7 +47,10 @@ export function generateKeySignatureQuestions(exercise: KeySignatureExercise): K
         keyId: "g-major",
         index,
         targetMidi: 66,
-        prompt: index % 2 === 0 ? "En SOL mayor aparece FA. Toca la tecla que corresponde." : "La armadura dice FA#. Toca el FA alterado fijo.",
+        prompt:
+          index % 2 === 0
+            ? "En SOL mayor aparece FA. Toca la tecla que corresponde."
+            : "La armadura dice FA#. Toca el FA alterado fijo.",
       }),
     );
   }
@@ -57,25 +62,29 @@ export function generateKeySignatureQuestions(exercise: KeySignatureExercise): K
   }
 
   if (exercise.type === "build_scale_with_signature") {
-    return exercise.allowedKeys.map((keyId) => buildScaleQuestion(exercise, keyId)).slice(0, exercise.totalRounds);
+    return exercise.allowedKeys
+      .map((keyId) => buildScaleQuestion(exercise, keyId))
+      .slice(0, exercise.totalRounds);
   }
 
   if (exercise.type === "relative_keys_compare") {
-    return relativeComparisonPlan.slice(0, exercise.totalRounds).map(([keyId, comparisonKeyId, expected], index) =>
-      buildRelativeComparisonQuestion(exercise, keyId, comparisonKeyId, expected, index),
-    );
+    return relativeComparisonPlan
+      .slice(0, exercise.totalRounds)
+      .map(([keyId, comparisonKeyId, expected], index) =>
+        buildRelativeComparisonQuestion(exercise, keyId, comparisonKeyId, expected, index),
+      );
   }
 
   if (exercise.type === "find_relative_key") {
-    return exercise.allowedKeys.slice(0, exercise.totalRounds).map((keyId, index) =>
-      buildFindRelativeQuestion(exercise, keyId, index),
-    );
+    return exercise.allowedKeys
+      .slice(0, exercise.totalRounds)
+      .map((keyId, index) => buildFindRelativeQuestion(exercise, keyId, index));
   }
 
   if (exercise.type === "sharp_flat_none") {
-    return exercise.allowedKeys.slice(0, exercise.totalRounds).map((keyId, index) =>
-      buildAccidentalTypeQuestion(exercise, keyId, index),
-    );
+    return exercise.allowedKeys
+      .slice(0, exercise.totalRounds)
+      .map((keyId, index) => buildAccidentalTypeQuestion(exercise, keyId, index));
   }
 
   return buildFinalChallengeQuestions(exercise);
@@ -150,7 +159,9 @@ function buildAccidentalsQuestion(
     mode: "visual",
     taskType: exercise.type,
     prompt: `Qué alteraciones fijas tiene ${key.displayName}?`,
-    expectedAnswer: key.accidentals.length ? key.accidentals.map(getDisplayPitchName).join(" y ") : "sin alteraciones",
+    expectedAnswer: key.accidentals.length
+      ? key.accidentals.map(getDisplayPitchName).join(" y ")
+      : "sin alteraciones",
     answerOptions: accidentalOptions,
   };
 }
@@ -246,7 +257,10 @@ function buildFinalChallengeQuestions(exercise: KeySignatureExercise) {
     buildAccidentalTypeQuestion(exercise, "c-major", 11),
   ];
 
-  const expanded = [...mixed, ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` }))];
+  const expanded = [
+    ...mixed,
+    ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` })),
+  ];
   return expanded.slice(0, exercise.totalRounds).map((question) => ({
     ...question,
     taskType: "final_challenge" as KeySignatureExerciseType,
@@ -254,7 +268,16 @@ function buildFinalChallengeQuestions(exercise: KeySignatureExercise) {
 }
 
 function buildRelativeOptions(correctKeyId: string) {
-  const preferred = ["a-minor", "e-minor", "d-minor", "b-minor", "g-minor", "c-major", "g-major", "f-major"];
+  const preferred = [
+    "a-minor",
+    "e-minor",
+    "d-minor",
+    "b-minor",
+    "g-minor",
+    "c-major",
+    "g-major",
+    "f-major",
+  ];
   const optionIds = [correctKeyId, ...preferred.filter((id) => id !== correctKeyId)].slice(0, 4);
   return optionIds.map((id) => requireKeySignature(id).displayName);
 }
@@ -276,7 +299,9 @@ export function getQuestionScaleMidiNotes(question: KeySignatureQuestion) {
 }
 
 export function getComparisonScaleMidiNotes(question: KeySignatureQuestion) {
-  return question.comparisonKeyId ? getKeySignatureById(question.comparisonKeyId)?.midiNotes ?? [] : [];
+  return question.comparisonKeyId
+    ? (getKeySignatureById(question.comparisonKeyId)?.midiNotes ?? [])
+    : [];
 }
 
 export function allKeySignatureIds() {

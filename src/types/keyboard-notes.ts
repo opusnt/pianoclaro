@@ -1,3 +1,4 @@
+import type { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import type { SharpNoteName } from "@/lib/music/notes";
 import type { NoteName } from "@/types/music";
 
@@ -25,7 +26,7 @@ export type KeyboardNotesBlackKey = {
 };
 
 export type KeyboardNotesProgress = {
-  moduleId: "keyboard-notes";
+  moduleId: typeof keyboardNotesLessonSlug;
   completed: boolean;
   stage: KeyboardNotesStage;
   xp: number;

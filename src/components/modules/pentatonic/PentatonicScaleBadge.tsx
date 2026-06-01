@@ -1,9 +1,6 @@
 import { Sparkles } from "lucide-react";
 
-import {
-  getPentatonicDisplaySequence,
-  getPentatonicScaleById,
-} from "@/lib/pentatonic/theory";
+import { getPentatonicDisplaySequence, getPentatonicScaleById } from "@/lib/pentatonic/theory";
 
 type PentatonicScaleBadgeProps = {
   scaleId: string;
@@ -11,7 +8,9 @@ type PentatonicScaleBadgeProps = {
 
 export function PentatonicScaleBadge({ scaleId }: PentatonicScaleBadgeProps) {
   const scale = getPentatonicScaleById(scaleId);
-  const relative = scale?.relativeScaleId ? getPentatonicScaleById(scale.relativeScaleId) : undefined;
+  const relative = scale?.relativeScaleId
+    ? getPentatonicScaleById(scale.relativeScaleId)
+    : undefined;
 
   if (!scale) return null;
 
@@ -23,10 +22,13 @@ export function PentatonicScaleBadge({ scaleId }: PentatonicScaleBadgeProps) {
           <p className="text-xs font-bold uppercase text-muted">Escala actual</p>
           <p className="mt-1 text-lg font-bold text-blue-deep">{scale.displayName}</p>
           <p className="mt-2 text-sm font-semibold leading-6 text-muted">
-            {scale.type === "major" ? "Pentatónica mayor" : "Pentatónica menor"} · {getPentatonicDisplaySequence(scale)}
+            {scale.type === "major" ? "Pentatónica mayor" : "Pentatónica menor"} ·{" "}
+            {getPentatonicDisplaySequence(scale)}
           </p>
           {relative ? (
-            <p className="mt-2 text-xs font-bold text-blue-deep">Relativa: {relative.displayName}</p>
+            <p className="mt-2 text-xs font-bold text-blue-deep">
+              Relativa: {relative.displayName}
+            </p>
           ) : null}
         </div>
       </div>

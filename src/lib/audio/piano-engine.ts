@@ -1,199 +1,147 @@
-import { noteFrequencies } from "@/lib/music/notes";
+import * as Tone from "tone";
 import type { PianoNoteName } from "@/lib/music/notes";
 
-type AudioWindow = Window &
-  typeof globalThis & {
-    webkitAudioContext?: typeof AudioContext;
-  };
-
-type ActiveVoice = {
-  oscillators: OscillatorNode[];
-  gain: GainNode;
-  filter?: BiquadFilterNode;
-};
-
 export class PianoAudioEngine {
-  private context: AudioContext | null = null;
-  private masterGain: GainNode | null = null;
-  private activeVoices = new Set<ActiveVoice>();
+  private sampler: Tone.Sampler | null = null;
+  private metronomeSynth: Tone.MembraneSynth | null = null;
+  private frequencySynth: Tone.PolySynth | null = null;
+  private volumeNode: Tone.Volume | null = null;
+  
   private volume = 0.72;
   private muted = false;
+  private isPrepared = false;
 
-  private getContext() {
-    if (typeof window === "undefined") {
-      return null;
+  private updateVolume() {
+    if (this.volumeNode) {
+      const targetVolume = this.muted ? -Infinity : Tone.gainToDb(this.volume);
+      this.volumeNode.volume.rampTo(targetVolume, 0.1);
     }
-
-    const audioWindow = window as AudioWindow;
-    const AudioContextConstructor = audioWindow.AudioContext ?? audioWindow.webkitAudioContext;
-
-    if (!AudioContextConstructor) {
-      return null;
-    }
-
-    if (!this.context) {
-      this.context = new AudioContextConstructor();
-    }
-
-    return this.context;
-  }
-
-  private getMasterGain() {
-    const context = this.getContext();
-
-    if (!context) {
-      return null;
-    }
-
-    if (!this.masterGain) {
-      this.masterGain = context.createGain();
-      this.masterGain.connect(context.destination);
-    }
-
-    this.updateMasterGain();
-    return this.masterGain;
-  }
-
-  private updateMasterGain() {
-    if (!this.context || !this.masterGain) {
-      return;
-    }
-
-    const targetGain = this.muted ? 0.0001 : this.volume;
-    this.masterGain.gain.setTargetAtTime(targetGain, this.context.currentTime, 0.025);
   }
 
   setVolume(volume: number) {
     this.volume = Math.min(1, Math.max(0, volume));
-    this.updateMasterGain();
+    this.updateVolume();
   }
 
   setMuted(muted: boolean) {
     this.muted = muted;
-    this.updateMasterGain();
+    this.updateVolume();
   }
 
   async prepare() {
-    const context = this.getContext();
-    const masterGain = this.getMasterGain();
+    if (this.isPrepared) return true;
 
-    if (!context || !masterGain) {
+    try {
+      if (Tone.getContext().state !== "running") {
+        await Tone.start();
+      }
+      
+      this.volumeNode = new Tone.Volume(Tone.gainToDb(this.volume)).toDestination();
+      
+      this.sampler = new Tone.Sampler({
+        urls: {
+          A0: "A0.mp3",
+          C1: "C1.mp3",
+          "D#1": "Ds1.mp3",
+          "F#1": "Fs1.mp3",
+          A1: "A1.mp3",
+          C2: "C2.mp3",
+          "D#2": "Ds2.mp3",
+          "F#2": "Fs2.mp3",
+          A2: "A2.mp3",
+          C3: "C3.mp3",
+          "D#3": "Ds3.mp3",
+          "F#3": "Fs3.mp3",
+          A3: "A3.mp3",
+          C4: "C4.mp3",
+          "D#4": "Ds4.mp3",
+          "F#4": "Fs4.mp3",
+          A4: "A4.mp3",
+          C5: "C5.mp3",
+          "D#5": "Ds5.mp3",
+          "F#5": "Fs5.mp3",
+          A5: "A5.mp3",
+          C6: "C6.mp3",
+          "D#6": "Ds6.mp3",
+          "F#6": "Fs6.mp3",
+          A6: "A6.mp3",
+          C7: "C7.mp3",
+          "D#7": "Ds7.mp3",
+          "F#7": "Fs7.mp3",
+          A7: "A7.mp3",
+          C8: "C8.mp3"
+        },
+        release: 1,
+        baseUrl: "https://tonejs.github.io/audio/salamander/",
+      }).connect(this.volumeNode);
+
+      this.metronomeSynth = new Tone.MembraneSynth().connect(this.volumeNode);
+      
+      this.frequencySynth = new Tone.PolySynth(Tone.Synth, {
+        oscillator: { type: "triangle" },
+        envelope: { attack: 0.01, decay: 0.1, sustain: 0.2, release: 1 }
+      }).connect(this.volumeNode);
+
+      await Tone.loaded();
+      this.isPrepared = true;
+      this.updateVolume();
+      return true;
+    } catch (e) {
+      console.error("Failed to prepare Tone.js", e);
       return false;
     }
-
-    if (context.state === "suspended") {
-      await context.resume();
-    }
-
-    return true;
   }
 
   async playNote(note: PianoNoteName, durationMs = 420) {
-    await this.playFrequency(noteFrequencies[note], durationMs);
+    const isReady = await this.prepare();
+    if (!this.sampler || !isReady) return;
+    
+    // In this app, PianoNoteName implies octave 4
+    const toneNote = `${note}4`;
+    this.sampler.triggerAttackRelease(toneNote, durationMs / 1000);
   }
 
   async playFrequency(frequency: number, durationMs = 420) {
     const isReady = await this.prepare();
+    if (!this.frequencySynth || !isReady) return;
+    
+    this.frequencySynth.triggerAttackRelease(frequency, durationMs / 1000);
+  }
 
-    if (!isReady || !this.context || !this.masterGain) {
-      return;
-    }
-
-    const fundamental = frequency;
-    const oscillators = [
-      { type: "triangle" as OscillatorType, frequency: fundamental },
-      { type: "sine" as OscillatorType, frequency: fundamental * 2 },
-      { type: "sine" as OscillatorType, frequency: fundamental * 3 },
-    ].map((config) => {
-      const oscillator = this.context!.createOscillator();
-      oscillator.type = config.type;
-      oscillator.frequency.setValueAtTime(config.frequency, this.context!.currentTime);
-      return oscillator;
-    });
-    const filter = this.context.createBiquadFilter();
-    const gain = this.context.createGain();
-    const now = this.context.currentTime;
-    const releaseAt = now + durationMs / 1000;
-    const voice = { oscillators, filter, gain };
-
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(2800, now);
-    filter.frequency.exponentialRampToValueAtTime(1200, releaseAt);
-
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(0.18, now + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.1, now + 0.09);
-    gain.gain.exponentialRampToValueAtTime(0.0001, releaseAt);
-
-    oscillators.forEach((oscillator) => oscillator.connect(filter));
-    filter.connect(gain);
-    gain.connect(this.masterGain);
-
-    this.activeVoices.add(voice);
-    oscillators.forEach((oscillator) => {
-      oscillator.start(now);
-      oscillator.stop(releaseAt + 0.04);
-    });
-
-    oscillators[0].onended = () => {
-      oscillators.forEach((oscillator) => oscillator.disconnect());
-      filter.disconnect();
-      gain.disconnect();
-      this.activeVoices.delete(voice);
-    };
+  async playPianoTone(frequency: number, options: { durationMs?: number; velocity?: number; brightness?: number } = {}) {
+    // Some legacy calls might use playPianoTone directly
+    const durationMs = options.durationMs ?? 420;
+    
+    const isReady = await this.prepare();
+    if (!this.sampler || !isReady) return;
+    
+    // Convert frequency to closest note for the sampler to play a real piano tone
+    const note = Tone.Frequency(frequency).toNote();
+    this.sampler.triggerAttackRelease(note, durationMs / 1000);
   }
 
   async playMetronomeTick(accent = false) {
     const isReady = await this.prepare();
-
-    if (!isReady || !this.context || !this.masterGain) {
-      return;
+    if (!this.metronomeSynth || !isReady) return;
+    
+    if (accent) {
+      this.metronomeSynth.triggerAttackRelease("C5", "32n");
+    } else {
+      this.metronomeSynth.triggerAttackRelease("C4", "32n", undefined, 0.5);
     }
-
-    const oscillator = this.context.createOscillator();
-    const gain = this.context.createGain();
-    const now = this.context.currentTime;
-    const releaseAt = now + (accent ? 0.07 : 0.045);
-    const voice = { oscillators: [oscillator], gain };
-
-    oscillator.type = "square";
-    oscillator.frequency.setValueAtTime(accent ? 1320 : 920, now);
-    gain.gain.setValueAtTime(0.0001, now);
-    gain.gain.exponentialRampToValueAtTime(accent ? 0.12 : 0.075, now + 0.006);
-    gain.gain.exponentialRampToValueAtTime(0.0001, releaseAt);
-
-    oscillator.connect(gain);
-    gain.connect(this.masterGain);
-
-    this.activeVoices.add(voice);
-    oscillator.start(now);
-    oscillator.stop(releaseAt + 0.02);
-    oscillator.onended = () => {
-      oscillator.disconnect();
-      gain.disconnect();
-      this.activeVoices.delete(voice);
-    };
   }
 
   stopAll() {
-    this.activeVoices.forEach(({ oscillators, gain, filter }) => {
-      try {
-        const now = this.context?.currentTime ?? 0;
-        gain.gain.cancelScheduledValues(now);
-        gain.gain.setTargetAtTime(0.0001, now, 0.015);
-        oscillators.forEach((oscillator) => oscillator.stop(now + 0.04));
-        filter?.disconnect();
-      } catch {
-        // A voice can already be stopping when the user presses pause quickly.
-      }
-    });
-
-    this.activeVoices.clear();
+    this.sampler?.releaseAll();
+    this.frequencySynth?.releaseAll();
   }
 
   close() {
     this.stopAll();
-    void this.context?.close();
-    this.context = null;
+    this.sampler?.dispose();
+    this.metronomeSynth?.dispose();
+    this.frequencySynth?.dispose();
+    this.volumeNode?.dispose();
+    this.isPrepared = false;
   }
 }

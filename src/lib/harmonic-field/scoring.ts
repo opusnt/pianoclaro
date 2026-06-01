@@ -108,7 +108,11 @@ export function getHarmonicFieldFeedback({
   const field = requireField(question.fieldId);
   const chord = question.degree ? getChordByDegree(field, question.degree) : undefined;
 
-  if (answer.isCorrect && question.answerOptions && question.taskType === "identify_chord_quality") {
+  if (
+    answer.isCorrect &&
+    question.answerOptions &&
+    question.taskType === "identify_chord_quality"
+  ) {
     return `Correcto: el ${question.degree} grado en ${field.displayName} es ${getQualityLabel(chord?.quality ?? "major")}.`;
   }
 

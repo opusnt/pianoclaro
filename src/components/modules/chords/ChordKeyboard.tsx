@@ -2,13 +2,8 @@
 
 import { CircleDot } from "lucide-react";
 import { useMemo } from "react";
-
+import { buildKeyboardNotes, getChordById, noteToMidi } from "@/lib/chords/theory";
 import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
-import {
-  buildKeyboardNotes,
-  getChordById,
-  noteToMidi,
-} from "@/lib/chords/theory";
 
 type ChordKeyboardProps = {
   chordId?: string;
@@ -49,7 +44,7 @@ export function ChordKeyboard({
         </p>
       </div>
 
-      <div className="responsive-scroll mt-4 overflow-x-auto pb-2">
+      <div className="responsive-scroll mt-4 pb-2">
         <div className="relative h-48" style={{ minWidth: `${whiteKeys.length * 64}px` }}>
           <div
             className="grid h-full gap-1 pb-1"
@@ -61,16 +56,18 @@ export function ChordKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass({
-                  midi: keyNote.midi,
-                  selectedPitchClasses,
-                  chordPitchClasses,
-                  tonicPitchClass,
-                  thirdPitchClass,
-                  fifthPitchClass,
-                  helpVisible,
-                  answerCorrect,
-                })}`}
+                className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass(
+                  {
+                    midi: keyNote.midi,
+                    selectedPitchClasses,
+                    chordPitchClasses,
+                    tonicPitchClass,
+                    thirdPitchClass,
+                    fifthPitchClass,
+                    helpVisible,
+                    answerCorrect,
+                  },
+                )}`}
                 aria-label={`Seleccionar ${keyNote.displayName}`}
               >
                 {getBadge({
@@ -89,7 +86,9 @@ export function ChordKeyboard({
           </div>
 
           {blackKeys.map((keyNote) => {
-            const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < keyNote.midi);
+            const previousWhiteIndex = whiteKeys.findLastIndex(
+              (whiteKey) => whiteKey.midi < keyNote.midi,
+            );
             const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
@@ -98,16 +97,18 @@ export function ChordKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
-                  midi: keyNote.midi,
-                  selectedPitchClasses,
-                  chordPitchClasses,
-                  tonicPitchClass,
-                  thirdPitchClass,
-                  fifthPitchClass,
-                  helpVisible,
-                  answerCorrect,
-                })}`}
+                className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(
+                  {
+                    midi: keyNote.midi,
+                    selectedPitchClasses,
+                    chordPitchClasses,
+                    tonicPitchClass,
+                    thirdPitchClass,
+                    fifthPitchClass,
+                    helpVisible,
+                    answerCorrect,
+                  },
+                )}`}
                 style={{ left: `${left}%`, width: `calc(100% / ${whiteKeys.length} * 0.58)` }}
                 aria-label={`Seleccionar ${keyNote.displayName}`}
               >
@@ -129,11 +130,21 @@ export function ChordKeyboard({
       </div>
 
       <div className="mt-4 grid gap-2 text-xs font-semibold text-muted sm:grid-cols-5">
-        <p><span className="font-bold text-blue-deep">Tónica:</span> azul</p>
-        <p><span className="font-bold text-purple-700">Tercera:</span> morado</p>
-        <p><span className="font-bold text-gold-soft">Quinta:</span> dorado</p>
-        <p><span className="font-bold text-emerald-700">Seleccionada:</span> verde</p>
-        <p><span className="font-bold text-red-700">Error:</span> rojo</p>
+        <p>
+          <span className="font-bold text-blue-deep">Tónica:</span> azul
+        </p>
+        <p>
+          <span className="font-bold text-purple-700">Tercera:</span> morado
+        </p>
+        <p>
+          <span className="font-bold text-gold-soft">Quinta:</span> dorado
+        </p>
+        <p>
+          <span className="font-bold text-emerald-700">Seleccionada:</span> verde
+        </p>
+        <p>
+          <span className="font-bold text-red-700">Error:</span> rojo
+        </p>
       </div>
     </div>
   );
@@ -155,11 +166,15 @@ function getKeyClass(input: KeyClassInput) {
   const selected = input.selectedPitchClasses.has(pitch);
   const expected = input.chordPitchClasses.has(pitch);
 
-  if (selected && input.answerCorrect === false && !expected) return "border-red-500 bg-red-100 text-red-950";
+  if (selected && input.answerCorrect === false && !expected)
+    return "border-red-500 bg-red-100 text-red-950";
   if (selected) return "border-emerald-500 bg-emerald-100 text-emerald-950";
-  if (input.helpVisible && input.tonicPitchClass === pitch) return "border-blue-deep bg-blue-deep text-white";
-  if (input.helpVisible && input.thirdPitchClass === pitch) return "border-purple-500 bg-purple-50 text-purple-950 ring-2 ring-purple-200";
-  if (input.helpVisible && input.fifthPitchClass === pitch) return "border-gold-soft bg-cream text-blue-deep shadow-soft";
+  if (input.helpVisible && input.tonicPitchClass === pitch)
+    return "border-blue-deep bg-blue-deep text-white";
+  if (input.helpVisible && input.thirdPitchClass === pitch)
+    return "border-purple-500 bg-purple-50 text-purple-950 ring-2 ring-purple-200";
+  if (input.helpVisible && input.fifthPitchClass === pitch)
+    return "border-gold-soft bg-cream text-blue-deep shadow-soft";
   return "border-blue-deep/10 bg-white text-blue-deep hover:bg-blue-soft/30 disabled:opacity-60";
 }
 

@@ -1,3 +1,4 @@
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import type { Route } from "@/types/learning";
 
 export const learningRoutes: Route[] = [
@@ -11,13 +12,12 @@ export const learningRoutes: Route[] = [
     lessonCount: 3,
     progress: 32,
     accent: "blue",
-    lessonSlugs: ["tus-primeras-5-notas", "lee-antes-de-tocar", "tu-primera-mini-cancion"],
+    lessonSlugs: [keyboardNotesLessonSlug, "lee-antes-de-tocar", "tu-primera-mini-cancion"],
   },
   {
     slug: "lectura-de-partituras",
     title: "Lectura de partituras",
-    description:
-      "Relaciona pentagrama, ritmo y digitación con ejercicios cortos y progresivos.",
+    description: "Relaciona pentagrama, ritmo y digitación con ejercicios cortos y progresivos.",
     level: "Principiante",
     estimatedDuration: "5 semanas",
     lessonCount: 22,
@@ -28,8 +28,7 @@ export const learningRoutes: Route[] = [
   {
     slug: "acompanamiento-con-acordes",
     title: "Acompañamiento con acordes",
-    description:
-      "Aprende patrones útiles para tocar canciones con cifrado y mano izquierda clara.",
+    description: "Aprende patrones útiles para tocar canciones con cifrado y mano izquierda clara.",
     level: "Principiante",
     estimatedDuration: "6 semanas",
     lessonCount: 20,
@@ -52,8 +51,7 @@ export const learningRoutes: Route[] = [
   {
     slug: "canciones-faciles",
     title: "Canciones fáciles",
-    description:
-      "Repertorio reconocible por nivel, con teoría integrada dentro de cada canción.",
+    description: "Repertorio reconocible por nivel, con teoría integrada dentro de cada canción.",
     level: "Inicial a intermedio",
     estimatedDuration: "Continuo",
     lessonCount: 30,

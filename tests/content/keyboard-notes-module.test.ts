@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { keyboardNotesModule } from "@/data/modules/keyboard-notes-module";
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import { mockContentRepository } from "@/lib/content/mock-content-repository";
 
 test("define el módulo 1 con microlecciones cortas y completas", () => {
-  assert.equal(keyboardNotesModule.id, "keyboard-notes");
+  assert.equal(keyboardNotesModule.id, firstFiveNotesModuleId);
   assert.equal(keyboardNotesModule.microLessons.length, 8);
 
   for (const lesson of keyboardNotesModule.microLessons) {
@@ -23,7 +24,7 @@ test("incluye ejercicios, gamificación y evaluación final del módulo 1", () =
 
 test("expone el módulo detallado desde el repositorio de contenido", () => {
   assert.equal(
-    mockContentRepository.getDetailedLearningModuleById("keyboard-notes")?.name,
-    "El teclado y las notas",
+    mockContentRepository.getDetailedLearningModuleById(firstFiveNotesModuleId)?.name,
+    "Tus primeras 5 notas",
   );
 });

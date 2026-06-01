@@ -8,11 +8,7 @@ import {
   readPentatonicProgress,
   writePentatonicProgress,
 } from "@/lib/pentatonic/progress";
-import type {
-  PentatonicAttempt,
-  PentatonicExercise,
-  PentatonicProgress,
-} from "@/types/pentatonic";
+import type { PentatonicAttempt, PentatonicExercise, PentatonicProgress } from "@/types/pentatonic";
 
 export function usePentatonicProgress(moduleId: string, exercises: PentatonicExercise[]) {
   const [progress, setProgress] = useState<PentatonicProgress>(() =>

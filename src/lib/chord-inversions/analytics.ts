@@ -8,7 +8,10 @@ export type ChordInversionAnalyticsEvent =
   | "chord_inversion_exercise_completed"
   | "chord_inversion_module_completed";
 
-export function trackChordInversionEvent(event: ChordInversionAnalyticsEvent, payload: Record<string, unknown> = {}) {
+export function trackChordInversionEvent(
+  event: ChordInversionAnalyticsEvent,
+  payload: Record<string, unknown> = {},
+) {
   appendLocalAnalyticsEvent({
     name: event,
     payload: {
@@ -30,4 +33,3 @@ export function trackChordInversionAttempt(moduleId: string, attempt: ChordInver
     passed: attempt.passed,
   });
 }
-

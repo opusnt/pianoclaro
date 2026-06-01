@@ -77,9 +77,11 @@ export function applyMajorScaleAttemptToProgress({
       attempts: (current?.attempts ?? 0) + 1,
       weakestScales: attempt.weakestScales,
       weakestSteps: attempt.weakestSteps,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
       replayUsedCount:
-        (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -106,7 +108,9 @@ export function applyMajorScaleAttemptToProgress({
       ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
         completedExercises.length
       : 0;
-  const needsReview = Array.from(new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestScales)));
+  const needsReview = Array.from(
+    new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestScales)),
+  );
 
   return {
     ...progress,
@@ -114,7 +118,10 @@ export function applyMajorScaleAttemptToProgress({
     currentExerciseId,
     totalAccuracy,
     weakestScale: needsReview[0],
-    strongestScale: attempt.passed && attempt.weakestScales.length === 0 ? "última escala aprobada" : progress.strongestScale,
+    strongestScale:
+      attempt.passed && attempt.weakestScales.length === 0
+        ? "última escala aprobada"
+        : progress.strongestScale,
     masteredScales: progress.masteredScales,
     needsReview,
     exercises: nextExercises,

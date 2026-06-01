@@ -1,3 +1,4 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import type {
   CurriculumStage,
   ExerciseTypeDefinition,
@@ -208,11 +209,7 @@ export const curriculumStages: CurriculumStage[] = [
     expectedOutcome:
       "Puede improvisar motivos simples, rearmonizar frases y usar tensiones o modulaciones con intención.",
     exerciseGuidance: {
-      recommended: [
-        "improvise-backing-track",
-        "analyze-progression",
-        "reharmonize-simple-phrase",
-      ],
+      recommended: ["improvise-backing-track", "analyze-progression", "reharmonize-simple-phrase"],
       feedback: ["audio", "theory", "reflection", "hint"],
       pianoRelation: "El teclado muestra zonas sugeridas, notas objetivo y tensiones disponibles.",
     },
@@ -236,7 +233,7 @@ export const curriculumStages: CurriculumStage[] = [
 
 export const moduleBlueprints: ModuleBlueprint[] = [
   {
-    id: "keyboard-notes",
+    id: firstFiveNotesModuleId,
     stageId: "stage-1-foundations",
     order: 1,
     name: "El teclado y las notas",
@@ -263,17 +260,18 @@ export const moduleBlueprints: ModuleBlueprint[] = [
     objective: "Sentir pulso, negras, blancas y silencios como acciones musicales.",
     mainConcepts: ["pulso", "negra", "blanca", "silencio", "compás"],
     practicalSkill: "Tocar y esperar en el momento correcto.",
-    keyboardVisualization: "Pulso animado bajo la partitura y teclas que esperan durante silencios.",
+    keyboardVisualization:
+      "Pulso animado bajo la partitura y teclas que esperan durante silencios.",
     auditoryExercises: ["follow-rhythm"],
     executionExercises: ["follow-rhythm", "play-indicated-note"],
     recognitionExercises: ["follow-rhythm"],
     creativeMiniChallenge: "Inventar un patrón de dos compases con una pausa.",
     finalAssessment: "Seguir un patrón con notas y silencios a tempo lento.",
-    unlockCriteria: [{ type: "module-completed", moduleId: "keyboard-notes" }],
+    unlockCriteria: [{ type: "module-completed", moduleId: firstFiveNotesModuleId }],
     contributesToSkills: { rhythm: 40, keyboard: 10, reading: 15 },
     estimatedMinutes: 50,
     difficulty: "inicial",
-    prerequisites: ["keyboard-notes"],
+    prerequisites: [firstFiveNotesModuleId],
   },
   {
     id: "intervals",
@@ -293,7 +291,7 @@ export const moduleBlueprints: ModuleBlueprint[] = [
     contributesToSkills: { ear: 25, keyboard: 20, reading: 15 },
     estimatedMinutes: 55,
     difficulty: "inicial",
-    prerequisites: ["keyboard-notes", "basic-rhythm"],
+    prerequisites: [firstFiveNotesModuleId, "basic-rhythm"],
   },
   {
     id: "major-scale",
@@ -401,7 +399,12 @@ export const moduleBlueprints: ModuleBlueprint[] = [
     order: 9,
     name: "Inversiones",
     objective: "Usar las mismas notas de un acorde en distintas posiciones tocables.",
-    mainConcepts: ["posición fundamental", "primera inversión", "segunda inversión", "voz superior"],
+    mainConcepts: [
+      "posición fundamental",
+      "primera inversión",
+      "segunda inversión",
+      "voz superior",
+    ],
     practicalSkill: "Cambiar de acorde con menos movimiento de mano.",
     keyboardVisualization: "Mismas notas reordenadas con colores consistentes.",
     auditoryExercises: ["identify-chord"],

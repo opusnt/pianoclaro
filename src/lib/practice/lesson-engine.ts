@@ -1,3 +1,4 @@
+import { solfegeByNote } from "@/lib/music/notes";
 import {
   getPracticeEventsInScope,
   getPracticeTimelineInScope,
@@ -6,7 +7,6 @@ import {
   type PianoClaroTimelineEvent,
   type PracticeSong,
 } from "@/lib/music/song-model";
-import { solfegeByNote } from "@/lib/music/notes";
 import { coreLessonPedagogy } from "@/lib/practice/pedagogy";
 import type { Lesson, LessonStep, NoteName } from "@/types/lesson";
 
@@ -48,10 +48,7 @@ export function getLessonFocus(lesson: Lesson, step: LessonStep): LessonFocus {
   };
 }
 
-export function getLessonFocusFromPracticeSong(
-  song: PracticeSong,
-  step: LessonStep,
-): LessonFocus {
+export function getLessonFocusFromPracticeSong(song: PracticeSong, step: LessonStep): LessonFocus {
   const scopedEvents = getPracticeEventsInScope(song, {
     measure: step.activeMeasure,
     phrase: step.activePhrase,

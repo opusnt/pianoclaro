@@ -22,11 +22,19 @@ export function ChordInversionBadge({ inversionId }: ChordInversionBadgeProps) {
       </p>
       <h3 className="mt-2 text-2xl font-bold text-blue-deep">{inversion.chordDisplayName}</h3>
       <div className="mt-3 grid gap-2 text-sm font-semibold text-muted">
-        <p><span className="font-bold text-blue-deep">Posición:</span> {inversion.inversionDisplayName}</p>
-        <p><span className="font-bold text-blue-deep">Bajo:</span> {getDisplayPitchName(inversion.bassNote)}</p>
-        <p><span className="font-bold text-blue-deep">Notas:</span> {getInversionDisplaySequence(inversion)}</p>
+        <p>
+          <span className="font-bold text-blue-deep">Posición:</span>{" "}
+          {inversion.inversionDisplayName}
+        </p>
+        <p>
+          <span className="font-bold text-blue-deep">Bajo:</span>{" "}
+          {getDisplayPitchName(inversion.bassNote)}
+        </p>
+        <p>
+          <span className="font-bold text-blue-deep">Notas:</span>{" "}
+          {getInversionDisplaySequence(inversion)}
+        </p>
       </div>
     </div>
   );
 }
-

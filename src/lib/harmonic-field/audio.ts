@@ -1,10 +1,14 @@
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { getChordByDegree, midiToFrequency, noteToMidi, requireField } from "./theory";
+import type { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import type { ScaleDegree } from "@/types/harmonic-field";
+import { getChordByDegree, midiToFrequency, noteToMidi, requireField } from "./theory";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export async function playHarmonicFieldNote(engine: PianoAudioEngine, noteName: string, durationMs = 360) {
+export async function playHarmonicFieldNote(
+  engine: PianoAudioEngine,
+  noteName: string,
+  durationMs = 360,
+) {
   await engine.playFrequency(midiToFrequency(noteToMidi(noteName)), durationMs);
 }
 
@@ -12,7 +16,11 @@ export async function playChord(engine: PianoAudioEngine, noteNames: string[], d
   await Promise.all(noteNames.map((note) => playHarmonicFieldNote(engine, note, durationMs)));
 }
 
-export async function playArpeggiatedChord(engine: PianoAudioEngine, midiNotes: number[], durationMs = 210) {
+export async function playArpeggiatedChord(
+  engine: PianoAudioEngine,
+  midiNotes: number[],
+  durationMs = 210,
+) {
   for (const midi of midiNotes) {
     await engine.playFrequency(midiToFrequency(midi), durationMs);
     await wait(durationMs * 0.72);
@@ -27,13 +35,24 @@ export async function playFieldScale(engine: PianoAudioEngine, fieldId: string, 
   }
 }
 
-export async function playDegreeChord(engine: PianoAudioEngine, fieldId: string, degree: ScaleDegree) {
+export async function playDegreeChord(
+  engine: PianoAudioEngine,
+  fieldId: string,
+  degree: ScaleDegree,
+) {
   const field = requireField(fieldId);
   const chord = getChordByDegree(field, degree);
-  await Promise.all(chord.midiNotes.map((midi) => engine.playFrequency(midiToFrequency(midi), 560)));
+  await Promise.all(
+    chord.midiNotes.map((midi) => engine.playFrequency(midiToFrequency(midi), 560)),
+  );
 }
 
-export async function playProgression(engine: PianoAudioEngine, fieldId: string, degrees: ScaleDegree[], durationMs = 900) {
+export async function playProgression(
+  engine: PianoAudioEngine,
+  fieldId: string,
+  degrees: ScaleDegree[],
+  durationMs = 900,
+) {
   const field = requireField(fieldId);
   for (const degree of degrees) {
     const chord = getChordByDegree(field, degree);

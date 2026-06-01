@@ -17,7 +17,11 @@ export function HarmonicFieldScorePanel({
 }: HarmonicFieldScorePanelProps) {
   const metrics = [
     { label: "Score", value: score.toString(), icon: <Star className="h-4 w-4" /> },
-    { label: "Accuracy", value: `${Math.round(accuracy * 100)}%`, icon: <Gauge className="h-4 w-4" /> },
+    {
+      label: "Accuracy",
+      value: `${Math.round(accuracy * 100)}%`,
+      icon: <Gauge className="h-4 w-4" />,
+    },
     { label: "Combo", value: combo.toString(), icon: <Flame className="h-4 w-4" /> },
     { label: "Progreso", value: progressLabel, icon: <Target className="h-4 w-4" /> },
   ];
@@ -31,7 +35,9 @@ export function HarmonicFieldScorePanel({
             <p className="text-xs font-bold uppercase">{metric.label}</p>
           </div>
           <p className="mt-2 text-2xl font-bold text-blue-deep">{metric.value}</p>
-          {metric.label === "Combo" ? <p className="text-xs font-semibold text-muted">Máximo {comboMax}</p> : null}
+          {metric.label === "Combo" ? (
+            <p className="text-xs font-semibold text-muted">Máximo {comboMax}</p>
+          ) : null}
         </div>
       ))}
     </div>

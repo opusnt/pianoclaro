@@ -1,19 +1,11 @@
 "use client";
 
-import {
-  Eye,
-  HelpCircle,
-  Play,
-  RotateCcw,
-  SkipForward,
-  Volume2,
-} from "lucide-react";
-
+import { Eye, HelpCircle, Play, RotateCcw, SkipForward, Volume2 } from "lucide-react";
+import { useMajorScaleEngine } from "@/components/modules/major-scale/hooks/useMajorScaleEngine";
 import { MajorScaleFeedback } from "@/components/modules/major-scale/MajorScaleFeedback";
 import { MajorScaleKeyboard } from "@/components/modules/major-scale/MajorScaleKeyboard";
 import { MajorScalePattern } from "@/components/modules/major-scale/MajorScalePattern";
 import { MajorScaleScorePanel } from "@/components/modules/major-scale/MajorScaleScorePanel";
-import { useMajorScaleEngine } from "@/components/modules/major-scale/hooks/useMajorScaleEngine";
 import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
 import {
   getDisplayPitchName,
@@ -75,8 +67,7 @@ export function MajorScaleExerciseScreen({
     tonicMidi: scale?.midiNotes[0],
     playedCount: engine.currentPlayedNotes.length,
   });
-  const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
+  const showLabels = exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
 
   return (
     <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-soft">
@@ -119,151 +110,172 @@ export function MajorScaleExerciseScreen({
         />
       ) : (
         <>
-      <div className="mt-5">
-        <MajorScaleScorePanel
-          score={engine.scoring.score}
-          accuracy={engine.scoring.accuracy}
-          combo={engine.scoring.combo}
-          comboMax={engine.scoring.comboMax}
-          progressLabel={progressLabel}
-        />
-      </div>
+          <div className="mt-5">
+            <MajorScaleScorePanel
+              score={engine.scoring.score}
+              accuracy={engine.scoring.accuracy}
+              combo={engine.scoring.combo}
+              comboMax={engine.scoring.comboMax}
+              progressLabel={progressLabel}
+            />
+          </div>
 
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
-        <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
-      </div>
+          <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
+            <div
+              className="h-full rounded-full bg-gold-soft transition-all"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
 
-      <MajorScaleExerciseGuide type={exercise.type} />
+          <MajorScaleExerciseGuide type={exercise.type} />
 
-      <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
-        <div className="min-w-0 space-y-4">
-          <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-5">
-            <p className="text-xs font-bold uppercase text-muted">Pregunta</p>
-            <h3 className="mt-2 text-2xl font-bold text-blue-deep">
-              {question ? question.prompt : "Pulsa iniciar para comenzar"}
-            </h3>
-            {question && scale ? (
-              <div className="mt-4 grid gap-3 text-sm font-semibold text-muted sm:grid-cols-3">
-                <p>
-                  <span className="block text-xs font-bold uppercase text-gold-soft">Escala</span>
-                  {scale.displayName}
-                </p>
-                <p>
-                  <span className="block text-xs font-bold uppercase text-gold-soft">Tónica</span>
-                  {getDisplayPitchName(question.tonic)}
-                </p>
-                <p>
-                  <span className="block text-xs font-bold uppercase text-gold-soft">Fórmula</span>
-                  T - T - S - T - T - T - S
+          <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
+            <div className="min-w-0 space-y-4">
+              <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-5">
+                <p className="text-xs font-bold uppercase text-muted">Pregunta</p>
+                <h3 className="mt-2 text-2xl font-bold text-blue-deep">
+                  {question ? question.prompt : "Pulsa iniciar para comenzar"}
+                </h3>
+                {question && scale ? (
+                  <div className="mt-4 grid gap-3 text-sm font-semibold text-muted sm:grid-cols-3">
+                    <p>
+                      <span className="block text-xs font-bold uppercase text-gold-soft">
+                        Escala
+                      </span>
+                      {scale.displayName}
+                    </p>
+                    <p>
+                      <span className="block text-xs font-bold uppercase text-gold-soft">
+                        Tónica
+                      </span>
+                      {getDisplayPitchName(question.tonic)}
+                    </p>
+                    <p>
+                      <span className="block text-xs font-bold uppercase text-gold-soft">
+                        Fórmula
+                      </span>
+                      T - T - S - T - T - T - S
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+
+              <MajorScalePattern
+                currentStepIndex={currentStepIndex}
+                completedSteps={completedSteps}
+              />
+
+              {question?.answerOptions ? (
+                <AnswerOptions
+                  question={question}
+                  selectedOption={engine.currentAnswer?.selectedOption}
+                  expectedAnswer={engine.currentAnswer?.expectedAnswer}
+                  isAnswered={Boolean(engine.currentAnswer)}
+                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
+                  onAnswer={engine.answerWithOption}
+                />
+              ) : null}
+
+              {question?.missingNoteIndex !== undefined && scale ? (
+                <MissingNotePreview question={question} />
+              ) : null}
+
+              {question?.expectedNotes ? (
+                <MajorScaleKeyboard
+                  tonicMidi={scale?.midiNotes[0]}
+                  expectedMidi={expectedMidi}
+                  selectedNote={engine.currentAnswer?.selectedNote}
+                  completedMidiNotes={completedMidiNotes}
+                  routeMidiNotes={routeMidiNotes}
+                  showLabels={showLabels}
+                  disabled={engine.state !== "active" || engine.questionComplete}
+                  onNotePress={engine.answerWithNote}
+                />
+              ) : scale ? (
+                <ScaleSummary scaleId={scale.id} />
+              ) : null}
+            </div>
+
+            <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
+              <MajorScaleFeedback message={engine.message} answer={engine.currentAnswer} />
+
+              <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
+                <p className="text-xs font-bold uppercase text-muted">Controles</p>
+                <div className="mt-3 grid gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void engine.playQuestionAudio()}
+                    disabled={!question || !exercise.allowReplay}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-blue-deep px-4 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Volume2 aria-hidden="true" className="h-4 w-4" />
+                    Reproducir sonido
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void engine.playExpectedScale()}
+                    disabled={!question || !exercise.allowReplay}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Volume2 aria-hidden="true" className="h-4 w-4" />
+                    Escala correcta
+                  </button>
+                  <button
+                    type="button"
+                    onClick={engine.revealHint}
+                    disabled={!question || !exercise.allowHints || Boolean(engine.currentAnswer)}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <Eye aria-hidden="true" className="h-4 w-4" />
+                    Ver notas
+                  </button>
+                  <button
+                    type="button"
+                    onClick={engine.nextQuestion}
+                    disabled={!engine.questionComplete}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#cda85d] disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <SkipForward aria-hidden="true" className="h-4 w-4" />
+                    {engine.currentIndex >= engine.questions.length - 1
+                      ? "Finalizar ejercicio"
+                      : "Siguiente pregunta"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
+                <p className="text-xs font-bold uppercase text-muted">Idea clave</p>
+                <p className="mt-2 text-sm font-semibold leading-6 text-blue-deep">
+                  Una escala mayor no se memoriza como lista: se construye con T - T - S - T - T - T
+                  - S.
                 </p>
               </div>
-            ) : null}
+
+              {progress?.weakestScales.length || progress?.weakestSteps.length ? (
+                <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
+                  <p className="text-xs font-bold uppercase text-muted">A reforzar</p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {progress.weakestScales.map((scaleName) => (
+                      <span
+                        key={scaleName}
+                        className="rounded-xl bg-cream px-3 py-2 text-xs font-bold text-blue-deep"
+                      >
+                        {scaleName}
+                      </span>
+                    ))}
+                    {progress.weakestSteps.map((step) => (
+                      <span
+                        key={step}
+                        className="rounded-xl bg-blue-soft/40 px-3 py-2 text-xs font-bold text-blue-deep"
+                      >
+                        Paso {step + 1}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+            </aside>
           </div>
-
-          <MajorScalePattern currentStepIndex={currentStepIndex} completedSteps={completedSteps} />
-
-          {question?.answerOptions ? (
-            <AnswerOptions
-              question={question}
-              selectedOption={engine.currentAnswer?.selectedOption}
-              expectedAnswer={engine.currentAnswer?.expectedAnswer}
-              isAnswered={Boolean(engine.currentAnswer)}
-              disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
-              onAnswer={engine.answerWithOption}
-            />
-          ) : null}
-
-          {question?.missingNoteIndex !== undefined && scale ? (
-            <MissingNotePreview question={question} />
-          ) : null}
-
-          {question?.expectedNotes ? (
-            <MajorScaleKeyboard
-              tonicMidi={scale?.midiNotes[0]}
-              expectedMidi={expectedMidi}
-              selectedNote={engine.currentAnswer?.selectedNote}
-              completedMidiNotes={completedMidiNotes}
-              routeMidiNotes={routeMidiNotes}
-              showLabels={showLabels}
-              disabled={engine.state !== "active" || engine.questionComplete}
-              onNotePress={engine.answerWithNote}
-            />
-          ) : scale ? (
-            <ScaleSummary scaleId={scale.id} />
-          ) : null}
-        </div>
-
-        <aside className="grid min-w-0 gap-4 md:grid-cols-2 min-[1800px]:block min-[1800px]:space-y-4">
-          <MajorScaleFeedback message={engine.message} answer={engine.currentAnswer} />
-
-          <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
-            <p className="text-xs font-bold uppercase text-muted">Controles</p>
-            <div className="mt-3 grid gap-2">
-              <button
-                type="button"
-                onClick={() => void engine.playQuestionAudio()}
-                disabled={!question || !exercise.allowReplay}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-blue-deep px-4 py-3 text-sm font-bold text-white transition hover:bg-[#0d2949] disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <Volume2 aria-hidden="true" className="h-4 w-4" />
-                Reproducir sonido
-              </button>
-              <button
-                type="button"
-                onClick={() => void engine.playExpectedScale()}
-                disabled={!question || !exercise.allowReplay}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <Volume2 aria-hidden="true" className="h-4 w-4" />
-                Escala correcta
-              </button>
-              <button
-                type="button"
-                onClick={engine.revealHint}
-                disabled={!question || !exercise.allowHints || Boolean(engine.currentAnswer)}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <Eye aria-hidden="true" className="h-4 w-4" />
-                Ver notas
-              </button>
-              <button
-                type="button"
-                onClick={engine.nextQuestion}
-                disabled={!engine.questionComplete}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#cda85d] disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <SkipForward aria-hidden="true" className="h-4 w-4" />
-                {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
-              </button>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
-            <p className="text-xs font-bold uppercase text-muted">Idea clave</p>
-            <p className="mt-2 text-sm font-semibold leading-6 text-blue-deep">
-              Una escala mayor no se memoriza como lista: se construye con T - T - S - T - T - T - S.
-            </p>
-          </div>
-
-          {progress?.weakestScales.length || progress?.weakestSteps.length ? (
-            <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
-              <p className="text-xs font-bold uppercase text-muted">A reforzar</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {progress.weakestScales.map((scaleName) => (
-                  <span key={scaleName} className="rounded-xl bg-cream px-3 py-2 text-xs font-bold text-blue-deep">
-                    {scaleName}
-                  </span>
-                ))}
-                {progress.weakestSteps.map((step) => (
-                  <span key={step} className="rounded-xl bg-blue-soft/40 px-3 py-2 text-xs font-bold text-blue-deep">
-                    Paso {step + 1}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
-        </aside>
-      </div>
         </>
       )}
     </section>

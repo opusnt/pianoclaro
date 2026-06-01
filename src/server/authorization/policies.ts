@@ -1,6 +1,6 @@
-import { forbidden, unauthenticated } from "@/server/errors";
-import { hasRole, isSessionExpired } from "@/server/auth/types";
 import type { ServerSession, UserRole } from "@/server/auth/types";
+import { hasRole, isSessionExpired } from "@/server/auth/types";
+import { forbidden, unauthenticated } from "@/server/errors";
 
 export type OwnableResource = {
   id: string;

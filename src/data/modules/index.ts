@@ -1,6 +1,6 @@
 import { basicRhythmDetailedModule } from "@/data/modules/basic-rhythm-module";
-import { chordsDetailedModule } from "@/data/modules/chords-module";
 import { chordInversionsDetailedModule } from "@/data/modules/chord-inversions-module";
+import { chordsDetailedModule } from "@/data/modules/chords-module";
 import { harmonicFieldDetailedModule } from "@/data/modules/harmonic-field-module";
 import { intervalsDetailedModule } from "@/data/modules/intervals-module";
 import { keySignaturesDetailedModule } from "@/data/modules/key-signatures-module";

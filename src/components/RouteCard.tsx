@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { ArrowRight, Clock, GraduationCap } from "lucide-react";
-
-import type { Route } from "@/types/learning";
+import Link from "next/link";
 import { clampPercentage } from "@/lib/format";
+import type { Route } from "@/types/learning";
 
 const accentStyles = {
   blue: "bg-blue-soft text-blue-deep",

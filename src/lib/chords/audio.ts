@@ -1,16 +1,28 @@
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import type { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { getChordById, midiToFrequency, noteToMidi } from "@/lib/chords/theory";
 
-export async function playChordNote(engine: PianoAudioEngine, noteOrMidi: string | number, durationMs = 420) {
+export async function playChordNote(
+  engine: PianoAudioEngine,
+  noteOrMidi: string | number,
+  durationMs = 420,
+) {
   const midi = typeof noteOrMidi === "number" ? noteOrMidi : noteToMidi(noteOrMidi);
   await engine.playFrequency(midiToFrequency(midi), durationMs);
 }
 
-export async function playChord(engine: PianoAudioEngine, noteNamesOrMidi: Array<string | number>, durationMs = 760) {
+export async function playChord(
+  engine: PianoAudioEngine,
+  noteNamesOrMidi: Array<string | number>,
+  durationMs = 760,
+) {
   await Promise.all(noteNamesOrMidi.map((note) => playChordNote(engine, note, durationMs)));
 }
 
-export async function playArpeggiatedChord(engine: PianoAudioEngine, noteNamesOrMidi: Array<string | number>, noteDurationMs = 280) {
+export async function playArpeggiatedChord(
+  engine: PianoAudioEngine,
+  noteNamesOrMidi: Array<string | number>,
+  noteDurationMs = 280,
+) {
   for (const note of noteNamesOrMidi) {
     await playChordNote(engine, note, noteDurationMs);
     await wait(110);
@@ -23,7 +35,11 @@ export async function playChordById(engine: PianoAudioEngine, chordId: string) {
   await playChord(engine, chord.midiNotes);
 }
 
-export async function playSingleNoteVsChord(engine: PianoAudioEngine, chordId: string, asChord: boolean) {
+export async function playSingleNoteVsChord(
+  engine: PianoAudioEngine,
+  chordId: string,
+  asChord: boolean,
+) {
   const chord = getChordById(chordId);
   if (!chord) return;
   if (asChord) await playChord(engine, chord.midiNotes);

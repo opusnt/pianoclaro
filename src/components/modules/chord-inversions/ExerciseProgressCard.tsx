@@ -1,6 +1,9 @@
 import { CheckCircle2, Lock, PlayCircle } from "lucide-react";
 
-import type { ChordInversionExercise, ChordInversionExerciseProgress } from "@/types/chord-inversions";
+import type {
+  ChordInversionExercise,
+  ChordInversionExerciseProgress,
+} from "@/types/chord-inversions";
 
 type ExerciseProgressCardProps = {
   exercise: ChordInversionExercise;
@@ -35,14 +38,22 @@ export function ExerciseProgressCard({
       }`}
     >
       <div className="flex items-start gap-3">
-        <Icon aria-hidden="true" className={`mt-1 h-5 w-5 shrink-0 ${selected ? "text-gold-soft" : "text-gold-soft"}`} />
+        <Icon
+          aria-hidden="true"
+          className={`mt-1 h-5 w-5 shrink-0 ${selected ? "text-gold-soft" : "text-gold-soft"}`}
+        />
         <div>
           <p className="text-xs font-bold uppercase opacity-75">Ejercicio {index + 1}</p>
           <h3 className="mt-1 text-base font-bold">{exercise.title}</h3>
-          <p className={`mt-1 text-sm leading-5 ${selected ? "text-white/78" : "text-muted"}`}>{exercise.description}</p>
+          <p className={`mt-1 text-sm leading-5 ${selected ? "text-white/78" : "text-muted"}`}>
+            {exercise.description}
+          </p>
           {progress?.attempts ? (
-            <p className={`mt-2 text-xs font-bold ${selected ? "text-white/80" : "text-blue-deep"}`}>
-              Mejor accuracy: {Math.round(progress.bestAccuracy * 100)}% · intentos: {progress.attempts}
+            <p
+              className={`mt-2 text-xs font-bold ${selected ? "text-white/80" : "text-blue-deep"}`}
+            >
+              Mejor accuracy: {Math.round(progress.bestAccuracy * 100)}% · intentos:{" "}
+              {progress.attempts}
             </p>
           ) : null}
         </div>
@@ -50,4 +61,3 @@ export function ExerciseProgressCard({
     </button>
   );
 }
-

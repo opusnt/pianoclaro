@@ -1,9 +1,21 @@
 "use client";
 
+import {
+  BarChart3,
+  BookOpen,
+  ChevronDown,
+  Keyboard,
+  Layers3,
+  Library,
+  Music2,
+  Route,
+  WalletCards,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-import { BarChart3, BookOpen, ChevronDown, Keyboard, Layers3, Library, Music2, Route, WalletCards } from "lucide-react";
+
+import { firstFiveNotesModuleId, keyboardNotesLessonSlug } from "@/data/learning-slugs";
 
 const navItems = [
   { href: "/biblioteca", label: "Biblioteca", icon: Library },
@@ -17,27 +29,60 @@ const learningMenuSections = [
     icon: Route,
     items: [
       { href: "/rutas", label: "Todas las rutas", description: "Mapa general de aprendizaje" },
-      { href: "/rutas/piano-desde-cero", label: "Piano desde cero", description: "Secuencia inicial guiada" },
-      { href: "/rutas/acompanamiento-con-acordes", label: "Acompañamiento", description: "Camino para tocar canciones" },
+      {
+        href: "/rutas/piano-desde-cero",
+        label: "Piano desde cero",
+        description: "Secuencia inicial guiada",
+      },
+      {
+        href: "/rutas/acompanamiento-con-acordes",
+        label: "Acompañamiento",
+        description: "Camino para tocar canciones",
+      },
     ],
   },
   {
-    title: "Módulos",
+    title: "Teoría musical",
     icon: Layers3,
     items: [
-      { href: "/modulos/keyboard-notes", label: "Teclado y notas", description: "Base visual del piano" },
+      {
+        href: "/modulos",
+        label: "Todos los módulos",
+        description: "Teoría aplicada con ejercicios",
+      },
+      {
+        href: `/modulos/${firstFiveNotesModuleId}`,
+        label: "Tus primeras 5 notas",
+        description: "Partitura y lectura inicial",
+      },
       { href: "/modulos/basic-rhythm", label: "Ritmo básico", description: "Pulso, beat y timing" },
-      { href: "/modulos/chord-construction", label: "Construcción de acordes", description: "Tríadas mayores y menores" },
-      { href: "/modulos/harmonic-field", label: "Campo armónico", description: "Grados y progresiones" },
+      {
+        href: "/modulos/chord-construction",
+        label: "Acordes",
+        description: "Tríadas mayores y menores",
+      },
+      {
+        href: "/modulos/harmonic-field",
+        label: "Campo armónico",
+        description: "Grados y progresiones",
+      },
     ],
   },
   {
-    title: "Práctica",
+    title: "Lecciones de piano",
     icon: Keyboard,
     items: [
-      { href: "/lecciones/tus-primeras-5-notas", label: "Primera lección", description: "Lectura + teclado" },
-      { href: "/biblioteca/himno-a-la-alegria", label: "Canción guiada", description: "Practicar con repertorio" },
-      { href: "/progreso", label: "Ver progreso", description: "Estado local de práctica" },
+      { href: "/lecciones", label: "Todas las lecciones", description: "Ordenadas por módulo" },
+      {
+        href: `/lecciones/${keyboardNotesLessonSlug}`,
+        label: "El teclado y las notas",
+        description: "Mapa práctico del piano",
+      },
+      {
+        href: "/biblioteca/himno-a-la-alegria",
+        label: "Canción guiada",
+        description: "Practicar con repertorio",
+      },
     ],
   },
 ];
@@ -48,7 +93,10 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [isLearningMenuOpen, setIsLearningMenuOpen] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isLearningActive = pathname.startsWith("/rutas") || pathname.startsWith("/modulos");
+  const isLearningActive =
+    pathname.startsWith("/rutas") ||
+    pathname.startsWith("/modulos") ||
+    pathname.startsWith("/lecciones");
 
   function openLearningMenu() {
     if (closeTimerRef.current) {
@@ -86,8 +134,12 @@ export function SiteHeader() {
             <Music2 aria-hidden="true" className="h-5 w-5" />
           </span>
           <span className="hidden min-w-0 sm:block">
-            <span className="block truncate text-base font-black tracking-normal text-blue-deep">Piano Claro</span>
-            <span className="block text-[11px] font-bold uppercase text-muted">Aprende entendiendo</span>
+            <span className="block truncate text-base font-black tracking-normal text-blue-deep">
+              Piano Claro
+            </span>
+            <span className="block text-[11px] font-bold uppercase text-muted">
+              Aprende entendiendo
+            </span>
           </span>
         </Link>
 
@@ -106,7 +158,7 @@ export function SiteHeader() {
               aria-label="Abrir menú de aprendizaje"
               aria-expanded={isLearningMenuOpen}
               aria-haspopup="menu"
-              onClick={() => setIsLearningMenuOpen((current) => !current)}
+              onClick={openLearningMenu}
               onKeyDown={(event) => {
                 if (event.key === "Escape") {
                   closeLearningMenu();
@@ -132,8 +184,7 @@ export function SiteHeader() {
             const isActive =
               pathname === item.href ||
               pathname.startsWith(`${item.href}/`) ||
-              (item.href === "/rutas" && pathname.startsWith("/modulos")) ||
-              (item.href === "/biblioteca" && pathname.startsWith("/lecciones"));
+              (item.href === "/rutas" && pathname.startsWith("/modulos"));
 
             return (
               <Link
@@ -189,7 +240,9 @@ export function SiteHeader() {
                           onClick={closeLearningMenu}
                           className="focus-ring block rounded-xl px-3 py-2 transition hover:bg-white"
                         >
-                          <span className="block text-sm font-bold text-blue-deep">{item.label}</span>
+                          <span className="block text-sm font-bold text-blue-deep">
+                            {item.label}
+                          </span>
                           <span className="mt-0.5 block text-xs font-semibold leading-4 text-muted">
                             {item.description}
                           </span>

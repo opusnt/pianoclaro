@@ -77,8 +77,11 @@ export function applyHarmonicFieldAttemptToProgress({
       weakestDegrees: attempt.weakestDegrees,
       weakestChordQualities: attempt.weakestChordQualities,
       weakestProgressions: attempt.weakestProgressions,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
-      replayUsedCount: (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      replayUsedCount:
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -94,16 +97,22 @@ export function applyHarmonicFieldAttemptToProgress({
   const completedExercises = Object.values(nextExercises).filter((exercise) => exercise.completed);
   const totalAccuracy =
     completedExercises.length > 0
-      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) / completedExercises.length
+      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
+        completedExercises.length
       : 0;
   const weakestKeys = Object.values(nextExercises).flatMap((exercise) => exercise.weakestKeys);
-  const weakestDegrees = Object.values(nextExercises).flatMap((exercise) => exercise.weakestDegrees);
-  const weakestChordQualities = Object.values(nextExercises).flatMap((exercise) => exercise.weakestChordQualities);
+  const weakestDegrees = Object.values(nextExercises).flatMap(
+    (exercise) => exercise.weakestDegrees,
+  );
+  const weakestChordQualities = Object.values(nextExercises).flatMap(
+    (exercise) => exercise.weakestChordQualities,
+  );
 
   return {
     ...progress,
     completed:
-      progress.completed || Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
+      progress.completed ||
+      Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
     currentExerciseId: getNextAvailableExerciseId({
       exercises,
       exerciseProgress: nextExercises,

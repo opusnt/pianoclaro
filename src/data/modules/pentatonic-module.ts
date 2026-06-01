@@ -10,7 +10,13 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
     "Aprende pentatónica mayor y menor, reconoce relativas e improvisa con notas permitidas.",
   objective:
     "Enseñar la escala pentatónica como una zona práctica de cinco notas para crear melodías e improvisar desde el inicio.",
-  mainConcepts: ["pentatónica mayor", "pentatónica menor", "relativa", "frase", "improvisación guiada"],
+  mainConcepts: [
+    "pentatónica mayor",
+    "pentatónica menor",
+    "relativa",
+    "frase",
+    "improvisación guiada",
+  ],
   practicalSkill: "Construir pentatónicas simples y crear frases cortas dentro de una zona segura.",
   keyboardVisualization:
     "Teclado A3-C6 con tónica, notas permitidas, notas bloqueadas fuera de escala y notas tocadas.",
@@ -69,7 +75,8 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
       objective: "Crear una frase simple dentro de una zona segura.",
       idealMinutes: 8,
       mainConcept: "Frase pentatónica",
-      briefExplanation: "Si te mantienes dentro de la pentatónica, ya tienes material musical usable.",
+      briefExplanation:
+        "Si te mantienes dentro de la pentatónica, ya tienes material musical usable.",
       visualExample: "Teclado con notas fuera de escala bloqueadas.",
       suggestedInteraction: "Tocar 12 notas usando al menos 3 distintas.",
       exerciseType: "improvise-backing-track",
@@ -80,9 +87,17 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
     entryExperience: "El módulo abre con una reducción visual de DO mayor a cinco notas.",
     firstScreen: "Lista de ejercicios, progreso y ejercicio activo.",
     conceptDelivery: "El usuario toca primero, luego se explica la fórmula.",
-    animationMoments: ["Notas fuera de escala atenuadas", "Notas permitidas marcadas", "Pulso al improvisar"],
+    animationMoments: [
+      "Notas fuera de escala atenuadas",
+      "Notas permitidas marcadas",
+      "Pulso al improvisar",
+    ],
     audioMoments: ["Escala pentatónica", "Loop simple", "Feedback positivo/error"],
-    cognitiveLoadRules: ["No enseñar modos", "No enseñar jazz avanzado", "No explicar tensiones todavía"],
+    cognitiveLoadRules: [
+      "No enseñar modos",
+      "No enseñar jazz avanzado",
+      "No explicar tensiones todavía",
+    ],
     progressFeeling: ["Barra por unidades", "Combo", "Desbloqueo de improvisación"],
     visualFeedback: ["Tónica azul", "Permitidas moradas", "Próxima dorada", "Tocadas verdes"],
     soundFeedback: ["Oscilador tipo piano", "Loop simple", "Confirmación de frase"],
@@ -94,7 +109,13 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
     visibleOctaves: { mobile: 2, desktop: 2 },
     horizontalScroll: "mobile-only",
     labelMode: "on-hint",
-    illumination: ["Tónica", "Notas permitidas", "Notas bloqueadas", "Nota esperada", "Notas tocadas"],
+    illumination: [
+      "Tónica",
+      "Notas permitidas",
+      "Notas bloqueadas",
+      "Nota esperada",
+      "Notas tocadas",
+    ],
     animations: ["Pulso de nota tocada", "Atenuación de fuera de escala", "Avance de ruta"],
     colorSystem: {
       naturalKey: "#fffdf7",
@@ -150,7 +171,11 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
     spatialSoundLearning: ["Las notas permitidas forman una zona tocable de bajo riesgo"],
   },
   adaptivity: {
-    frustrationSignals: ["accuracy < 60%", "poca variedad en improvisación", "confusión de relativas"],
+    frustrationSignals: [
+      "accuracy < 60%",
+      "poca variedad en improvisación",
+      "confusión de relativas",
+    ],
     lowerDifficultyActions: ["Solo DO pentatónica", "Mostrar etiquetas", "Bloquear notas fuera"],
     raiseDifficultyActions: ["Ocultar etiquetas", "Incluir SOL y FA", "Permitir teclado completo"],
     repetitionRules: ["Repetir escalas o relativas débiles"],
@@ -178,7 +203,12 @@ export const pentatonicDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: crea tu frase pentatónica",
     setup: "20 rondas mixtas con construcción, relativa, nota faltante e improvisación.",
-    tasks: ["Construir pentatónica", "Completar nota faltante", "Reconocer relativa", "Improvisar una frase"],
+    tasks: [
+      "Construir pentatónica",
+      "Completar nota faltante",
+      "Reconocer relativa",
+      "Improvisar una frase",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 6 errores", "completar improvisación final"],
     celebration: "Creaste tu primera frase pentatónica guiada.",
     summary: ["Pentatónica mayor", "Pentatónica menor", "Relativas", "Frase simple"],

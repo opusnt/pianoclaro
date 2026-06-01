@@ -1,6 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useComputerKeyboardInput } from "@/components/lesson/hooks/useComputerKeyboardInput";
+import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
+import { useMicrophonePitchDetection } from "@/components/lesson/hooks/useMicrophonePitchDetection";
+import { useLessonPractice } from "@/components/lesson/hooks/useLessonPractice";
+import { useLessonProgress } from "@/components/lesson/hooks/useLessonProgress";
 import { LessonCompleteModal } from "@/components/lesson/LessonCompleteModal";
 import { LessonHeader } from "@/components/lesson/LessonHeader";
 import { LessonNavigation } from "@/components/lesson/LessonNavigation";
@@ -8,14 +13,11 @@ import { LessonPracticeStatus } from "@/components/lesson/LessonPracticeStatus";
 import { LessonSidebar } from "@/components/lesson/LessonSidebar";
 import { LessonToolsPanel } from "@/components/lesson/LessonToolsPanel";
 import { NotationViewer } from "@/components/lesson/NotationViewer";
-import { StudyRoutineStrip } from "@/components/lesson/StudyRoutineStrip";
-import { useComputerKeyboardInput } from "@/components/lesson/hooks/useComputerKeyboardInput";
-import { useLessonPractice } from "@/components/lesson/hooks/useLessonPractice";
-import { useLessonProgress } from "@/components/lesson/hooks/useLessonProgress";
 import { PracticeSequenceStrip } from "@/components/lesson/PracticeSequenceStrip";
 import { PracticeSessionPanel } from "@/components/lesson/PracticeSessionPanel";
 import { PracticeSongSummary } from "@/components/lesson/PracticeSongSummary";
 import { ProgressIndicator } from "@/components/lesson/ProgressIndicator";
+import { StudyRoutineStrip } from "@/components/lesson/StudyRoutineStrip";
 import type { Lesson, PracticeMode } from "@/types/lesson";
 
 type LessonNavItem = Pick<Lesson, "slug" | "title" | "order">;
@@ -28,6 +30,7 @@ type LessonLayoutProps = {
   navigationItemLabel?: string;
   completionReturnHref?: string;
   completionReturnLabel?: string;
+  initialViewMode?: "professional" | "didactic" | "waterfall";
 };
 
 const fallbackPracticeMode: PracticeMode = {
@@ -44,6 +47,7 @@ export function LessonLayout({
   navigationItemLabel = "Lección",
   completionReturnHref,
   completionReturnLabel,
+  initialViewMode,
 }: LessonLayoutProps) {
   const [selectedPracticeMode, setSelectedPracticeMode] = useState<PracticeMode>(
     lesson.practiceModes[0] ?? fallbackPracticeMode,
@@ -61,6 +65,9 @@ export function LessonLayout({
     stepCount: lesson.steps.length,
   });
   const [computerKeyboardEnabled, setComputerKeyboardEnabled] = useState(true);
+  const [microphoneEnabled, setMicrophoneEnabled] = useState(false);
+  const completionTitle =
+    navigationItemLabel === "Módulo" ? "Módulo completado" : "Lección completada";
   const activeStep = lesson.steps[activeStepIndex] ?? lesson.steps[0];
   const {
     activeNotes,
@@ -109,10 +116,20 @@ export function LessonLayout({
     onSharpKeyPress: handleBlackKeyboardPress,
   });
 
+  useMidiKeyboardInput({
+    enabled: true, // Siempre encendido por defecto
+    onNaturalKeyPress: handleKeyboardPress,
+    onSharpKeyPress: handleBlackKeyboardPress,
+  });
+
+  useMicrophonePitchDetection({
+    enabled: microphoneEnabled,
+    onNaturalKeyPress: handleKeyboardPress,
+    onSharpKeyPress: handleBlackKeyboardPress,
+  });
+
   function markStepComplete(stepId: string) {
-    setCompletedStepIds((current) =>
-      current.includes(stepId) ? current : [...current, stepId],
-    );
+    setCompletedStepIds((current) => (current.includes(stepId) ? current : [...current, stepId]));
   }
 
   function goToPreviousStep() {
@@ -126,7 +143,7 @@ export function LessonLayout({
 
   function completeLesson() {
     const allStepIds = lesson.steps.map((step) => step.id);
-    stopGuidedPractice("Lección completada. Puedes seguir practicando o avanzar cuando quieras.");
+    stopGuidedPractice(`${completionTitle}. Puedes seguir practicando o avanzar cuando quieras.`);
     setCompletedStepIds(allStepIds);
     setActiveStepIndex(lesson.steps.length - 1);
     setIsLessonCompleted(true);
@@ -136,7 +153,7 @@ export function LessonLayout({
   return (
     <>
       <div className="space-y-5">
-        <LessonHeader lesson={lesson} />
+        <LessonHeader lesson={lesson} sectionLabel={navigationItemLabel} />
 
         <ProgressIndicator
           currentStep={isLessonCompleted ? lesson.steps.length : activeStepIndex + 1}
@@ -166,6 +183,7 @@ export function LessonLayout({
             onLoopFocusChange={setLoopFocusEnabled}
             onTempoChange={setTempoMode}
             onCompleteLesson={completeLesson}
+            itemLabel={navigationItemLabel}
           />
 
           <main className="min-w-0 space-y-5">
@@ -178,6 +196,10 @@ export function LessonLayout({
               activeNotePosition={activeNotePosition}
               hintNotePosition={hintNotePosition}
               onNoteSelect={handleScoreNoteSelect}
+              onNaturalKeyPress={handleKeyboardPress}
+              onSharpKeyPress={handleBlackKeyboardPress}
+              isPlaying={isPlaying}
+              initialViewMode={initialViewMode}
             />
 
             <PracticeSessionPanel
@@ -185,10 +207,7 @@ export function LessonLayout({
               isLoopEnabled={loopFocusEnabled}
             />
 
-            <PracticeSequenceStrip
-              events={activeFocus.events}
-              activeIndex={expectedEventIndex}
-            />
+            <PracticeSequenceStrip events={activeFocus.events} activeIndex={expectedEventIndex} />
 
             <PracticeSongSummary song={practiceSong} />
 
@@ -210,6 +229,7 @@ export function LessonLayout({
               activeNotes={activeNotes}
               activeBlackNotes={activeBlackNotes}
               computerKeyboardEnabled={computerKeyboardEnabled}
+              microphoneEnabled={microphoneEnabled}
               selectedPracticeMode={selectedPracticeMode}
               volume={volume}
               isMuted={isMuted}
@@ -217,6 +237,7 @@ export function LessonLayout({
               onNaturalKeyPress={handleKeyboardPress}
               onSharpKeyPress={handleBlackKeyboardPress}
               onComputerKeyboardChange={setComputerKeyboardEnabled}
+              onMicrophoneChange={setMicrophoneEnabled}
               onPracticeModeChange={setSelectedPracticeMode}
               onVolumeChange={setVolume}
               onMutedChange={setIsMuted}
@@ -238,6 +259,7 @@ export function LessonLayout({
         onClose={() => setIsCompleteModalOpen(false)}
         returnHref={completionReturnHref}
         returnLabel={completionReturnLabel}
+        title={completionTitle}
       />
     </>
   );

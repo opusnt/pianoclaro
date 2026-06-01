@@ -33,7 +33,9 @@ export default async function LessonPage({ params }: LessonPageProps) {
   }
 
   const orderedLessons = [...contentRepository.getLessons()].sort((a, b) => a.order - b.order);
-  const currentLessonIndex = orderedLessons.findIndex((currentLesson) => currentLesson.slug === slug);
+  const currentLessonIndex = orderedLessons.findIndex(
+    (currentLesson) => currentLesson.slug === slug,
+  );
   const previousLesson = orderedLessons[currentLessonIndex - 1];
   const nextLesson = orderedLessons[currentLessonIndex + 1];
 

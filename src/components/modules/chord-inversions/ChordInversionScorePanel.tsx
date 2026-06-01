@@ -31,10 +31,11 @@ export function ChordInversionScorePanel({
             {item.label}
           </p>
           <p className="mt-2 text-2xl font-bold text-blue-deep">{item.value}</p>
-          {item.label === "Combo" ? <p className="mt-1 text-xs font-semibold text-muted">Máximo: {comboMax}</p> : null}
+          {item.label === "Combo" ? (
+            <p className="mt-1 text-xs font-semibold text-muted">Máximo: {comboMax}</p>
+          ) : null}
         </div>
       ))}
     </div>
   );
 }
-

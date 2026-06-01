@@ -37,7 +37,9 @@ const identifyPlan = [
 
 const progressionPlan = ["c-major-root", "g-major-first", "a-minor-first", "f-major-second"];
 
-export function generateChordInversionQuestions(exercise: ChordInversionExercise): ChordInversionQuestion[] {
+export function generateChordInversionQuestions(
+  exercise: ChordInversionExercise,
+): ChordInversionQuestion[] {
   if (exercise.type === "same_notes_different_order") {
     return sameNotesPlan.slice(0, exercise.totalRounds).map((item, index) => {
       const inversion = requireInversion(item.inversionId);
@@ -64,15 +66,15 @@ export function generateChordInversionQuestions(exercise: ChordInversionExercise
   }
 
   if (exercise.type === "identify_inversion" || exercise.type === "audio_recognition") {
-    return identifyPlan.slice(0, exercise.totalRounds).map((inversionId, index) =>
-      buildIdentifyQuestion(exercise, inversionId, index),
-    );
+    return identifyPlan
+      .slice(0, exercise.totalRounds)
+      .map((inversionId, index) => buildIdentifyQuestion(exercise, inversionId, index));
   }
 
   if (exercise.type === "build_multiple_inversions") {
-    return exercise.allowedInversions.slice(0, exercise.totalRounds).map((inversionId) =>
-      buildConstructionQuestion(exercise, inversionId),
-    );
+    return exercise.allowedInversions
+      .slice(0, exercise.totalRounds)
+      .map((inversionId) => buildConstructionQuestion(exercise, inversionId));
   }
 
   if (exercise.type === "smooth_chord_movement") {
@@ -106,7 +108,10 @@ export function getComparisonTruth(inversionId: string, comparisonNotes: string[
   return haveSamePitchClasses(inversion.notes, comparisonNotes) ? "Sí" : "No";
 }
 
-function buildConstructionQuestion(exercise: ChordInversionExercise, inversionId: string): ChordInversionQuestion {
+function buildConstructionQuestion(
+  exercise: ChordInversionExercise,
+  inversionId: string,
+): ChordInversionQuestion {
   const inversion = requireInversion(inversionId);
   const expectedNotes = getInversionNoteNamesWithOctaves(inversion);
 
@@ -124,7 +129,11 @@ function buildConstructionQuestion(exercise: ChordInversionExercise, inversionId
   };
 }
 
-function buildIdentifyQuestion(exercise: ChordInversionExercise, inversionId: string, index: number): ChordInversionQuestion {
+function buildIdentifyQuestion(
+  exercise: ChordInversionExercise,
+  inversionId: string,
+  index: number,
+): ChordInversionQuestion {
   const inversion = requireInversion(inversionId);
   return {
     id: `${exercise.id}-${inversionId}-${index}`,
@@ -171,8 +180,10 @@ function buildFinalChallengeQuestions(exercise: ChordInversionExercise) {
     })),
   ];
 
-  return [...mixed, ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` }))]
+  return [
+    ...mixed,
+    ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` })),
+  ]
     .slice(0, exercise.totalRounds)
     .map((question) => ({ ...question, taskType: "final_challenge" as const }));
 }
-

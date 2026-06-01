@@ -34,11 +34,17 @@ export function MajorScaleFeedback({ message, answer }: MajorScaleFeedbackProps)
         <dl className="mt-3 grid gap-2 text-xs font-semibold sm:grid-cols-2">
           <div>
             <dt className="uppercase opacity-70">Esperado</dt>
-            <dd className="mt-1">{Array.isArray(answer.expectedAnswer) ? answer.expectedAnswer.join(" · ") : answer.expectedAnswer}</dd>
+            <dd className="mt-1">
+              {Array.isArray(answer.expectedAnswer)
+                ? answer.expectedAnswer.join(" · ")
+                : answer.expectedAnswer}
+            </dd>
           </div>
           <div>
             <dt className="uppercase opacity-70">Respuesta</dt>
-            <dd className="mt-1">{Array.isArray(answer.userAnswer) ? answer.userAnswer.join(" · ") : answer.userAnswer}</dd>
+            <dd className="mt-1">
+              {Array.isArray(answer.userAnswer) ? answer.userAnswer.join(" · ") : answer.userAnswer}
+            </dd>
           </div>
         </dl>
       ) : null}

@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
-import { KeyboardNotesExperience } from "@/components/modules/KeyboardNotesExperience";
 import { ModuleChordInversionsScreen } from "@/components/modules/chord-inversions/ModuleChordInversionsScreen";
 import { ModuleChordsScreen } from "@/components/modules/chords/ModuleChordsScreen";
+import { ModuleFirstFiveNotesScreen } from "@/components/modules/first-five-notes/ModuleFirstFiveNotesScreen";
 import { ModuleHarmonicFieldScreen } from "@/components/modules/harmonic-field/ModuleHarmonicFieldScreen";
 import { ModuleIntervalsScreen } from "@/components/modules/intervals/ModuleIntervalsScreen";
 import { ModuleKeySignaturesScreen } from "@/components/modules/key-signature/ModuleKeySignaturesScreen";
@@ -10,19 +10,24 @@ import { ModuleMajorScaleScreen } from "@/components/modules/major-scale/ModuleM
 import { ModuleMinorScaleScreen } from "@/components/modules/minor-scale/ModuleMinorScaleScreen";
 import { ModulePentatonicScreen } from "@/components/modules/pentatonic/ModulePentatonicScreen";
 import { ModuleRhythmBasicsScreen } from "@/components/modules/rhythm/ModuleRhythmBasicsScreen";
-import { chordModule } from "@/data/chords";
 import { chordInversionModule } from "@/data/chord-inversions";
+import { chordModule } from "@/data/chords";
 import { harmonicFieldModule } from "@/data/harmonic-field";
 import { intervalModule } from "@/data/intervals";
 import { keySignatureModule } from "@/data/key-signatures";
+import { firstFiveNotesModuleId, keyboardNotesLessonSlug } from "@/data/learning-slugs";
+import { getLessonBySlug } from "@/data/lessons";
 import { majorScaleModule } from "@/data/major-scale";
 import { minorScaleModule } from "@/data/minor-scale";
+import { keyboardNotesModule } from "@/data/modules/keyboard-notes-module";
 import { pentatonicModule } from "@/data/pentatonic";
 import { rhythmModule } from "@/data/rhythm-basics";
 import type { DetailedLearningModule } from "@/types/curriculum";
 
+const firstNotesTheoryLesson = getLessonBySlug(keyboardNotesLessonSlug);
+
 export const playableModuleIds = [
-  "keyboard-notes",
+  firstFiveNotesModuleId,
   "basic-rhythm",
   "intervals",
   "major-scale",
@@ -41,10 +46,15 @@ export type PlayableModuleRegistration = {
   render: (module: DetailedLearningModule) => ReactNode;
 };
 
-export const playableModuleRegistry = {
-  "keyboard-notes": {
-    id: "keyboard-notes",
-    render: (module) => <KeyboardNotesExperience module={module} />,
+export const playableModuleRegistry: Record<PlayableModuleId, PlayableModuleRegistration> = {
+  [firstFiveNotesModuleId]: {
+    id: firstFiveNotesModuleId,
+    render: () => (
+      <ModuleFirstFiveNotesScreen
+        module={keyboardNotesModule}
+        sourceLesson={firstNotesTheoryLesson!}
+      />
+    ),
   },
   "basic-rhythm": {
     id: "basic-rhythm",
@@ -82,7 +92,7 @@ export const playableModuleRegistry = {
     id: "harmonic-field",
     render: () => <ModuleHarmonicFieldScreen module={harmonicFieldModule} />,
   },
-} satisfies Record<PlayableModuleId, PlayableModuleRegistration>;
+};
 
 export function isPlayableModuleId(moduleId: string): moduleId is PlayableModuleId {
   return playableModuleIds.includes(moduleId as PlayableModuleId);

@@ -34,9 +34,7 @@ export function MajorScalePattern({ currentStepIndex, completedSteps }: MajorSca
               <p className="mt-1 text-[0.68rem] font-semibold">
                 {step === 2 ? "2 teclas" : "1 tecla"}
               </p>
-              {completed ? (
-                <Check aria-hidden="true" className="mx-auto mt-2 h-4 w-4" />
-              ) : null}
+              {completed ? <Check aria-hidden="true" className="mx-auto mt-2 h-4 w-4" /> : null}
             </div>
           );
         })}

@@ -18,9 +18,16 @@ export function ChordBadge({ chordId }: ChordBadgeProps) {
       </p>
       <h3 className="mt-2 text-2xl font-bold text-blue-deep">{chord.displayName}</h3>
       <div className="mt-3 grid gap-2 text-sm font-semibold text-muted">
-        <p><span className="font-bold text-blue-deep">Tipo:</span> {getChordQualityLabel(chord.quality)}</p>
-        <p><span className="font-bold text-blue-deep">Fórmula:</span> [{chord.formula.join(", ")}]</p>
-        <p><span className="font-bold text-blue-deep">Notas:</span> {getChordDisplaySequence(chord)}</p>
+        <p>
+          <span className="font-bold text-blue-deep">Tipo:</span>{" "}
+          {getChordQualityLabel(chord.quality)}
+        </p>
+        <p>
+          <span className="font-bold text-blue-deep">Fórmula:</span> [{chord.formula.join(", ")}]
+        </p>
+        <p>
+          <span className="font-bold text-blue-deep">Notas:</span> {getChordDisplaySequence(chord)}
+        </p>
       </div>
     </div>
   );

@@ -20,16 +20,29 @@ export function ChordInversionVisualizer({ inversionId }: ChordInversionVisualiz
       <h3 className="mt-2 text-lg font-bold text-blue-deep">{inversion.chordDisplayName}</h3>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <InversionLine label="Fundamental" notes={root.notes} bassNote={root.bassNote} />
-        <InversionLine label={inversion.inversionDisplayName} notes={inversion.notes} bassNote={inversion.bassNote} />
+        <InversionLine
+          label={inversion.inversionDisplayName}
+          notes={inversion.notes}
+          bassNote={inversion.bassNote}
+        />
       </div>
       <p className="mt-4 rounded-2xl bg-cream/70 p-3 text-sm font-semibold leading-6 text-blue-deep">
-        Bajo actual: {getDisplayPitchName(inversion.bassNote)}. Las notas son {getInversionDisplaySequence(inversion)}.
+        Bajo actual: {getDisplayPitchName(inversion.bassNote)}. Las notas son{" "}
+        {getInversionDisplaySequence(inversion)}.
       </p>
     </div>
   );
 }
 
-function InversionLine({ label, notes, bassNote }: { label: string; notes: string[]; bassNote: string }) {
+function InversionLine({
+  label,
+  notes,
+  bassNote,
+}: {
+  label: string;
+  notes: string[];
+  bassNote: string;
+}) {
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-3">
       <p className="text-xs font-bold uppercase text-muted">{label}</p>
@@ -54,4 +67,3 @@ function InversionLine({ label, notes, bassNote }: { label: string; notes: strin
     </div>
   );
 }
-

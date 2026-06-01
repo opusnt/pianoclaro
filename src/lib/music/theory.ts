@@ -1,8 +1,4 @@
-import type {
-  ChromaticNoteName,
-  KeySignatureDetails,
-  KeySignatureName,
-} from "@/types/theory";
+import type { ChromaticNoteName, KeySignatureDetails, KeySignatureName } from "@/types/theory";
 
 const blackPitchClasses = new Set([1, 3, 6, 8, 10]);
 
@@ -44,7 +40,8 @@ export const keySignatures: KeySignatureDetails[] = [
     type: "sharp",
     alteredNotes: ["F", "C"],
     spanishName: "Re mayor",
-    beginnerExplanation: "Tiene Fa sostenido y Do sostenido. Ayuda a leer patrones con dos alteraciones.",
+    beginnerExplanation:
+      "Tiene Fa sostenido y Do sostenido. Ayuda a leer patrones con dos alteraciones.",
   },
   {
     name: "F",

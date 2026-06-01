@@ -77,8 +77,11 @@ export function applyChordInversionAttemptToProgress({
       weakestChords: attempt.weakestChords,
       weakestInversions: attempt.weakestInversions,
       bassMistakes: (current?.bassMistakes ?? 0) + attempt.bassMistakes,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
-      replayUsedCount: (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      replayUsedCount:
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -94,16 +97,25 @@ export function applyChordInversionAttemptToProgress({
   const completedExercises = Object.values(nextExercises).filter((exercise) => exercise.completed);
   const totalAccuracy =
     completedExercises.length > 0
-      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) / completedExercises.length
+      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
+        completedExercises.length
       : 0;
-  const needsReview = Array.from(new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestChords)));
-  const weakestInversions = Object.values(nextExercises).flatMap((exercise) => exercise.weakestInversions);
-  const bassMistakes = Object.values(nextExercises).reduce((total, exercise) => total + exercise.bassMistakes, 0);
+  const needsReview = Array.from(
+    new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestChords)),
+  );
+  const weakestInversions = Object.values(nextExercises).flatMap(
+    (exercise) => exercise.weakestInversions,
+  );
+  const bassMistakes = Object.values(nextExercises).reduce(
+    (total, exercise) => total + exercise.bassMistakes,
+    0,
+  );
 
   return {
     ...progress,
     completed:
-      progress.completed || Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
+      progress.completed ||
+      Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
     currentExerciseId: getNextAvailableExerciseId({
       exercises,
       exerciseProgress: nextExercises,
@@ -114,8 +126,9 @@ export function applyChordInversionAttemptToProgress({
     weakestInversion: weakestInversions[0],
     bassMistakes,
     needsReview,
-    masteredInversions: completedExercises.map((exercise) => exercise.lastAttempt?.exerciseId).filter(Boolean) as string[],
+    masteredInversions: completedExercises
+      .map((exercise) => exercise.lastAttempt?.exerciseId)
+      .filter(Boolean) as string[],
     exercises: nextExercises,
   };
 }
-

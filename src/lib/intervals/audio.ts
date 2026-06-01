@@ -1,4 +1,4 @@
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import type { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { getNoteFrequency } from "@/lib/intervals/theory";
 
 function wait(ms: number) {
@@ -7,11 +7,7 @@ function wait(ms: number) {
   });
 }
 
-export async function playIntervalNote(
-  audio: PianoAudioEngine,
-  note: string,
-  durationMs = 420,
-) {
+export async function playIntervalNote(audio: PianoAudioEngine, note: string, durationMs = 420) {
   await audio.playFrequency(getNoteFrequency(note), durationMs);
 }
 

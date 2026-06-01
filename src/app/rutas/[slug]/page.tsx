@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, GraduationCap } from "lucide-react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { contentRepository } from "@/lib/content";
@@ -68,7 +68,10 @@ export default async function RoutePage({ params }: RoutePageProps) {
             </div>
           </div>
           <div className="mt-7 h-2 overflow-hidden rounded-full bg-blue-deep/10">
-            <div className="h-full rounded-full bg-blue-deep" style={{ width: `${route.progress}%` }} />
+            <div
+              className="h-full rounded-full bg-blue-deep"
+              style={{ width: `${route.progress}%` }}
+            />
           </div>
         </section>
 

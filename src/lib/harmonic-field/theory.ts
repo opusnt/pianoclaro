@@ -180,19 +180,25 @@ export function getChordByDegree(field: HarmonicFieldDefinition, degree: ScaleDe
   return chord;
 }
 
-export function getChordProgressionFromDegrees(field: HarmonicFieldDefinition, progression: ScaleDegree[]) {
+export function getChordProgressionFromDegrees(
+  field: HarmonicFieldDefinition,
+  progression: ScaleDegree[],
+) {
   return progression.map((degree) => getChordByDegree(field, degree));
 }
 
 export function validateChordPitchClasses(expectedNotes: string[], selectedNotes: string[]) {
   const expected = normalizePitchClasses(expectedNotes);
   const selected = normalizePitchClasses(selectedNotes);
-  return expected.length === selected.length && expected.every((note, index) => note === selected[index]);
+  return (
+    expected.length === selected.length && expected.every((note, index) => note === selected[index])
+  );
 }
 
 export function countCorrectChordNotes(expectedNotes: string[], selectedNotes: string[]) {
   const expected = new Set(normalizePitchClasses(expectedNotes));
-  return [...new Set(normalizePitchClasses(selectedNotes))].filter((note) => expected.has(note)).length;
+  return [...new Set(normalizePitchClasses(selectedNotes))].filter((note) => expected.has(note))
+    .length;
 }
 
 export function normalizePitchClasses(notes: string[]) {

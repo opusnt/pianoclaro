@@ -2,7 +2,7 @@ import { keyboardNotesModuleId } from "@/lib/keyboard-notes/theory";
 import { readModuleProgress, writeModuleProgress } from "@/lib/modules/sequential-progress";
 import type { KeyboardNotesProgress, KeyboardNotesStage } from "@/types/keyboard-notes";
 
-const progressKey = "piano-claro.keyboard-notes-progress";
+const progressKey = `piano-claro.${keyboardNotesModuleId}-progress`;
 
 export function createInitialKeyboardNotesProgress(): KeyboardNotesProgress {
   return {

@@ -1,8 +1,3 @@
-import type {
-  IntervalAttempt,
-  IntervalExercise,
-  IntervalProgress,
-} from "@/types/intervals";
 import {
   createSequentialExerciseProgress,
   getNextAvailableExerciseId,
@@ -11,6 +6,7 @@ import {
   unlockNextSequentialExercise,
   writeModuleProgress,
 } from "@/lib/modules/sequential-progress";
+import type { IntervalAttempt, IntervalExercise, IntervalProgress } from "@/types/intervals";
 
 const progressKey = "piano-claro:interval-progress:v1";
 

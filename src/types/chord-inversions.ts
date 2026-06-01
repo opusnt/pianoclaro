@@ -138,4 +138,3 @@ export type ChordInversionModule = {
   order: number;
   exercises: ChordInversionExercise[];
 };
-

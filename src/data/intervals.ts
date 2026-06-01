@@ -52,13 +52,20 @@ export const intervalExercises: IntervalExercise[] = [
     totalRounds: 10,
     requiredAccuracy: 0.7,
     unlockedBy: "direction-recognition",
-    allowedIntervals: ["minor-second", "major-third", "perfect-fourth", "perfect-fifth", "perfect-octave"],
+    allowedIntervals: [
+      "minor-second",
+      "major-third",
+      "perfect-fourth",
+      "perfect-fifth",
+      "perfect-octave",
+    ],
   },
   {
     id: "audio-distance",
     moduleId: INTERVAL_MODULE_ID,
     title: "Reconocimiento auditivo básico",
-    description: "Clasifica la distancia sonora como misma nota, paso corto, salto medio o salto grande.",
+    description:
+      "Clasifica la distancia sonora como misma nota, paso corto, salto medio o salto grande.",
     type: "audio_distance",
     totalRounds: 12,
     requiredAccuracy: 0.7,

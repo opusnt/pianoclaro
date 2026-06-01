@@ -24,4 +24,3 @@ export function ChordInversionFeedback({ message, answer }: ChordInversionFeedba
     </div>
   );
 }
-

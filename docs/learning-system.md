@@ -3,8 +3,18 @@
 ## Principio de producto
 
 Piano Claro debe sentirse como un **skill tree musical**, no como un curso
-académico lineal. Cada módulo desbloquea una habilidad tocable: leer mejor,
-tocar con más pulso, reconocer sonido, acompañar una canción o crear una frase.
+académico lineal. Cada módulo de teoría o lección de piano desbloquea una
+habilidad tocable: leer mejor, tocar con más pulso, reconocer sonido, acompañar
+una canción o crear una frase.
+
+La experiencia principal se divide en dos carriles:
+
+- **Teoría musical**: módulos interactivos en `/modulos`.
+- **Lecciones de piano**: sesiones de lectura, teclado y repertorio en `/lecciones`.
+
+Ambos carriles deben funcionar para aprendizaje autónomo. Si una mejora
+pedagógica no aparece como acción, feedback, reparación, autoevaluación o reto
+visible para el alumno, todavía no está integrada al producto.
 
 La teoría aparece siempre en este orden:
 
@@ -13,6 +23,37 @@ La teoría aparece siempre en este orden:
 3. **Tocar**: aplicarlo inmediatamente en piano virtual, teclado físico o MIDI.
 4. **Escuchar**: comparar lo esperado con lo que suena.
 5. **Usar**: llevarlo a una mini canción, loop, variación o reto creativo.
+
+## Unidad De Aprendizaje
+
+La unidad de aprendizaje es la frontera principal para seguir agregando
+contenido sin desconectar lecciones de piano y teoría musical.
+
+Cada unidad vive en:
+
+```txt
+src/data/learning-path.ts
+```
+
+Una unidad debe definir:
+
+- objetivo corto que el usuario pueda entender;
+- resultado observable al terminar;
+- lecciones de piano asociadas;
+- módulo de teoría musical asociado, si existe;
+- habilidades principales que entrena;
+- prerequisitos;
+- criterios de dominio;
+- evidencia que permite considerarla lograda;
+- acciones de reparación si el usuario falla.
+
+Regla: una lección de piano guía una sesión de práctica; un módulo de teoría
+entrena y evalúa un concepto; la unidad decide por qué ambas piezas existen y
+cómo se conectan.
+
+Antes de crear una nueva lección o módulo, agregar o actualizar su unidad de
+aprendizaje. Si una experiencia no cabe en una unidad con criterio de dominio,
+probablemente está demasiado suelta para entrar al producto.
 
 ## Arquitectura Pedagógica General
 
@@ -339,7 +380,7 @@ Repositorio:
 ```ts
 const progress = {
   userId: "demo-user",
-  completedModuleIds: ["keyboard-notes"],
+  completedModuleIds: ["tus-primeras-5-notas"],
   weakSkillIds: ["rhythm"],
   masteredSkillIds: ["keyboard"],
   recommendations: [

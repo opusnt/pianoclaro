@@ -89,7 +89,13 @@ export function buildChordAttempt({
   };
 }
 
-export function getChordFeedback({ question, answer }: { question: ChordQuestion; answer: ChordAnswer }) {
+export function getChordFeedback({
+  question,
+  answer,
+}: {
+  question: ChordQuestion;
+  answer: ChordAnswer;
+}) {
   const chord = getChordById(question.chordId);
 
   if (answer.isCorrect && question.taskType === "major_vs_minor_audio") {

@@ -1,5 +1,6 @@
-import { coreLessonPedagogy } from "@/lib/practice/pedagogy";
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import { createMeasure, notes } from "@/lib/music/score-authoring";
+import { coreLessonPedagogy } from "@/lib/practice/pedagogy";
 import type { Lesson } from "@/types/lesson";
 
 const basePracticeModes = [
@@ -22,15 +23,15 @@ const basePracticeModes = [
 
 export const lessons: Lesson[] = [
   {
-    slug: "tus-primeras-5-notas",
+    slug: keyboardNotesLessonSlug,
     moduleId: "piano-desde-cero",
     order: 1,
-    title: "Tus primeras 5 notas",
-    subtitle: "Do, Re, Mi, Fa y Sol",
+    title: "El teclado y las notas",
+    subtitle: "Mapa visual del piano",
     level: "Inicial",
     estimatedMinutes: 12,
     tempoBpm: 72,
-    objective: "Relacionar teclado, nombre de nota y posición en la partitura.",
+    objective: "Aprender a orientarse en el teclado usando patrones visuales y sonido.",
     pedagogy: coreLessonPedagogy,
     concepts: ["teclado", "pentagrama", "clave de sol", "negra", "lectura ascendente"],
     notes: ["C", "D", "E", "F", "G"],
@@ -78,8 +79,7 @@ export const lessons: Lesson[] = [
         activeNotes: ["E"],
         activeMeasure: 1,
         conceptTitle: "Líneas y espacios",
-        conceptExplanation:
-          "Leer música es aprender a ver movimiento, no solo nombres de notas.",
+        conceptExplanation: "Leer música es aprender a ver movimiento, no solo nombres de notas.",
         melodyDirection: "up",
       },
       {
@@ -110,7 +110,8 @@ export const lessons: Lesson[] = [
         id: "tocar-cinco-notas",
         title: "Tocar las 5 notas lentamente",
         description: "Une lectura, teclado y pulso en una frase corta.",
-        instruction: "Toca Do, Re, Mi, Fa y Sol sin apurarte. Primero mira la partitura. Luego toca.",
+        instruction:
+          "Toca Do, Re, Mi, Fa y Sol sin apurarte. Primero mira la partitura. Luego toca.",
         activeNotes: ["C", "D", "E", "F", "G"],
         activeMeasure: 1,
         conceptTitle: "Lectura ascendente",
@@ -186,8 +187,7 @@ export const lessons: Lesson[] = [
         activeNotes: ["C", "D"],
         activeMeasure: 3,
         conceptTitle: "Repetición visible",
-        conceptExplanation:
-          "Leer música es aprender a ver movimiento, no solo nombres de notas.",
+        conceptExplanation: "Leer música es aprender a ver movimiento, no solo nombres de notas.",
         melodyDirection: "repeat",
       },
       {
@@ -281,7 +281,8 @@ export const lessons: Lesson[] = [
         id: "identificar-repeticion",
         title: "Identificar repetición",
         description: "Hay notas y movimientos que vuelven a aparecer.",
-        instruction: "Busca patrones repetidos antes de tocar. No memorices teclas: entiende lo que estás tocando.",
+        instruction:
+          "Busca patrones repetidos antes de tocar. No memorices teclas: entiende lo que estás tocando.",
         activeNotes: ["C", "D", "E", "G"],
         activeMeasure: 8,
         conceptTitle: "Lectura por patrones",
@@ -293,7 +294,8 @@ export const lessons: Lesson[] = [
         id: "tocar-completa",
         title: "Tocar canción completa",
         description: "Une frase A y frase B con pulso constante.",
-        instruction: "Cuenta cuatro tiempos por compás y mantén la mirada un poco por delante de tus dedos.",
+        instruction:
+          "Cuenta cuatro tiempos por compás y mantén la mirada un poco por delante de tus dedos.",
         activeNotes: ["C", "D", "E", "F", "G"],
         activePhrase: "A",
         conceptTitle: "Canción completa",

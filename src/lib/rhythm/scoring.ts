@@ -53,8 +53,7 @@ export function getAverageTimingErrorMs(results: TimingResult[]) {
   }
 
   return Math.round(
-    timedResults.reduce((total, result) => total + result.timingErrorMs, 0) /
-      timedResults.length,
+    timedResults.reduce((total, result) => total + result.timingErrorMs, 0) / timedResults.length,
   );
 }
 

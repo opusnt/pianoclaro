@@ -44,13 +44,7 @@ export type ExerciseInputMode =
   | "tap-rhythm"
   | "free-play";
 
-export type FeedbackChannel =
-  | "visual"
-  | "audio"
-  | "timing"
-  | "theory"
-  | "hint"
-  | "reflection";
+export type FeedbackChannel = "visual" | "audio" | "timing" | "theory" | "hint" | "reflection";
 
 export type UnlockRule =
   | {

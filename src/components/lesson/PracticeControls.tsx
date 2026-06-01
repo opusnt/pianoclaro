@@ -1,6 +1,6 @@
 "use client";
 
-import { Pause, Play, Repeat2, RotateCcw, Turtle, Gauge } from "lucide-react";
+import { Gauge, Pause, Play, Repeat2, RotateCcw, Turtle } from "lucide-react";
 import type { TempoMode } from "@/types/practice";
 
 type PracticeControlsProps = {

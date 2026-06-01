@@ -62,24 +62,28 @@ export function PentatonicKeyboard({
         <div className="relative h-48 min-w-[820px]">
           <div className="grid h-full grid-cols-[repeat(17,minmax(34px,1fr))] gap-1 pb-1">
             {whiteKeys.map((keyNote) => {
-              const outsideScale = Boolean(lockToScale && !allowedPitchClasses.has(keyNote.midi % 12));
+              const outsideScale = Boolean(
+                lockToScale && !allowedPitchClasses.has(keyNote.midi % 12),
+              );
               return (
                 <button
                   key={keyNote.midi}
                   type="button"
                   disabled={disabled || outsideScale}
                   onClick={() => onNotePress(keyNote.internalName)}
-                  className={`focus-ring relative flex h-full min-w-[42px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass({
-                    midi: keyNote.midi,
-                    tonicMidi,
-                    expectedMidi,
-                    selectedMidi,
-                    completedSet,
-                    routeSet,
-                    improvisedSet,
-                    allowedPitchClasses,
-                    outsideScale,
-                  })}`}
+                  className={`focus-ring relative flex h-full min-w-[42px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass(
+                    {
+                      midi: keyNote.midi,
+                      tonicMidi,
+                      expectedMidi,
+                      selectedMidi,
+                      completedSet,
+                      routeSet,
+                      improvisedSet,
+                      allowedPitchClasses,
+                      outsideScale,
+                    },
+                  )}`}
                   aria-label={`Tocar ${keyNote.displayName}`}
                 >
                   {getBadge({
@@ -91,16 +95,22 @@ export function PentatonicKeyboard({
                     improvisedSet,
                     allowedPitchClasses,
                   })}
-                  <span className={showLabels ? "opacity-100" : "opacity-0"}>{keyNote.displayName.replace(/\d/g, "")}</span>
+                  <span className={showLabels ? "opacity-100" : "opacity-0"}>
+                    {keyNote.displayName.replace(/\d/g, "")}
+                  </span>
                 </button>
               );
             })}
           </div>
 
           {blackKeys.map((keyNote) => {
-            const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < keyNote.midi);
+            const previousWhiteIndex = whiteKeys.findLastIndex(
+              (whiteKey) => whiteKey.midi < keyNote.midi,
+            );
             const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
-            const outsideScale = Boolean(lockToScale && !allowedPitchClasses.has(keyNote.midi % 12));
+            const outsideScale = Boolean(
+              lockToScale && !allowedPitchClasses.has(keyNote.midi % 12),
+            );
 
             return (
               <button
@@ -108,22 +118,34 @@ export function PentatonicKeyboard({
                 type="button"
                 disabled={disabled || outsideScale}
                 onClick={() => onNotePress(keyNote.internalName)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 w-[3.8%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
+                className={`focus-ring absolute top-0 z-10 flex h-28 w-[3.8%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(
+                  {
+                    midi: keyNote.midi,
+                    tonicMidi,
+                    expectedMidi,
+                    selectedMidi,
+                    completedSet,
+                    routeSet,
+                    improvisedSet,
+                    allowedPitchClasses,
+                    outsideScale,
+                  },
+                )}`}
+                style={{ left: `${left}%` }}
+                aria-label={`Tocar ${keyNote.displayName}`}
+              >
+                {getBadge({
                   midi: keyNote.midi,
                   tonicMidi,
                   expectedMidi,
                   selectedMidi,
                   completedSet,
-                  routeSet,
                   improvisedSet,
                   allowedPitchClasses,
-                  outsideScale,
-                })}`}
-                style={{ left: `${left}%` }}
-                aria-label={`Tocar ${keyNote.displayName}`}
-              >
-                {getBadge({ midi: keyNote.midi, tonicMidi, expectedMidi, selectedMidi, completedSet, improvisedSet, allowedPitchClasses })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{keyNote.displayName.replace(/\d/g, "")}</span>
+                })}
+                <span className={showLabels ? "opacity-100" : "opacity-0"}>
+                  {keyNote.displayName.replace(/\d/g, "")}
+                </span>
               </button>
             );
           })}
@@ -131,11 +153,21 @@ export function PentatonicKeyboard({
       </div>
 
       <div className="mt-4 grid gap-2 text-xs font-semibold text-muted sm:grid-cols-5">
-        <p><span className="font-bold text-blue-deep">Tónica:</span> azul</p>
-        <p><span className="font-bold text-purple-700">Permitida:</span> borde</p>
-        <p><span className="font-bold text-gold-soft">Próxima:</span> dorado</p>
-        <p><span className="font-bold text-emerald-700">Tocada:</span> verde</p>
-        <p><span className="font-bold text-muted">Fuera:</span> atenuada</p>
+        <p>
+          <span className="font-bold text-blue-deep">Tónica:</span> azul
+        </p>
+        <p>
+          <span className="font-bold text-purple-700">Permitida:</span> borde
+        </p>
+        <p>
+          <span className="font-bold text-gold-soft">Próxima:</span> dorado
+        </p>
+        <p>
+          <span className="font-bold text-emerald-700">Tocada:</span> verde
+        </p>
+        <p>
+          <span className="font-bold text-muted">Fuera:</span> atenuada
+        </p>
       </div>
     </div>
   );
@@ -155,11 +187,15 @@ type KeyStateInput = {
 
 function getKeyClass(input: KeyStateInput) {
   if (input.outsideScale) return "border-blue-deep/5 bg-slate-100 text-slate-400 opacity-45";
-  if (input.selectedMidi === input.midi && input.expectedMidi !== input.midi) return "border-red-400 bg-red-100 text-red-950";
-  if (input.completedSet.has(input.midi) || input.improvisedSet.has(input.midi)) return "border-emerald-500 bg-emerald-100 text-emerald-950";
-  if (input.expectedMidi === input.midi) return "border-gold-soft bg-cream text-blue-deep shadow-soft";
+  if (input.selectedMidi === input.midi && input.expectedMidi !== input.midi)
+    return "border-red-400 bg-red-100 text-red-950";
+  if (input.completedSet.has(input.midi) || input.improvisedSet.has(input.midi))
+    return "border-emerald-500 bg-emerald-100 text-emerald-950";
+  if (input.expectedMidi === input.midi)
+    return "border-gold-soft bg-cream text-blue-deep shadow-soft";
   if (input.tonicMidi === input.midi) return "border-blue-deep bg-blue-deep text-white";
-  if (input.allowedPitchClasses.has(input.midi % 12)) return "border-purple-500 bg-purple-50 text-purple-950 ring-2 ring-purple-200";
+  if (input.allowedPitchClasses.has(input.midi % 12))
+    return "border-purple-500 bg-purple-50 text-purple-950 ring-2 ring-purple-200";
   if (input.routeSet.has(input.midi)) return "border-blue-deep/10 bg-blue-soft/35 text-blue-deep";
   return "border-blue-deep/10 bg-white text-blue-deep hover:bg-blue-soft/30 disabled:opacity-60";
 }

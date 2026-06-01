@@ -1,9 +1,9 @@
 import type { MeasureMock } from "@/types/lesson";
 import type {
   MeasureEvent,
+  NotatedNoteEvent,
   NoteDuration,
   NoteName,
-  NotatedNoteEvent,
   SolfegeName,
 } from "@/types/music";
 
@@ -17,10 +17,7 @@ const solfegeByNote: Record<NoteName, SolfegeName> = {
   B: "Si",
 };
 
-export function note(
-  noteName: NoteName,
-  duration: NoteDuration = "negra",
-): NotatedNoteEvent {
+export function note(noteName: NoteName, duration: NoteDuration = "negra"): NotatedNoteEvent {
   return {
     kind: "note",
     pitch: { note: noteName },
@@ -44,9 +41,7 @@ export function createMeasure(
   events: MeasureEvent[],
   phrase?: "A" | "B",
 ): MeasureMock {
-  const noteEvents = events.filter(
-    (event): event is NotatedNoteEvent => event.kind === "note",
-  );
+  const noteEvents = events.filter((event): event is NotatedNoteEvent => event.kind === "note");
 
   return {
     number,

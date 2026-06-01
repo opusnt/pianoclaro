@@ -90,7 +90,13 @@ const finalSeeds: QuestionSeed[] = [
   { baseNote: "G4", semitones: 3, direction: "descending", taskType: "direction_recognition" },
   { baseNote: "C4", semitones: 7, direction: "ascending", taskType: "audio_distance" },
   { baseNote: "E4", semitones: 1, direction: "ascending", taskType: "find_interval" },
-  { baseNote: "D4", semitones: 4, direction: "ascending", taskType: "melodic_vs_harmonic", playbackType: "harmonic" },
+  {
+    baseNote: "D4",
+    semitones: 4,
+    direction: "ascending",
+    taskType: "melodic_vs_harmonic",
+    playbackType: "harmonic",
+  },
   { baseNote: "C5", semitones: 12, direction: "descending", taskType: "find_interval" },
   { baseNote: "F4", semitones: 5, direction: "ascending", taskType: "direction_recognition" },
   { baseNote: "A4", semitones: 0, direction: "same", taskType: "audio_distance" },
@@ -98,13 +104,25 @@ const finalSeeds: QuestionSeed[] = [
   { baseNote: "B4", semitones: 5, direction: "descending", taskType: "direction_recognition" },
   { baseNote: "C4", semitones: 12, direction: "ascending", taskType: "audio_distance" },
   { baseNote: "F4", semitones: 4, direction: "ascending", taskType: "find_interval" },
-  { baseNote: "E4", semitones: 5, direction: "ascending", taskType: "melodic_vs_harmonic", playbackType: "melodic" },
+  {
+    baseNote: "E4",
+    semitones: 5,
+    direction: "ascending",
+    taskType: "melodic_vs_harmonic",
+    playbackType: "melodic",
+  },
   { baseNote: "G4", semitones: 0, direction: "same", taskType: "direction_recognition" },
   { baseNote: "C4", semitones: 5, direction: "ascending", taskType: "find_interval" },
   { baseNote: "C5", semitones: 7, direction: "descending", taskType: "audio_distance" },
   { baseNote: "D4", semitones: 3, direction: "ascending", taskType: "find_interval" },
   { baseNote: "A4", semitones: 1, direction: "descending", taskType: "direction_recognition" },
-  { baseNote: "C4", semitones: 7, direction: "ascending", taskType: "melodic_vs_harmonic", playbackType: "harmonic" },
+  {
+    baseNote: "C4",
+    semitones: 7,
+    direction: "ascending",
+    taskType: "melodic_vs_harmonic",
+    playbackType: "harmonic",
+  },
   { baseNote: "C4", semitones: 12, direction: "ascending", taskType: "find_interval" },
 ];
 
@@ -154,12 +172,17 @@ function buildQuestion({
   index: number;
 }): IntervalQuestion {
   const signedDistance =
-    seed.direction === "descending" ? -seed.semitones : seed.direction === "same" ? 0 : seed.semitones;
+    seed.direction === "descending"
+      ? -seed.semitones
+      : seed.direction === "same"
+        ? 0
+        : seed.semitones;
   const targetNote = transposeNote(seed.baseNote, signedDistance);
   const taskType = seed.taskType ?? exercise.type;
   const interval = getIntervalDefinitionById(
-    exercise.allowedIntervals.find((id) => getIntervalDefinitionById(id)?.semitones === seed.semitones) ??
-      "unison",
+    exercise.allowedIntervals.find(
+      (id) => getIntervalDefinitionById(id)?.semitones === seed.semitones,
+    ) ?? "unison",
   );
   const intervalName = interval?.name ?? `${seed.semitones} semitonos`;
 

@@ -40,14 +40,18 @@ export function PracticeFeedback({
   const Icon = style.icon;
 
   return (
-    <section className={`rounded-2xl border p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)] ${style.className}`}>
+    <section
+      className={`rounded-2xl border p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)] ${style.className}`}
+    >
       <div className="flex items-start gap-3">
         <span className="mt-0.5 flex h-9 w-9 items-center justify-center rounded-xl bg-white/70">
           <Icon aria-hidden="true" className="h-5 w-5" />
         </span>
         <div>
           <p className="text-xs font-bold uppercase text-muted">Feedback de práctica</p>
-          <h2 className="mt-1 text-lg font-bold text-blue-deep">{feedback ? style.label : "Listo para escuchar"}</h2>
+          <h2 className="mt-1 text-lg font-bold text-blue-deep">
+            {feedback ? style.label : "Listo para escuchar"}
+          </h2>
           <p className="mt-2 text-sm leading-6 text-muted">
             {feedback?.message ??
               "Toca una tecla para comparar tu respuesta con la nota activa de la lección."}
@@ -61,8 +65,7 @@ export function PracticeFeedback({
           <span className="mt-1 block font-semibold text-muted">intentos</span>
         </span>
         <span className="rounded-xl bg-white/70 px-2 py-3">
-          {accuracy}%
-          <span className="mt-1 block font-semibold text-muted">precisión</span>
+          {accuracy}%<span className="mt-1 block font-semibold text-muted">precisión</span>
         </span>
         <span className="rounded-xl bg-white/70 px-2 py-3">
           {streak}
@@ -74,4 +77,3 @@ export function PracticeFeedback({
     </section>
   );
 }
-

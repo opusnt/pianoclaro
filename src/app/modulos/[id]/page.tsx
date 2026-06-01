@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { contentRepository } from "@/lib/content";
-import {
-  getPlayableModuleRegistration,
-  isPlayableModuleId,
-} from "@/lib/modules/playable-modules";
+import { getPlayableModuleRegistration, isPlayableModuleId } from "@/lib/modules/playable-modules";
 
 type ModulePageProps = {
   params: Promise<{

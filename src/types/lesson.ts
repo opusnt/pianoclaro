@@ -1,9 +1,4 @@
-import type {
-  MeasureEvent,
-  NoteDuration,
-  NoteName,
-  SolfegeName,
-} from "@/types/music";
+import type { MeasureEvent, NoteDuration, NoteName, SolfegeName } from "@/types/music";
 
 export type { NoteName, SolfegeName } from "@/types/music";
 
@@ -43,6 +38,7 @@ export type ScoreMock = {
   keySignature: string;
   clef: "treble" | "bass";
   measures: MeasureMock[];
+  xmlData?: string;
 };
 
 export type LessonStep = {

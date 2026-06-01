@@ -76,9 +76,11 @@ export function applyKeySignatureAttemptToProgress({
       weakestKeys: attempt.weakestKeys,
       weakestAccidentals: attempt.weakestAccidentals,
       weakestRelativePairs: attempt.weakestRelativePairs,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
       replayUsedCount:
-        (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -105,7 +107,9 @@ export function applyKeySignatureAttemptToProgress({
       ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
         completedExercises.length
       : 0;
-  const needsReview = Array.from(new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestKeys)));
+  const needsReview = Array.from(
+    new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestKeys)),
+  );
 
   return {
     ...progress,

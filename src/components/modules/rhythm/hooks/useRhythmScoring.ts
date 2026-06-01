@@ -6,8 +6,5 @@ import { scoreRhythmResults } from "@/lib/rhythm/scoring";
 import type { TimingResult } from "@/types/rhythm";
 
 export function useRhythmScoring(results: TimingResult[], expectedHitCount: number) {
-  return useMemo(
-    () => scoreRhythmResults(results, expectedHitCount),
-    [expectedHitCount, results],
-  );
+  return useMemo(() => scoreRhythmResults(results, expectedHitCount), [expectedHitCount, results]);
 }

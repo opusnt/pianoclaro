@@ -4,10 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { trackChordEvent } from "@/lib/chords/analytics";
-import {
-  buildChordNotesAnswer,
-  buildChordOptionAnswer,
-} from "@/lib/chords/answers";
+import { buildChordNotesAnswer, buildChordOptionAnswer } from "@/lib/chords/answers";
 import {
   playArpeggiatedChord,
   playChord,
@@ -17,19 +14,9 @@ import {
   playChordSuccess,
   playSingleNoteVsChord,
 } from "@/lib/chords/audio";
-import {
-  generateChordQuestions,
-  getExerciseUnitCount,
-} from "@/lib/chords/questions";
-import {
-  buildChordAttempt,
-  getChordFeedback,
-  scoreChordAnswers,
-} from "@/lib/chords/scoring";
-import {
-  getChordById,
-  stripOctave,
-} from "@/lib/chords/theory";
+import { generateChordQuestions, getExerciseUnitCount } from "@/lib/chords/questions";
+import { buildChordAttempt, getChordFeedback, scoreChordAnswers } from "@/lib/chords/scoring";
+import { getChordById, stripOctave } from "@/lib/chords/theory";
 import type {
   ChordAnswer,
   ChordAttempt,
@@ -85,8 +72,15 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
     setHelpUsed(assistedMode);
     setReplayUsed(false);
     setStartedAt(new Date().toISOString());
-    setMessage(assistedMode ? "Modo ayuda activo: las notas objetivo están visibles." : "Selecciona las notas del acorde.");
-    trackChordEvent("chord_exercise_started", { moduleId: exercise.moduleId, exerciseId: exercise.id });
+    setMessage(
+      assistedMode
+        ? "Modo ayuda activo: las notas objetivo están visibles."
+        : "Selecciona las notas del acorde.",
+    );
+    trackChordEvent("chord_exercise_started", {
+      moduleId: exercise.moduleId,
+      exerciseId: exercise.id,
+    });
     void playQuestionAudio({ markReplay: false });
   }
 
@@ -109,7 +103,11 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
     if (!chord) return;
 
     if (currentQuestion.taskType === "single_note_vs_chord") {
-      await playSingleNoteVsChord(getAudio(), currentQuestion.chordId, currentQuestion.expectedAnswer === "Acorde");
+      await playSingleNoteVsChord(
+        getAudio(),
+        currentQuestion.chordId,
+        currentQuestion.expectedAnswer === "Acorde",
+      );
       return;
     }
 
@@ -127,7 +125,8 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
   }
 
   function toggleNote(note: string) {
-    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions) return;
+    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions)
+      return;
     void playChordNote(getAudio(), note, 220);
     setSelectedNotes((current) => {
       const pitch = stripOctave(note);
@@ -144,7 +143,8 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
   }
 
   function confirmChord() {
-    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     const chord = getChordById(currentQuestion.chordId);
     if (!chord) return;
     const answer = buildChordNotesAnswer({
@@ -159,7 +159,8 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     const answer = buildChordOptionAnswer({
       question: currentQuestion,
       option,

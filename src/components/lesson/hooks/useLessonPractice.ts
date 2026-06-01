@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import type { ScoreNoteSelection } from "@/components/lesson/notation/types";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { pianoLabelByNote, solfegeByNote } from "@/lib/music/notes";
 import type { PianoNoteName, SharpNoteName } from "@/lib/music/notes";
+import { pianoLabelByNote, solfegeByNote } from "@/lib/music/notes";
 import {
   lessonToPracticeSong,
   type PianoClaroNoteEvent,
@@ -31,9 +31,7 @@ export function useLessonPractice({
   const [activeNotes, setActiveNotes] = useState<NoteName[]>(activeStep.activeNotes ?? []);
   const [activeBlackNotes, setActiveBlackNotes] = useState<SharpNoteName[]>([]);
   const [activeMeasure, setActiveMeasure] = useState<number | undefined>(activeStep.activeMeasure);
-  const [activePhrase, setActivePhrase] = useState<"A" | "B" | undefined>(
-    activeStep.activePhrase,
-  );
+  const [activePhrase, setActivePhrase] = useState<"A" | "B" | undefined>(activeStep.activePhrase);
   const [activeNotePosition, setActiveNotePosition] = useState<{
     measureNumber: number;
     noteIndex: number;
@@ -272,7 +270,7 @@ export function useLessonPractice({
     setPracticeMessage("La guía está recorriendo y sonando nota por nota.");
 
     const tempoMultiplier = tempoMode === "lento" ? 0.62 : 1;
-    const msPerBeat = (60_000 / practiceSong.config.tempoBpm) / tempoMultiplier;
+    const msPerBeat = 60_000 / practiceSong.config.tempoBpm / tempoMultiplier;
     const firstBeat = practiceEvents[0]?.startsAtBeat ?? 1;
     let playbackEndsAt = 0;
 
@@ -312,7 +310,9 @@ export function useLessonPractice({
     if (event.kind === "rest") {
       setActiveNotePosition(null);
       setActiveNotes([]);
-      setPracticeMessage(`Silencio en el compás ${event.measureNumber}: escucha el pulso y espera.`);
+      setPracticeMessage(
+        `Silencio en el compás ${event.measureNumber}: escucha el pulso y espera.`,
+      );
       return;
     }
 

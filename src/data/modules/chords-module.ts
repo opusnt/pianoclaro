@@ -32,7 +32,12 @@ export const chordsDetailedModule: DetailedLearningModule = {
   prerequisites: ["pentatonic-scale", "major-scale", "minor-scales"],
   expectedResult:
     "El usuario puede construir tríadas mayores y menores simples, reconocer mayor/menor y explorar disminuido/aumentado.",
-  laterUnlockedSkills: ["Inversiones", "Campo armónico", "Progresiones populares", "Acompañamiento"],
+  laterUnlockedSkills: [
+    "Inversiones",
+    "Campo armónico",
+    "Progresiones populares",
+    "Acompañamiento",
+  ],
   microLessons: [
     {
       id: "what-is-a-chord",
@@ -74,16 +79,33 @@ export const chordsDetailedModule: DetailedLearningModule = {
   ux: {
     entryExperience: "El usuario escucha primero una nota sola y luego un acorde.",
     firstScreen: "Lista de ejercicios y panel de construcción activa.",
-    conceptDelivery: "La fórmula aparece al lado del teclado, pero la tarea principal es seleccionar notas.",
-    animationMoments: ["Notas seleccionadas", "Ayuda tónica-tercera-quinta", "Confirmación correcta"],
+    conceptDelivery:
+      "La fórmula aparece al lado del teclado, pero la tarea principal es seleccionar notas.",
+    animationMoments: [
+      "Notas seleccionadas",
+      "Ayuda tónica-tercera-quinta",
+      "Confirmación correcta",
+    ],
     audioMoments: ["Nota sola", "Acorde simultáneo", "Arpegio de ayuda", "Feedback"],
-    cognitiveLoadRules: ["No enseñar inversiones", "No enseñar séptimas", "No usar cifrado avanzado"],
+    cognitiveLoadRules: [
+      "No enseñar inversiones",
+      "No enseñar séptimas",
+      "No usar cifrado avanzado",
+    ],
     progressFeeling: ["Score", "Combo", "Desbloqueo secuencial"],
     visualFeedback: ["Tónica azul", "Tercera morada", "Quinta dorada", "Selección verde"],
     soundFeedback: ["Acorde simultáneo", "Arpegio lento", "Éxito/error"],
     celebrations: ["Primer DO mayor", "Primer menor reconocido", "Desafío de tríadas completado"],
-    errorHandling: ["Mostrar notas faltantes", "Explicar tercera", "Recordar que el orden no importa"],
-    smartHints: ["Revisa la tercera", "La quinta suele estar 7 semitonos arriba", "Confirma cuando tengas tres notas"],
+    errorHandling: [
+      "Mostrar notas faltantes",
+      "Explicar tercera",
+      "Recordar que el orden no importa",
+    ],
+    smartHints: [
+      "Revisa la tercera",
+      "La quinta suele estar 7 semitonos arriba",
+      "Confirma cuando tengas tres notas",
+    ],
   },
   keyboard: {
     visibleOctaves: { mobile: 2, desktop: 2 },
@@ -145,8 +167,16 @@ export const chordsDetailedModule: DetailedLearningModule = {
     spatialSoundLearning: ["La tercera está más cerca en menor y más lejos en mayor"],
   },
   adaptivity: {
-    frustrationSignals: ["accuracy < 60%", "errores repetidos por calidad", "faltan notas del acorde"],
-    lowerDifficultyActions: ["Solo DO mayor y LA menor", "Mostrar etiquetas", "Mostrar notas objetivo"],
+    frustrationSignals: [
+      "accuracy < 60%",
+      "errores repetidos por calidad",
+      "faltan notas del acorde",
+    ],
+    lowerDifficultyActions: [
+      "Solo DO mayor y LA menor",
+      "Mostrar etiquetas",
+      "Mostrar notas objetivo",
+    ],
     raiseDifficultyActions: ["Ocultar etiquetas", "Más tónicas", "Mezclar calidades"],
     repetitionRules: ["Repetir calidades débiles"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],
@@ -173,7 +203,12 @@ export const chordsDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: constructor de acordes",
     setup: "24 rondas mixtas con construcción, reconocimiento y nota faltante.",
-    tasks: ["Construir mayores", "Construir menores", "Reconocer mayor/menor", "Completar nota faltante"],
+    tasks: [
+      "Construir mayores",
+      "Construir menores",
+      "Reconocer mayor/menor",
+      "Completar nota faltante",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 6 errores"],
     celebration: "Construiste tus primeras tríadas con criterio.",
     summary: ["Acorde", "Tríada", "Mayor", "Menor", "Disminuido", "Aumentado"],

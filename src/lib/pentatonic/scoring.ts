@@ -54,7 +54,9 @@ export function scorePentatonicAnswers(answers: PentatonicAnswer[], totalUnits: 
 
     combo += 1;
     comboMax = Math.max(comboMax, combo);
-    const multiplier = answer.improvisationMetrics ? 1 : Math.min(2, 1 + Math.floor(combo / 5) * 0.1);
+    const multiplier = answer.improvisationMetrics
+      ? 1
+      : Math.min(2, 1 + Math.floor(combo / 5) * 0.1);
     score += Math.round(answer.points * multiplier);
   });
 

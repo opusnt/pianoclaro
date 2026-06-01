@@ -1,8 +1,4 @@
-import type {
-  IntervalDefinition,
-  IntervalDirection,
-  IntervalQuestion,
-} from "@/types/intervals";
+import type { IntervalDefinition, IntervalDirection, IntervalQuestion } from "@/types/intervals";
 
 const pitchClassToSemitone: Record<string, number> = {
   C: 0,

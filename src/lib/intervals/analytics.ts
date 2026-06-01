@@ -1,5 +1,5 @@
-import type { IntervalAttempt } from "@/types/intervals";
 import { appendLocalAnalyticsEvent } from "@/lib/analytics/local-analytics";
+import type { IntervalAttempt } from "@/types/intervals";
 
 type IntervalAnalyticsEvent =
   | "interval_module_started"
@@ -33,13 +33,10 @@ export function trackIntervalEvent(
 }
 
 export function trackIntervalAttempt(moduleId: string, attempt: IntervalAttempt) {
-  trackIntervalEvent(
-    attempt.passed ? "interval_exercise_completed" : "interval_exercise_failed",
-    {
-      moduleId,
-      exerciseId: attempt.exerciseId,
-      accuracy: attempt.accuracy,
-      score: attempt.score,
-    },
-  );
+  trackIntervalEvent(attempt.passed ? "interval_exercise_completed" : "interval_exercise_failed", {
+    moduleId,
+    exerciseId: attempt.exerciseId,
+    accuracy: attempt.accuracy,
+    score: attempt.score,
+  });
 }

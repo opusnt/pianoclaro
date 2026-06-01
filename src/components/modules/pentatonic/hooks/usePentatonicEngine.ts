@@ -18,19 +18,13 @@ import {
   playPentatonicSequence,
   playPentatonicSuccess,
 } from "@/lib/pentatonic/audio";
-import {
-  generatePentatonicQuestions,
-  getExerciseUnitCount,
-} from "@/lib/pentatonic/questions";
+import { generatePentatonicQuestions, getExerciseUnitCount } from "@/lib/pentatonic/questions";
 import {
   buildPentatonicAttempt,
   getPentatonicFeedback,
   scorePentatonicAnswers,
 } from "@/lib/pentatonic/scoring";
-import {
-  getPentatonicScaleById,
-  noteToMidi,
-} from "@/lib/pentatonic/theory";
+import { getPentatonicScaleById, noteToMidi } from "@/lib/pentatonic/theory";
 import type {
   PentatonicAnswer,
   PentatonicAttempt,
@@ -59,7 +53,9 @@ export function usePentatonicEngine({
   const [improvisedNotes, setImprovisedNotes] = useState<string[]>([]);
   const [answers, setAnswers] = useState<PentatonicAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<PentatonicAnswer | null>(null);
-  const [message, setMessage] = useState("Inicia el ejercicio para tocar con una zona pentatónica segura.");
+  const [message, setMessage] = useState(
+    "Inicia el ejercicio para tocar con una zona pentatónica segura.",
+  );
   const [helpUsed, setHelpUsed] = useState(false);
   const [replayUsed, setReplayUsed] = useState(false);
   const [startedAt, setStartedAt] = useState(new Date().toISOString());
@@ -99,7 +95,11 @@ export function usePentatonicEngine({
     setHelpUsed(assistedMode);
     setReplayUsed(false);
     setStartedAt(new Date().toISOString());
-    setMessage(assistedMode ? "Modo ayuda activo: notas permitidas visibles." : "Toca solo las notas iluminadas.");
+    setMessage(
+      assistedMode
+        ? "Modo ayuda activo: notas permitidas visibles."
+        : "Toca solo las notas iluminadas.",
+    );
     trackPentatonicEvent("pentatonic_exercise_started", {
       moduleId: exercise.moduleId,
       exerciseId: exercise.id,
@@ -133,7 +133,9 @@ export function usePentatonicEngine({
 
   function revealHint() {
     setHelpUsed(true);
-    setMessage("Ayuda activa: usa las notas iluminadas. Las notas apagadas quedan fuera de esta pentatónica.");
+    setMessage(
+      "Ayuda activa: usa las notas iluminadas. Las notas apagadas quedan fuera de esta pentatónica.",
+    );
   }
 
   function answerWithNote(note: string) {
@@ -197,7 +199,8 @@ export function usePentatonicEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
 
     const answer = buildPentatonicOptionAnswer({
       question: currentQuestion,

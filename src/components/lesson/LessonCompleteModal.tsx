@@ -1,13 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
+import Link from "next/link";
 
 type LessonCompleteModalProps = {
   isOpen: boolean;
   onClose: () => void;
   returnHref?: string;
   returnLabel?: string;
+  title?: string;
 };
 
 export function LessonCompleteModal({
@@ -15,6 +16,7 @@ export function LessonCompleteModal({
   onClose,
   returnHref = "/rutas",
   returnLabel = "Volver a rutas",
+  title = "Lección completada",
 }: LessonCompleteModalProps) {
   if (!isOpen) {
     return null;
@@ -26,7 +28,7 @@ export function LessonCompleteModal({
         <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-teal-soft/20 text-blue-deep">
           <CheckCircle2 aria-hidden="true" className="h-7 w-7" />
         </span>
-        <h2 className="mt-5 text-3xl font-bold text-blue-deep">Lección completada</h2>
+        <h2 className="mt-5 text-3xl font-bold text-blue-deep">{title}</h2>
         <p className="mt-3 text-base leading-7 text-muted">
           Acabas de avanzar en lectura musical y práctica de piano.
         </p>

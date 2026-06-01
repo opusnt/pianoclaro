@@ -11,13 +11,15 @@ export const keySignaturesDetailedModule: DetailedLearningModule = {
   objective:
     "Enseñar tonalidad como centro musical y armadura como regla visual de alteraciones fijas.",
   mainConcepts: ["tonalidad", "tónica", "armadura", "sostenido", "bemol", "relativa mayor/menor"],
-  practicalSkill: "Identificar tonalidades simples, aplicar alteraciones fijas y encontrar relativas.",
+  practicalSkill:
+    "Identificar tonalidades simples, aplicar alteraciones fijas y encontrar relativas.",
   keyboardVisualization:
     "Teclado A3-C6 con tónica, ruta de escala y alteraciones de armadura marcadas de forma persistente.",
   auditoryExercises: ["recognize-heard-note"],
   executionExercises: ["complete-scale", "play-indicated-note"],
   recognitionExercises: ["complete-scale", "recognize-heard-note"],
-  creativeMiniChallenge: "Tomar una frase corta y observar cómo cambia al moverla a una tonalidad cercana.",
+  creativeMiniChallenge:
+    "Tomar una frase corta y observar cómo cambia al moverla a una tonalidad cercana.",
   finalAssessment: "Desafío mixto de 24 rondas sobre tónica, armadura, escala y relativa.",
   unlockCriteria: [{ type: "module-completed", moduleId: "minor-scales" }],
   contributesToSkills: {
@@ -90,15 +92,32 @@ export const keySignaturesDetailedModule: DetailedLearningModule = {
     progressFeeling: ["Barra por unidades", "Combo", "Desbloqueo secuencial"],
     visualFeedback: ["Tónica azul", "Armadura morada", "Próxima nota dorada", "Correcta verde"],
     soundFeedback: ["Escala", "Tónica", "Feedback positivo/error"],
-    celebrations: ["Primera armadura aplicada", "Relativas detectadas", "Mapa de tonalidades completado"],
-    errorHandling: ["Mostrar alteración esperada", "Recordar regla global", "Comparar relativa correcta"],
-    smartHints: ["La relativa menor está 3 semitonos abajo", "La armadura afecta todas las notas con ese nombre"],
+    celebrations: [
+      "Primera armadura aplicada",
+      "Relativas detectadas",
+      "Mapa de tonalidades completado",
+    ],
+    errorHandling: [
+      "Mostrar alteración esperada",
+      "Recordar regla global",
+      "Comparar relativa correcta",
+    ],
+    smartHints: [
+      "La relativa menor está 3 semitonos abajo",
+      "La armadura afecta todas las notas con ese nombre",
+    ],
   },
   keyboard: {
     visibleOctaves: { mobile: 2, desktop: 2 },
     horizontalScroll: "mobile-only",
     labelMode: "on-hint",
-    illumination: ["Tónica", "Alteraciones fijas", "Ruta de escala", "Nota esperada", "Respuesta incorrecta"],
+    illumination: [
+      "Tónica",
+      "Alteraciones fijas",
+      "Ruta de escala",
+      "Nota esperada",
+      "Respuesta incorrecta",
+    ],
     animations: ["Pulso en nota esperada", "Borde persistente para armadura", "Avance de ruta"],
     colorSystem: {
       naturalKey: "#fffdf7",
@@ -151,12 +170,26 @@ export const keySignaturesDetailedModule: DetailedLearningModule = {
     errorSound: "Pulso grave corto.",
     guidedVoice: "No usar voz por defecto.",
     earTraining: ["Tónica", "Escala de tonalidad", "Comparación relativa"],
-    spatialSoundLearning: ["Las alteraciones fijas se sienten como teclas recurrentes dentro de la familia"],
+    spatialSoundLearning: [
+      "Las alteraciones fijas se sienten como teclas recurrentes dentro de la familia",
+    ],
   },
   adaptivity: {
-    frustrationSignals: ["accuracy < 60%", "errores repetidos en sostenidos/bemoles", "confusión de relativas"],
-    lowerDifficultyActions: ["Reducir a DO/LA/SOL/FA", "Mostrar etiquetas", "Marcar armadura en teclado"],
-    raiseDifficultyActions: ["Incluir RE/SI menor/SIb/SOL menor", "Ocultar pistas", "Mezclar rondas"],
+    frustrationSignals: [
+      "accuracy < 60%",
+      "errores repetidos en sostenidos/bemoles",
+      "confusión de relativas",
+    ],
+    lowerDifficultyActions: [
+      "Reducir a DO/LA/SOL/FA",
+      "Mostrar etiquetas",
+      "Marcar armadura en teclado",
+    ],
+    raiseDifficultyActions: [
+      "Incluir RE/SI menor/SIb/SOL menor",
+      "Ocultar pistas",
+      "Mezclar rondas",
+    ],
     repetitionRules: ["Repetir tonalidades y alteraciones débiles"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],
   },

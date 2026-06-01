@@ -48,7 +48,9 @@ export function HarmonicFieldKeyboard({
             Selecciona las tres notas del acorde. Las inversiones también valen.
           </p>
         </div>
-        <p className="text-xs font-bold text-blue-deep">Escala resaltada + acorde esperado con ayuda</p>
+        <p className="text-xs font-bold text-blue-deep">
+          Escala resaltada + acorde esperado con ayuda
+        </p>
       </div>
 
       <div className="responsive-scroll mt-4">
@@ -78,8 +80,14 @@ export function HarmonicFieldKeyboard({
                           : "border-blue-deep/10 bg-white/70 text-muted"
                   } disabled:cursor-not-allowed disabled:opacity-75`}
                 >
-                  {isTonic ? <span className="absolute left-1 top-2 rounded-full bg-blue-deep px-2 py-0.5 text-[10px] text-white">tónica</span> : null}
-                  {helpVisible && inChord ? <span className="text-[10px] uppercase">acorde</span> : null}
+                  {isTonic ? (
+                    <span className="absolute left-1 top-2 rounded-full bg-blue-deep px-2 py-0.5 text-[10px] text-white">
+                      tónica
+                    </span>
+                  ) : null}
+                  {helpVisible && inChord ? (
+                    <span className="text-[10px] uppercase">acorde</span>
+                  ) : null}
                   {showLabels ? <span>{note.displayName}</span> : null}
                 </button>
               );
@@ -89,8 +97,11 @@ export function HarmonicFieldKeyboard({
           <div className="pointer-events-none absolute left-0 top-0 grid w-full grid-cols-[repeat(18,minmax(42px,1fr))] gap-1">
             {whiteNotes.map((whiteNote, index) => {
               const nextMidi = whiteNote.midi + 1;
-              const blackNote = keyboardNotes.find((note) => note.midi === nextMidi && note.isBlackKey);
-              if (!blackNote || index === whiteNotes.length - 1) return <span key={`${whiteNote.internalName}-gap`} />;
+              const blackNote = keyboardNotes.find(
+                (note) => note.midi === nextMidi && note.isBlackKey,
+              );
+              if (!blackNote || index === whiteNotes.length - 1)
+                return <span key={`${whiteNote.internalName}-gap`} />;
               const pitch = normalizePitchClasses([blackNote.internalName])[0];
               const selected = selectedPitches.has(pitch);
               const inScale = scalePitches.has(pitch);

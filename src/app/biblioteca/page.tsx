@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Clock, FileMusic, Library, ShieldCheck, Tags } from "lucide-react";
+import Link from "next/link";
 
 import { repertoireReadinessLabels, sourceTypeLabels } from "@/data/songs";
 import { contentRepository } from "@/lib/content";
@@ -49,17 +49,23 @@ export default function LibraryPage() {
           <article className="rounded-2xl border border-blue-deep/10 bg-white/80 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]">
             <p className="text-sm font-bold text-blue-deep">Listas para MVP</p>
             <p className="mt-2 text-3xl font-bold text-gold-soft">{mvpSongs.length}</p>
-            <p className="mt-2 text-sm leading-6 text-muted">Piezas o ejercicios que podemos convertir primero.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Piezas o ejercicios que podemos convertir primero.
+            </p>
           </article>
           <article className="rounded-2xl border border-blue-deep/10 bg-white/80 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]">
             <p className="text-sm font-bold text-blue-deep">Dominio público</p>
             <p className="mt-2 text-3xl font-bold text-gold-soft">{publicDomainSongs.length}</p>
-            <p className="mt-2 text-sm leading-6 text-muted">Buenas candidatas para arreglos propios trazables.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Buenas candidatas para arreglos propios trazables.
+            </p>
           </article>
           <article className="rounded-2xl border border-blue-deep/10 bg-white/80 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]">
             <p className="text-sm font-bold text-blue-deep">MIDI futuro</p>
             <p className="mt-2 text-3xl font-bold text-gold-soft">{midiReadySongs.length}</p>
-            <p className="mt-2 text-sm leading-6 text-muted">Tienen referencia externa para una integración posterior.</p>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Tienen referencia externa para una integración posterior.
+            </p>
           </article>
         </section>
 
@@ -102,16 +108,24 @@ export default function LibraryPage() {
               </div>
               <div className="mt-5 space-y-3 border-t border-blue-deep/10 pt-4 text-sm">
                 <p className="flex items-start gap-2 text-muted">
-                  <ShieldCheck aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-teal-soft" />
+                  <ShieldCheck
+                    aria-hidden="true"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-teal-soft"
+                  />
                   <span>
-                    <span className="font-bold text-blue-deep">{sourceTypeLabels[song.sourceType]}</span>
+                    <span className="font-bold text-blue-deep">
+                      {sourceTypeLabels[song.sourceType]}
+                    </span>
                     {": "}
                     {song.licenseLabel}
                   </span>
                 </p>
                 {song.midiFileHint ? (
                   <p className="flex items-start gap-2 text-muted">
-                    <FileMusic aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0 text-gold-soft" />
+                    <FileMusic
+                      aria-hidden="true"
+                      className="mt-0.5 h-4 w-4 shrink-0 text-gold-soft"
+                    />
                     <span>{song.midiFileHint}</span>
                   </p>
                 ) : null}

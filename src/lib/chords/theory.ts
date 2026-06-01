@@ -50,18 +50,138 @@ const displayByPitch: Record<string, string> = {
 };
 
 export const chordDefinitions: ChordDefinition[] = [
-  { id: "c-major", tonic: "C", internalName: "C Major", displayName: "DO mayor", quality: "major", notes: ["C", "E", "G"], midiNotes: [60, 64, 67], formula: CHORD_FORMULAS.major, difficulty: 1 },
-  { id: "g-major", tonic: "G", internalName: "G Major", displayName: "SOL mayor", quality: "major", notes: ["G", "B", "D"], midiNotes: [67, 71, 74], formula: CHORD_FORMULAS.major, difficulty: 2 },
-  { id: "f-major", tonic: "F", internalName: "F Major", displayName: "FA mayor", quality: "major", notes: ["F", "A", "C"], midiNotes: [65, 69, 72], formula: CHORD_FORMULAS.major, difficulty: 2 },
-  { id: "d-major", tonic: "D", internalName: "D Major", displayName: "RE mayor", quality: "major", notes: ["D", "F#", "A"], midiNotes: [62, 66, 69], formula: CHORD_FORMULAS.major, difficulty: 2 },
-  { id: "a-minor", tonic: "A", internalName: "A Minor", displayName: "LA menor", quality: "minor", notes: ["A", "C", "E"], midiNotes: [57, 60, 64], formula: CHORD_FORMULAS.minor, difficulty: 1 },
-  { id: "e-minor", tonic: "E", internalName: "E Minor", displayName: "MI menor", quality: "minor", notes: ["E", "G", "B"], midiNotes: [64, 67, 71], formula: CHORD_FORMULAS.minor, difficulty: 2 },
-  { id: "d-minor", tonic: "D", internalName: "D Minor", displayName: "RE menor", quality: "minor", notes: ["D", "F", "A"], midiNotes: [62, 65, 69], formula: CHORD_FORMULAS.minor, difficulty: 2 },
-  { id: "c-minor", tonic: "C", internalName: "C Minor", displayName: "DO menor", quality: "minor", notes: ["C", "Eb", "G"], midiNotes: [60, 63, 67], formula: CHORD_FORMULAS.minor, difficulty: 2 },
-  { id: "b-diminished", tonic: "B", internalName: "B Diminished", displayName: "SI disminuido", quality: "diminished", notes: ["B", "D", "F"], midiNotes: [59, 62, 65], formula: CHORD_FORMULAS.diminished, difficulty: 3 },
-  { id: "c-diminished", tonic: "C", internalName: "C Diminished", displayName: "DO disminuido", quality: "diminished", notes: ["C", "Eb", "Gb"], midiNotes: [60, 63, 66], formula: CHORD_FORMULAS.diminished, difficulty: 3 },
-  { id: "c-augmented", tonic: "C", internalName: "C Augmented", displayName: "DO aumentado", quality: "augmented", notes: ["C", "E", "G#"], midiNotes: [60, 64, 68], formula: CHORD_FORMULAS.augmented, difficulty: 3 },
-  { id: "g-augmented", tonic: "G", internalName: "G Augmented", displayName: "SOL aumentado", quality: "augmented", notes: ["G", "B", "D#"], midiNotes: [67, 71, 75], formula: CHORD_FORMULAS.augmented, difficulty: 3 },
+  {
+    id: "c-major",
+    tonic: "C",
+    internalName: "C Major",
+    displayName: "DO mayor",
+    quality: "major",
+    notes: ["C", "E", "G"],
+    midiNotes: [60, 64, 67],
+    formula: CHORD_FORMULAS.major,
+    difficulty: 1,
+  },
+  {
+    id: "g-major",
+    tonic: "G",
+    internalName: "G Major",
+    displayName: "SOL mayor",
+    quality: "major",
+    notes: ["G", "B", "D"],
+    midiNotes: [67, 71, 74],
+    formula: CHORD_FORMULAS.major,
+    difficulty: 2,
+  },
+  {
+    id: "f-major",
+    tonic: "F",
+    internalName: "F Major",
+    displayName: "FA mayor",
+    quality: "major",
+    notes: ["F", "A", "C"],
+    midiNotes: [65, 69, 72],
+    formula: CHORD_FORMULAS.major,
+    difficulty: 2,
+  },
+  {
+    id: "d-major",
+    tonic: "D",
+    internalName: "D Major",
+    displayName: "RE mayor",
+    quality: "major",
+    notes: ["D", "F#", "A"],
+    midiNotes: [62, 66, 69],
+    formula: CHORD_FORMULAS.major,
+    difficulty: 2,
+  },
+  {
+    id: "a-minor",
+    tonic: "A",
+    internalName: "A Minor",
+    displayName: "LA menor",
+    quality: "minor",
+    notes: ["A", "C", "E"],
+    midiNotes: [57, 60, 64],
+    formula: CHORD_FORMULAS.minor,
+    difficulty: 1,
+  },
+  {
+    id: "e-minor",
+    tonic: "E",
+    internalName: "E Minor",
+    displayName: "MI menor",
+    quality: "minor",
+    notes: ["E", "G", "B"],
+    midiNotes: [64, 67, 71],
+    formula: CHORD_FORMULAS.minor,
+    difficulty: 2,
+  },
+  {
+    id: "d-minor",
+    tonic: "D",
+    internalName: "D Minor",
+    displayName: "RE menor",
+    quality: "minor",
+    notes: ["D", "F", "A"],
+    midiNotes: [62, 65, 69],
+    formula: CHORD_FORMULAS.minor,
+    difficulty: 2,
+  },
+  {
+    id: "c-minor",
+    tonic: "C",
+    internalName: "C Minor",
+    displayName: "DO menor",
+    quality: "minor",
+    notes: ["C", "Eb", "G"],
+    midiNotes: [60, 63, 67],
+    formula: CHORD_FORMULAS.minor,
+    difficulty: 2,
+  },
+  {
+    id: "b-diminished",
+    tonic: "B",
+    internalName: "B Diminished",
+    displayName: "SI disminuido",
+    quality: "diminished",
+    notes: ["B", "D", "F"],
+    midiNotes: [59, 62, 65],
+    formula: CHORD_FORMULAS.diminished,
+    difficulty: 3,
+  },
+  {
+    id: "c-diminished",
+    tonic: "C",
+    internalName: "C Diminished",
+    displayName: "DO disminuido",
+    quality: "diminished",
+    notes: ["C", "Eb", "Gb"],
+    midiNotes: [60, 63, 66],
+    formula: CHORD_FORMULAS.diminished,
+    difficulty: 3,
+  },
+  {
+    id: "c-augmented",
+    tonic: "C",
+    internalName: "C Augmented",
+    displayName: "DO aumentado",
+    quality: "augmented",
+    notes: ["C", "E", "G#"],
+    midiNotes: [60, 64, 68],
+    formula: CHORD_FORMULAS.augmented,
+    difficulty: 3,
+  },
+  {
+    id: "g-augmented",
+    tonic: "G",
+    internalName: "G Augmented",
+    displayName: "SOL aumentado",
+    quality: "augmented",
+    notes: ["G", "B", "D#"],
+    midiNotes: [67, 71, 75],
+    formula: CHORD_FORMULAS.augmented,
+    difficulty: 3,
+  },
 ];
 
 export function getChordById(id: string) {
@@ -113,13 +233,17 @@ export function buildChordFromMidi(tonicMidi: number, quality: ChordQuality) {
 }
 
 export function normalizePitchSet(notes: string[]) {
-  return [...new Set(notes.map(stripOctave).map((note) => pitchClassToMidi[note]))].sort((a, b) => a - b);
+  return [...new Set(notes.map(stripOctave).map((note) => pitchClassToMidi[note]))].sort(
+    (a, b) => a - b,
+  );
 }
 
 export function validateChordNotes(expectedNotes: string[], playedNotes: string[]) {
   const expected = normalizePitchSet(expectedNotes);
   const played = normalizePitchSet(playedNotes);
-  return expected.length === played.length && expected.every((note, index) => note === played[index]);
+  return (
+    expected.length === played.length && expected.every((note, index) => note === played[index])
+  );
 }
 
 export function countCorrectChordNotes(expectedNotes: string[], playedNotes: string[]) {
@@ -167,7 +291,10 @@ export function getWeakestChordQualities(answers: ChordAnswer[]) {
   return countAnswerErrors(answers, "chordQuality") as ChordQuality[];
 }
 
-function countAnswerErrors<TKey extends "chordId" | "chordQuality">(answers: ChordAnswer[], key: TKey) {
+function countAnswerErrors<TKey extends "chordId" | "chordQuality">(
+  answers: ChordAnswer[],
+  key: TKey,
+) {
   const counts = new Map<string, number>();
   answers
     .filter((answer) => !answer.isCorrect)

@@ -1,4 +1,4 @@
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import type { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { getNoteFrequency, noteToMidi } from "@/lib/major-scale/theory";
 
 function wait(ms: number) {

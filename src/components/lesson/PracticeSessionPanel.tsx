@@ -58,15 +58,7 @@ export function PracticeSessionPanel({ summary, isLoopEnabled }: PracticeSession
   );
 }
 
-function Metric({
-  icon,
-  label,
-  value,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-}) {
+function Metric({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-3">
       <span className="text-gold-soft">{icon}</span>

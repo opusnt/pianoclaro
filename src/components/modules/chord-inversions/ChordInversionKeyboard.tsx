@@ -2,14 +2,13 @@
 
 import { CircleDot } from "lucide-react";
 import { useMemo } from "react";
-
-import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 import {
   buildKeyboardNotes,
   getDisplayNoteName,
   getInversionById,
   noteToMidi,
 } from "@/lib/chord-inversions/theory";
+import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 
 type ChordInversionKeyboardProps = {
   inversionId?: string;
@@ -48,7 +47,7 @@ export function ChordInversionKeyboard({
         </p>
       </div>
 
-      <div className="responsive-scroll mt-4 overflow-x-auto pb-2">
+      <div className="responsive-scroll mt-4 pb-2">
         <div className="relative h-48" style={{ minWidth: `${whiteKeys.length * 64}px` }}>
           <div
             className="grid h-full gap-1 pb-1"
@@ -60,17 +59,25 @@ export function ChordInversionKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass({
-                  midi: keyNote.midi,
-                  selectedPitchClasses,
-                  inversionPitchClasses,
-                  bassPitchClass,
-                  helpVisible,
-                  answerCorrect,
-                })}`}
+                className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass(
+                  {
+                    midi: keyNote.midi,
+                    selectedPitchClasses,
+                    inversionPitchClasses,
+                    bassPitchClass,
+                    helpVisible,
+                    answerCorrect,
+                  },
+                )}`}
                 aria-label={`Seleccionar ${keyNote.displayName}`}
               >
-                {getBadge({ midi: keyNote.midi, selectedPitchClasses, bassPitchClass, inversionPitchClasses, helpVisible })}
+                {getBadge({
+                  midi: keyNote.midi,
+                  selectedPitchClasses,
+                  bassPitchClass,
+                  inversionPitchClasses,
+                  helpVisible,
+                })}
                 <span className={showLabels ? "whitespace-nowrap opacity-100" : "opacity-0"}>
                   {keyNote.displayName.replace(/\d/g, "")}
                 </span>
@@ -79,7 +86,9 @@ export function ChordInversionKeyboard({
           </div>
 
           {blackKeys.map((keyNote) => {
-            const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < keyNote.midi);
+            const previousWhiteIndex = whiteKeys.findLastIndex(
+              (whiteKey) => whiteKey.midi < keyNote.midi,
+            );
             const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
@@ -88,18 +97,26 @@ export function ChordInversionKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
-                  midi: keyNote.midi,
-                  selectedPitchClasses,
-                  inversionPitchClasses,
-                  bassPitchClass,
-                  helpVisible,
-                  answerCorrect,
-                })}`}
+                className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(
+                  {
+                    midi: keyNote.midi,
+                    selectedPitchClasses,
+                    inversionPitchClasses,
+                    bassPitchClass,
+                    helpVisible,
+                    answerCorrect,
+                  },
+                )}`}
                 style={{ left: `${left}%`, width: `calc(100% / ${whiteKeys.length} * 0.58)` }}
                 aria-label={`Seleccionar ${keyNote.displayName}`}
               >
-                {getBadge({ midi: keyNote.midi, selectedPitchClasses, bassPitchClass, inversionPitchClasses, helpVisible })}
+                {getBadge({
+                  midi: keyNote.midi,
+                  selectedPitchClasses,
+                  bassPitchClass,
+                  inversionPitchClasses,
+                  helpVisible,
+                })}
                 <span className={showLabels ? "whitespace-nowrap opacity-100" : "opacity-0"}>
                   {keyNote.displayName.replace(/\d/g, "")}
                 </span>
@@ -110,10 +127,18 @@ export function ChordInversionKeyboard({
       </div>
 
       <div className="mt-4 grid gap-2 text-xs font-semibold text-muted sm:grid-cols-4">
-        <p><span className="font-bold text-blue-deep">Bajo:</span> azul</p>
-        <p><span className="font-bold text-gold-soft">Nota del acorde:</span> dorado</p>
-        <p><span className="font-bold text-emerald-700">Seleccionada:</span> verde</p>
-        <p><span className="font-bold text-red-700">Error:</span> rojo</p>
+        <p>
+          <span className="font-bold text-blue-deep">Bajo:</span> azul
+        </p>
+        <p>
+          <span className="font-bold text-gold-soft">Nota del acorde:</span> dorado
+        </p>
+        <p>
+          <span className="font-bold text-emerald-700">Seleccionada:</span> verde
+        </p>
+        <p>
+          <span className="font-bold text-red-700">Error:</span> rojo
+        </p>
       </div>
     </div>
   );
@@ -133,9 +158,11 @@ function getKeyClass(input: KeyClassInput) {
   const selected = input.selectedPitchClasses.has(pitch);
   const expected = input.inversionPitchClasses.has(pitch);
 
-  if (selected && input.answerCorrect === false && !expected) return "border-red-500 bg-red-100 text-red-950";
+  if (selected && input.answerCorrect === false && !expected)
+    return "border-red-500 bg-red-100 text-red-950";
   if (selected) return "border-emerald-500 bg-emerald-100 text-emerald-950";
-  if (input.helpVisible && input.bassPitchClass === pitch) return "border-blue-deep bg-blue-deep text-white";
+  if (input.helpVisible && input.bassPitchClass === pitch)
+    return "border-blue-deep bg-blue-deep text-white";
   if (input.helpVisible && expected) return "border-gold-soft bg-cream text-blue-deep shadow-soft";
   return "border-blue-deep/10 bg-white text-blue-deep hover:bg-blue-soft/30 disabled:opacity-60";
 }

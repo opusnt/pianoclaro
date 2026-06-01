@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { trackMinorScaleEvent } from "@/lib/minor-scale/analytics";
 import {
   buildMinorScaleNoteAnswer,
   buildMinorScaleOptionAnswer,
@@ -17,7 +18,6 @@ import {
   playMinorScaleSuccess,
   playScaleComparison,
 } from "@/lib/minor-scale/audio";
-import { trackMinorScaleEvent } from "@/lib/minor-scale/analytics";
 import {
   generateMinorScaleQuestions,
   getComparisonMidiNotes,
@@ -28,10 +28,7 @@ import {
   getMinorScaleFeedback,
   scoreMinorScaleAnswers,
 } from "@/lib/minor-scale/scoring";
-import {
-  getMinorScaleById,
-  noteToMidi,
-} from "@/lib/minor-scale/theory";
+import { getMinorScaleById, noteToMidi } from "@/lib/minor-scale/theory";
 import type {
   MinorScaleAnswer,
   MinorScaleAttempt,
@@ -145,7 +142,8 @@ export function useMinorScaleEngine({
 
     await playMinorScaleSequence({
       audio: getAudio(),
-      midiNotes: currentQuestion.expectedMidiNotes ?? getMinorQuestionScaleMidiNotes(currentQuestion),
+      midiNotes:
+        currentQuestion.expectedMidiNotes ?? getMinorQuestionScaleMidiNotes(currentQuestion),
       noteDurationMs: 280,
     });
   }
@@ -166,7 +164,8 @@ export function useMinorScaleEngine({
   }
 
   function answerWithNote(note: string) {
-    if (!currentQuestion || currentQuestion.answerOptions || state !== "active" || questionComplete) return;
+    if (!currentQuestion || currentQuestion.answerOptions || state !== "active" || questionComplete)
+      return;
 
     const selectedMidi = noteToMidi(note);
     void playMinorScaleNote(getAudio(), selectedMidi, 260);
@@ -213,7 +212,9 @@ export function useMinorScaleEngine({
     setCurrentPlayedNotes(nextPlayedNotes);
 
     if (nextPlayedNotes.length >= (currentQuestion.expectedNotes?.length ?? 0)) {
-      setMessage(`Bien: completaste ${getMinorScaleById(currentQuestion.scaleId)?.displayName ?? "la escala"}.`);
+      setMessage(
+        `Bien: completaste ${getMinorScaleById(currentQuestion.scaleId)?.displayName ?? "la escala"}.`,
+      );
       return;
     }
 
@@ -228,7 +229,8 @@ export function useMinorScaleEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
 
     const answer = buildMinorScaleOptionAnswer({
       question: currentQuestion,

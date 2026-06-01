@@ -49,7 +49,11 @@ type UseChordInversionEngineOptions = {
   onAttemptComplete: (attempt: ChordInversionAttempt) => void;
 };
 
-export function useChordInversionEngine({ exercise, progress, onAttemptComplete }: UseChordInversionEngineOptions) {
+export function useChordInversionEngine({
+  exercise,
+  progress,
+  onAttemptComplete,
+}: UseChordInversionEngineOptions) {
   const questions = useMemo(() => generateChordInversionQuestions(exercise), [exercise]);
   const totalUnits = useMemo(() => getExerciseUnitCount(questions), [questions]);
   const [state, setState] = useState<ChordInversionExerciseState>("intro");
@@ -57,14 +61,21 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [answers, setAnswers] = useState<ChordInversionAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<ChordInversionAnswer | null>(null);
-  const [message, setMessage] = useState("Inicia el ejercicio para escuchar y construir inversiones.");
+  const [message, setMessage] = useState(
+    "Inicia el ejercicio para escuchar y construir inversiones.",
+  );
   const [helpUsed, setHelpUsed] = useState(false);
   const [replayUsed, setReplayUsed] = useState(false);
   const [startedAt, setStartedAt] = useState(new Date().toISOString());
   const audioRef = useRef<PianoAudioEngine | null>(null);
   const currentQuestion = questions[currentIndex];
-  const scoring = useMemo(() => scoreChordInversionAnswers(answers, totalUnits), [answers, totalUnits]);
-  const assistedMode = Boolean(progress?.lastAttempt && (progress.lastAttempt.accuracy < 0.6 || progress.bassMistakes > 3));
+  const scoring = useMemo(
+    () => scoreChordInversionAnswers(answers, totalUnits),
+    [answers, totalUnits],
+  );
+  const assistedMode = Boolean(
+    progress?.lastAttempt && (progress.lastAttempt.accuracy < 0.6 || progress.bassMistakes > 3),
+  );
   const isComplete = state === "completed" || state === "failed";
   const questionComplete = Boolean(currentAnswer);
 
@@ -88,8 +99,15 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
     setHelpUsed(assistedMode);
     setReplayUsed(false);
     setStartedAt(new Date().toISOString());
-    setMessage(assistedMode ? "Modo ayuda activo: mira la nota del bajo antes de confirmar." : "Revisa el bajo: define la inversión.");
-    trackChordInversionEvent("chord_inversion_exercise_started", { moduleId: exercise.moduleId, exerciseId: exercise.id });
+    setMessage(
+      assistedMode
+        ? "Modo ayuda activo: mira la nota del bajo antes de confirmar."
+        : "Revisa el bajo: define la inversión.",
+    );
+    trackChordInversionEvent("chord_inversion_exercise_started", {
+      moduleId: exercise.moduleId,
+      exerciseId: exercise.id,
+    });
     void playQuestionAudio({ markReplay: false });
   }
 
@@ -117,11 +135,14 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
 
   function revealHint() {
     setHelpUsed(true);
-    setMessage("Ayuda activa: el bajo esperado está marcado. Las mismas notas con otro bajo cambian la inversión.");
+    setMessage(
+      "Ayuda activa: el bajo esperado está marcado. Las mismas notas con otro bajo cambian la inversión.",
+    );
   }
 
   function toggleNote(note: string) {
-    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions) return;
+    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions)
+      return;
     void playInversionNote(getAudio(), note, 220);
     setSelectedNotes((current) => {
       const pitch = stripOctave(note);
@@ -138,7 +159,8 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
   }
 
   function confirmInversion() {
-    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     const inversion = getInversionById(currentQuestion.inversionId);
     if (!inversion) return;
 
@@ -146,8 +168,12 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
     const correctNotesCount = countCorrectInversionNotes(inversion.notes, selectedNotes);
     const expectedPitchSet = new Set(normalizePitchClasses(inversion.notes));
     const selectedPitchSet = new Set(normalizePitchClasses(selectedNotes));
-    const missingNotes = inversion.notes.filter((note) => !selectedPitchSet.has(normalizePitchClasses([note])[0]));
-    const extraNotes = selectedNotes.filter((note) => !expectedPitchSet.has(normalizePitchClasses([note])[0]));
+    const missingNotes = inversion.notes.filter(
+      (note) => !selectedPitchSet.has(normalizePitchClasses([note])[0]),
+    );
+    const extraNotes = selectedNotes.filter(
+      (note) => !expectedPitchSet.has(normalizePitchClasses([note])[0]),
+    );
     const userBass = getPlayedBassPitchClass(selectedNotes);
     const answer: ChordInversionAnswer = {
       questionId: currentQuestion.id,
@@ -186,7 +212,8 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     const inversion = getInversionById(currentQuestion.inversionId);
     if (!inversion) return;
     const expectedAnswer = getExpectedOptionForQuestion(currentQuestion);
@@ -204,7 +231,11 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
       inversionId: currentQuestion.inversionId,
       chordId: inversion.chordId,
       inversionType: inversion.inversionType,
-      points: pointsForChordInversionAnswer({ isCorrect, helpUsed: helpUsed || assistedMode, replayUsed }),
+      points: pointsForChordInversionAnswer({
+        isCorrect,
+        helpUsed: helpUsed || assistedMode,
+        replayUsed,
+      }),
       errorDetails: isCorrect
         ? undefined
         : {
@@ -224,7 +255,9 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
     const nextAnswers = [...answers, answer];
     setAnswers(nextAnswers);
     setCurrentAnswer(answer);
-    setMessage(getChordInversionFeedback({ question: currentQuestion as ChordInversionQuestion, answer }));
+    setMessage(
+      getChordInversionFeedback({ question: currentQuestion as ChordInversionQuestion, answer }),
+    );
     trackAnswer(answer, nextAnswers);
     if (answer.isCorrect) void playInversionSuccess(getAudio());
     else void playInversionError(getAudio());
@@ -305,4 +338,3 @@ export function useChordInversionEngine({ exercise, progress, onAttemptComplete 
     nextQuestion,
   };
 }
-

@@ -8,7 +8,6 @@ import { ChordKeyboard } from "@/components/modules/chords/ChordKeyboard";
 import { ChordScorePanel } from "@/components/modules/chords/ChordScorePanel";
 import { useChordEngine } from "@/components/modules/chords/hooks/useChordEngine";
 import { ExerciseStartPanel } from "@/components/modules/shared/ExerciseStartPanel";
-import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
 import {
   getChordById,
   getChordDisplaySequence,
@@ -16,7 +15,13 @@ import {
   getDisplayNoteName,
   getDisplayPitchName,
 } from "@/lib/chords/theory";
-import type { ChordAttempt, ChordExercise, ChordExerciseProgress, ChordQuestion } from "@/types/chords";
+import { getCompletedUnits } from "@/lib/scale-practice/progress-units";
+import type {
+  ChordAttempt,
+  ChordExercise,
+  ChordExerciseProgress,
+  ChordQuestion,
+} from "@/types/chords";
 
 type ChordExerciseScreenProps = {
   exercise: ChordExercise;
@@ -24,7 +29,11 @@ type ChordExerciseScreenProps = {
   onAttemptComplete: (attempt: ChordAttempt) => void;
 };
 
-export function ChordExerciseScreen({ exercise, progress, onAttemptComplete }: ChordExerciseScreenProps) {
+export function ChordExerciseScreen({
+  exercise,
+  progress,
+  onAttemptComplete,
+}: ChordExerciseScreenProps) {
   const engine = useChordEngine({ exercise, progress, onAttemptComplete });
   const isIntro = engine.state === "intro";
   const question = isIntro ? undefined : engine.currentQuestion;
@@ -39,8 +48,7 @@ export function ChordExerciseScreen({ exercise, progress, onAttemptComplete }: C
   const progressLabel = `${Math.min(currentProgressUnits, engine.totalUnits)}/${engine.totalUnits}`;
   const progressPercent =
     engine.totalUnits > 0 ? Math.min(100, (currentProgressUnits / engine.totalUnits) * 100) : 0;
-  const showLabels =
-    exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
+  const showLabels = exercise.showNoteLabels || engine.helpUsed || engine.assistedMode;
   const selectedText = engine.selectedNotes.length
     ? engine.selectedNotes.map(getDisplayNoteName).join(" · ")
     : "Sin notas";
@@ -86,119 +94,136 @@ export function ChordExerciseScreen({ exercise, progress, onAttemptComplete }: C
         />
       ) : (
         <>
-      <div className="mt-5">
-        <ChordScorePanel
-          score={engine.scoring.score}
-          accuracy={engine.scoring.accuracy}
-          combo={engine.scoring.combo}
-          comboMax={engine.scoring.comboMax}
-          progressLabel={progressLabel}
-        />
-      </div>
-
-      <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
-        <div className="h-full rounded-full bg-gold-soft transition-all" style={{ width: `${progressPercent}%` }} />
-      </div>
-
-      <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
-        <div className="min-w-0 space-y-4">
-          <QuestionPanel question={question} />
-
-          <ChordKeyboard
-            chordId={question?.chordId}
-            selectedNotes={engine.selectedNotes}
-            showLabels={showLabels}
-            helpVisible={engine.helpUsed || engine.assistedMode}
-            answerCorrect={engine.currentAnswer ? engine.currentAnswer.isCorrect : undefined}
-            disabled={engine.state !== "active" || Boolean(question?.answerOptions) || Boolean(engine.currentAnswer)}
-            onNoteToggle={engine.toggleNote}
-          />
-
-          {question?.answerOptions ? (
-            <OptionGrid
-              question={question}
-              selectedOption={engine.currentAnswer?.selectedOption}
-              disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
-              onAnswer={engine.answerWithOption}
+          <div className="mt-5">
+            <ChordScorePanel
+              score={engine.scoring.score}
+              accuracy={engine.scoring.accuracy}
+              combo={engine.scoring.combo}
+              comboMax={engine.scoring.comboMax}
+              progressLabel={progressLabel}
             />
-          ) : (
-            <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
-              <p className="text-xs font-bold uppercase text-muted">Selección</p>
-              <p className="mt-2 text-lg font-bold text-blue-deep">{selectedText}</p>
-              <div className="mt-3 grid gap-2 sm:grid-cols-2">
-                <button
-                  type="button"
-                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer) || engine.selectedNotes.length === 0}
-                  onClick={engine.clearSelection}
-                  className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-55"
-                >
-                  <Trash2 aria-hidden="true" className="h-4 w-4" />
-                  Limpiar selección
-                </button>
-                <button
-                  type="button"
-                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer) || engine.selectedNotes.length === 0}
-                  onClick={engine.confirmChord}
-                  className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
-                >
-                  Confirmar acorde
-                </button>
-              </div>
-            </div>
-          )}
-
-          <ChordFeedback message={engine.message} answer={engine.currentAnswer} />
-        </div>
-
-        <aside className="grid min-w-0 gap-4 md:grid-cols-3 min-[1800px]:block min-[1800px]:space-y-4">
-          {question ? <ChordBadge chordId={question.chordId} /> : null}
-
-          <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
-            <p className="text-xs font-bold uppercase text-muted">Controles</p>
-            <div className="mt-3 grid gap-2">
-              <button
-                type="button"
-                onClick={() => void engine.playQuestionAudio()}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
-              >
-                <Volume2 aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Repetir audio</span>
-              </button>
-              <button
-                type="button"
-                onClick={engine.revealHint}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
-              >
-                <HelpCircle aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">Ver notas</span>
-              </button>
-              <button
-                type="button"
-                disabled={!engine.questionComplete}
-                onClick={engine.nextQuestion}
-                className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
-              >
-                <SkipForward aria-hidden="true" className="h-4 w-4" />
-                <span className="whitespace-nowrap">
-                  {engine.currentIndex >= engine.questions.length - 1 ? "Finalizar ejercicio" : "Siguiente pregunta"}
-                </span>
-              </button>
-            </div>
           </div>
 
-          {chord ? (
-            <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4 text-sm font-semibold leading-6 text-muted">
-              <p className="text-xs font-bold uppercase text-muted">Idea clave</p>
-              <p className="mt-2">
-                Una tríada combina <span className="font-bold text-blue-deep">tónica</span>,{" "}
-                <span className="font-bold text-blue-deep">tercera</span> y{" "}
-                <span className="font-bold text-blue-deep">quinta</span>. En {chord.displayName}:{" "}
-                {getChordDisplaySequence(chord)}.
-              </p>
+          <div className="mt-5 h-2 overflow-hidden rounded-full bg-blue-deep/10">
+            <div
+              className="h-full rounded-full bg-gold-soft transition-all"
+              style={{ width: `${progressPercent}%` }}
+            />
+          </div>
+
+          <div className="mt-5 grid gap-5 min-[1800px]:grid-cols-[minmax(0,1fr)_minmax(21rem,24rem)]">
+            <div className="min-w-0 space-y-4">
+              <QuestionPanel question={question} />
+
+              <ChordKeyboard
+                chordId={question?.chordId}
+                selectedNotes={engine.selectedNotes}
+                showLabels={showLabels}
+                helpVisible={engine.helpUsed || engine.assistedMode}
+                answerCorrect={engine.currentAnswer ? engine.currentAnswer.isCorrect : undefined}
+                disabled={
+                  engine.state !== "active" ||
+                  Boolean(question?.answerOptions) ||
+                  Boolean(engine.currentAnswer)
+                }
+                onNoteToggle={engine.toggleNote}
+              />
+
+              {question?.answerOptions ? (
+                <OptionGrid
+                  question={question}
+                  selectedOption={engine.currentAnswer?.selectedOption}
+                  disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}
+                  onAnswer={engine.answerWithOption}
+                />
+              ) : (
+                <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4">
+                  <p className="text-xs font-bold uppercase text-muted">Selección</p>
+                  <p className="mt-2 text-lg font-bold text-blue-deep">{selectedText}</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      disabled={
+                        engine.state !== "active" ||
+                        Boolean(engine.currentAnswer) ||
+                        engine.selectedNotes.length === 0
+                      }
+                      onClick={engine.clearSelection}
+                      className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-55"
+                    >
+                      <Trash2 aria-hidden="true" className="h-4 w-4" />
+                      Limpiar selección
+                    </button>
+                    <button
+                      type="button"
+                      disabled={
+                        engine.state !== "active" ||
+                        Boolean(engine.currentAnswer) ||
+                        engine.selectedNotes.length === 0
+                      }
+                      onClick={engine.confirmChord}
+                      className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
+                    >
+                      Confirmar acorde
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <ChordFeedback message={engine.message} answer={engine.currentAnswer} />
             </div>
-          ) : null}
-        </aside>
-      </div>
+
+            <aside className="grid min-w-0 gap-4 md:grid-cols-3 min-[1800px]:block min-[1800px]:space-y-4">
+              {question ? <ChordBadge chordId={question.chordId} /> : null}
+
+              <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-4">
+                <p className="text-xs font-bold uppercase text-muted">Controles</p>
+                <div className="mt-3 grid gap-2">
+                  <button
+                    type="button"
+                    onClick={() => void engine.playQuestionAudio()}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
+                  >
+                    <Volume2 aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">Repetir audio</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={engine.revealHint}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
+                  >
+                    <HelpCircle aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">Ver notas</span>
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!engine.questionComplete}
+                    onClick={engine.nextQuestion}
+                    className="focus-ring inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl bg-gold-soft px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-[#caa759] disabled:cursor-not-allowed disabled:opacity-55"
+                  >
+                    <SkipForward aria-hidden="true" className="h-4 w-4" />
+                    <span className="whitespace-nowrap">
+                      {engine.currentIndex >= engine.questions.length - 1
+                        ? "Finalizar ejercicio"
+                        : "Siguiente pregunta"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              {chord ? (
+                <div className="rounded-2xl border border-blue-deep/10 bg-white/85 p-4 text-sm font-semibold leading-6 text-muted">
+                  <p className="text-xs font-bold uppercase text-muted">Idea clave</p>
+                  <p className="mt-2">
+                    Una tríada combina <span className="font-bold text-blue-deep">tónica</span>,{" "}
+                    <span className="font-bold text-blue-deep">tercera</span> y{" "}
+                    <span className="font-bold text-blue-deep">quinta</span>. En {chord.displayName}
+                    : {getChordDisplaySequence(chord)}.
+                  </p>
+                </div>
+              ) : null}
+            </aside>
+          </div>
         </>
       )}
     </section>
@@ -216,9 +241,17 @@ function QuestionPanel({ question }: { question?: ChordQuestion }) {
       </h3>
       {question && chord ? (
         <div className="mt-4 grid gap-3 text-sm font-semibold text-muted sm:grid-cols-3">
-          <p><span className="font-bold text-blue-deep">Acorde:</span> {chord.displayName}</p>
-          <p><span className="font-bold text-blue-deep">Tipo:</span> {getChordQualityLabel(chord.quality)}</p>
-          <p><span className="font-bold text-blue-deep">Tónica:</span> {getDisplayPitchName(chord.tonic)}</p>
+          <p>
+            <span className="font-bold text-blue-deep">Acorde:</span> {chord.displayName}
+          </p>
+          <p>
+            <span className="font-bold text-blue-deep">Tipo:</span>{" "}
+            {getChordQualityLabel(chord.quality)}
+          </p>
+          <p>
+            <span className="font-bold text-blue-deep">Tónica:</span>{" "}
+            {getDisplayPitchName(chord.tonic)}
+          </p>
         </div>
       ) : null}
     </div>

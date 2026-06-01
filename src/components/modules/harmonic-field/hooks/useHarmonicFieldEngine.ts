@@ -49,7 +49,11 @@ type UseHarmonicFieldEngineOptions = {
   onAttemptComplete: (attempt: HarmonicFieldAttempt) => void;
 };
 
-export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }: UseHarmonicFieldEngineOptions) {
+export function useHarmonicFieldEngine({
+  exercise,
+  progress,
+  onAttemptComplete,
+}: UseHarmonicFieldEngineOptions) {
   const questions = useMemo(() => generateHarmonicFieldQuestions(exercise), [exercise]);
   const totalUnits = useMemo(() => getExerciseUnitCount(questions), [questions]);
   const [state, setState] = useState<HarmonicFieldExerciseState>("intro");
@@ -57,13 +61,18 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
   const [selectedNotes, setSelectedNotes] = useState<string[]>([]);
   const [answers, setAnswers] = useState<HarmonicFieldAnswer[]>([]);
   const [currentAnswer, setCurrentAnswer] = useState<HarmonicFieldAnswer | null>(null);
-  const [message, setMessage] = useState("Inicia el ejercicio para construir acordes desde la escala.");
+  const [message, setMessage] = useState(
+    "Inicia el ejercicio para construir acordes desde la escala.",
+  );
   const [helpUsed, setHelpUsed] = useState(false);
   const [replayUsed, setReplayUsed] = useState(false);
   const [startedAt, setStartedAt] = useState(new Date().toISOString());
   const audioRef = useRef<PianoAudioEngine | null>(null);
   const currentQuestion = questions[currentIndex];
-  const scoring = useMemo(() => scoreHarmonicFieldAnswers(answers, totalUnits), [answers, totalUnits]);
+  const scoring = useMemo(
+    () => scoreHarmonicFieldAnswers(answers, totalUnits),
+    [answers, totalUnits],
+  );
   const assistedMode = Boolean(progress?.lastAttempt && progress.lastAttempt.accuracy < 0.6);
   const isComplete = state === "completed" || state === "failed";
   const questionComplete = Boolean(currentAnswer);
@@ -88,8 +97,15 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
     setHelpUsed(assistedMode);
     setReplayUsed(false);
     setStartedAt(new Date().toISOString());
-    setMessage(assistedMode ? "Modo ayuda activo: mira las notas del acorde antes de responder." : "Construye el acorde desde su grado.");
-    trackHarmonicFieldEvent("harmonic_field_exercise_started", { moduleId: exercise.moduleId, exerciseId: exercise.id });
+    setMessage(
+      assistedMode
+        ? "Modo ayuda activo: mira las notas del acorde antes de responder."
+        : "Construye el acorde desde su grado.",
+    );
+    trackHarmonicFieldEvent("harmonic_field_exercise_started", {
+      moduleId: exercise.moduleId,
+      exerciseId: exercise.id,
+    });
     void playQuestionAudio({ markReplay: false });
   }
 
@@ -134,7 +150,8 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
   }
 
   function toggleNote(note: string) {
-    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions) return;
+    if (!currentQuestion || state !== "active" || currentAnswer || currentQuestion.answerOptions)
+      return;
     void playHarmonicFieldNote(getAudio(), note, 220);
     setSelectedNotes((current) => {
       const pitch = stripOctave(note);
@@ -151,7 +168,8 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
   }
 
   function confirmChord() {
-    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     if (!currentQuestion.degree) return;
     const field = requireField(currentQuestion.fieldId);
     const chord = getChordByDegree(field, currentQuestion.degree);
@@ -159,8 +177,12 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
     const correctNotesCount = countCorrectChordNotes(chord.notes, selectedNotes);
     const expectedPitchSet = new Set(normalizePitchClasses(chord.notes));
     const selectedPitchSet = new Set(normalizePitchClasses(selectedNotes));
-    const missingNotes = chord.notes.filter((note) => !selectedPitchSet.has(normalizePitchClasses([note])[0]));
-    const extraNotes = selectedNotes.filter((note) => !expectedPitchSet.has(normalizePitchClasses([note])[0]));
+    const missingNotes = chord.notes.filter(
+      (note) => !selectedPitchSet.has(normalizePitchClasses([note])[0]),
+    );
+    const extraNotes = selectedNotes.filter(
+      (note) => !expectedPitchSet.has(normalizePitchClasses([note])[0]),
+    );
     const answer: HarmonicFieldAnswer = {
       questionId: currentQuestion.id,
       selectedNotes,
@@ -193,9 +215,12 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") return;
+    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
+      return;
     const field = requireField(currentQuestion.fieldId);
-    const chord = currentQuestion.degree ? getChordByDegree(field, currentQuestion.degree) : undefined;
+    const chord = currentQuestion.degree
+      ? getChordByDegree(field, currentQuestion.degree)
+      : undefined;
     const expectedAnswer = getExpectedOptionForQuestion(currentQuestion);
     const isCorrect = option === expectedAnswer;
     const answer: HarmonicFieldAnswer = {
@@ -213,7 +238,11 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
       chordQuality: chord?.quality ?? currentQuestion.chordQuality,
       functionRole: currentQuestion.expectedFunction ?? chord?.functionRole,
       progressionId: currentQuestion.progressionId,
-      points: pointsForHarmonicFieldAnswer({ isCorrect, helpUsed: helpUsed || assistedMode, replayUsed }),
+      points: pointsForHarmonicFieldAnswer({
+        isCorrect,
+        helpUsed: helpUsed || assistedMode,
+        replayUsed,
+      }),
       errorDetails: isCorrect
         ? undefined
         : {
@@ -229,7 +258,9 @@ export function useHarmonicFieldEngine({ exercise, progress, onAttemptComplete }
     const nextAnswers = [...answers, answer];
     setAnswers(nextAnswers);
     setCurrentAnswer(answer);
-    setMessage(getHarmonicFieldFeedback({ question: currentQuestion as HarmonicFieldQuestion, answer }));
+    setMessage(
+      getHarmonicFieldFeedback({ question: currentQuestion as HarmonicFieldQuestion, answer }),
+    );
     trackAnswer(answer, nextAnswers);
     if (answer.isCorrect) void playHarmonicFieldSuccess(getAudio());
     else void playHarmonicFieldError(getAudio());

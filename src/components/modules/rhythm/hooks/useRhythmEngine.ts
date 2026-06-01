@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-
+import { useMetronome } from "@/components/modules/rhythm/hooks/useMetronome";
+import { useRhythmScoring } from "@/components/modules/rhythm/hooks/useRhythmScoring";
+import { useTimingEvaluator } from "@/components/modules/rhythm/hooks/useTimingEvaluator";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { trackEvent } from "@/lib/rhythm/analytics";
 import { buildExerciseAttempt } from "@/lib/rhythm/scoring";
@@ -20,9 +22,6 @@ import type {
   RhythmExerciseState,
   TimingResult,
 } from "@/types/rhythm";
-import { useMetronome } from "@/components/modules/rhythm/hooks/useMetronome";
-import { useRhythmScoring } from "@/components/modules/rhythm/hooks/useRhythmScoring";
-import { useTimingEvaluator } from "@/components/modules/rhythm/hooks/useTimingEvaluator";
 
 type UseRhythmEngineOptions = {
   exercise: RhythmExercise;
@@ -43,7 +42,9 @@ export function useRhythmEngine({
   const [results, setResults] = useState<TimingResult[]>([]);
   const [currentBeatIndex, setCurrentBeatIndex] = useState(0);
   const [pulseProgress, setPulseProgress] = useState(0);
-  const [feedback, setFeedback] = useState("Pulsa iniciar y toca cuando el anillo llegue al centro.");
+  const [feedback, setFeedback] = useState(
+    "Pulsa iniciar y toca cuando el anillo llegue al centro.",
+  );
   const [lastResult, setLastResult] = useState<TimingResult | null>(null);
   const [effectiveBpm, setEffectiveBpm] = useState(exercise.bpm);
   const audioRef = useRef<PianoAudioEngine | null>(null);
@@ -65,7 +66,8 @@ export function useRhythmEngine({
 
   const effectiveExercise = useMemo(() => {
     const scale = failedAttempts >= 2 ? 0.9 : 1;
-    const speedUp = failedAttempts === 0 && scoring.accuracy >= 0.9 && results.length > 0 ? 1.05 : 1;
+    const speedUp =
+      failedAttempts === 0 && scoring.accuracy >= 0.9 && results.length > 0 ? 1.05 : 1;
     const tempoScale = scale * speedUp;
     const scaleBpm = (bpm: number) => Math.max(40, Math.round(bpm * tempoScale));
 
@@ -196,7 +198,6 @@ export function useRhythmEngine({
       finishAttempt();
       return;
     }
-
   }
 
   function monitorPreviewClock() {
@@ -268,25 +269,28 @@ export function useRhythmEngine({
       }, index * 720);
       countdownTimersRef.current.push(timer);
     });
-    const startTimer = window.setTimeout(() => {
-      const startTimestamp = performance.now() + 520;
-      const events = generateBeatEvents({
-        exercise: effectiveExercise,
-        startTimestamp,
-      });
-      beatEventsRef.current = events;
-      setBeatEvents(events);
-      startedAtIsoRef.current = new Date().toISOString();
-      setEffectiveBpm(events[0]?.bpm ?? effectiveExercise.bpm);
-      setCountdown(null);
-      setState("playing");
-      trackEvent("rhythm_exercise_started", {
-        moduleId: exercise.moduleId,
-        exerciseId: exercise.id,
-        bpm: events[0]?.bpm ?? exercise.bpm,
-      });
-      startMetronome(monitorClock);
-    }, countdownValues.length * 720 + 120);
+    const startTimer = window.setTimeout(
+      () => {
+        const startTimestamp = performance.now() + 520;
+        const events = generateBeatEvents({
+          exercise: effectiveExercise,
+          startTimestamp,
+        });
+        beatEventsRef.current = events;
+        setBeatEvents(events);
+        startedAtIsoRef.current = new Date().toISOString();
+        setEffectiveBpm(events[0]?.bpm ?? effectiveExercise.bpm);
+        setCountdown(null);
+        setState("playing");
+        trackEvent("rhythm_exercise_started", {
+          moduleId: exercise.moduleId,
+          exerciseId: exercise.id,
+          bpm: events[0]?.bpm ?? exercise.bpm,
+        });
+        startMetronome(monitorClock);
+      },
+      countdownValues.length * 720 + 120,
+    );
     countdownTimersRef.current.push(startTimer);
   }
 
@@ -353,7 +357,9 @@ export function useRhythmEngine({
     resetRuntime();
     setState("intro");
     setEffectiveBpm(effectiveExercise.bpm);
-    setFeedback("Primero escucha el patrón. Luego practica y toca cuando el anillo llegue al centro.");
+    setFeedback(
+      "Primero escucha el patrón. Luego practica y toca cuando el anillo llegue al centro.",
+    );
   }
 
   return {

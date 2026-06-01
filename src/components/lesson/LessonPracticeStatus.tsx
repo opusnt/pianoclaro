@@ -1,8 +1,8 @@
 "use client";
 
 import { PracticeFeedback } from "@/components/lesson/PracticeFeedback";
-import { pianoLabelByNote, solfegeByNote } from "@/lib/music/notes";
 import type { SharpNoteName } from "@/lib/music/notes";
+import { pianoLabelByNote, solfegeByNote } from "@/lib/music/notes";
 import type { NoteInputEvaluation } from "@/lib/practice/evaluate-note";
 import type { NoteName } from "@/types/lesson";
 

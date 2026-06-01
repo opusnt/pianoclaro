@@ -207,7 +207,11 @@ export function getStepLabel(interval: number) {
   return interval === 1 ? "Semitono" : "Tono";
 }
 
-export function createAlteredScaleMidiNotes(scale: ScaleDefinition, alteredIndex = 3, direction: 1 | -1 = 1) {
+export function createAlteredScaleMidiNotes(
+  scale: ScaleDefinition,
+  alteredIndex = 3,
+  direction: 1 | -1 = 1,
+) {
   return scale.midiNotes.map((midi, index) => {
     if (index === alteredIndex) {
       return midi + direction;

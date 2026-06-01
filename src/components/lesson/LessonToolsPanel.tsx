@@ -1,11 +1,12 @@
 "use client";
 
-import { AudioSettings } from "@/components/lesson/AudioSettings";
-import { ComputerKeyboardToggle } from "@/components/lesson/ComputerKeyboardToggle";
-import { PianoKeyboard } from "@/components/lesson/PianoKeyboard";
-import { PracticeModeSelector } from "@/components/lesson/PracticeModeSelector";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { AudioSettings } from "@/components/lesson/AudioSettings";
+import { ComputerKeyboardToggle } from "@/components/lesson/ComputerKeyboardToggle";
+import { MicrophoneToggle } from "@/components/lesson/MicrophoneToggle";
+import { PianoKeyboard } from "@/components/lesson/PianoKeyboard";
+import { PracticeModeSelector } from "@/components/lesson/PracticeModeSelector";
 import type { SharpNoteName } from "@/lib/music/notes";
 import type { Lesson, NoteName, PracticeMode } from "@/types/lesson";
 
@@ -14,6 +15,7 @@ type LessonToolsPanelProps = {
   activeNotes: NoteName[];
   activeBlackNotes: SharpNoteName[];
   computerKeyboardEnabled: boolean;
+  microphoneEnabled: boolean;
   selectedPracticeMode: PracticeMode;
   volume: number;
   isMuted: boolean;
@@ -21,6 +23,7 @@ type LessonToolsPanelProps = {
   onNaturalKeyPress: (note: NoteName) => void;
   onSharpKeyPress: (note: SharpNoteName) => void;
   onComputerKeyboardChange: (enabled: boolean) => void;
+  onMicrophoneChange: (enabled: boolean) => void;
   onPracticeModeChange: (mode: PracticeMode) => void;
   onVolumeChange: (volume: number) => void;
   onMutedChange: (isMuted: boolean) => void;
@@ -32,6 +35,7 @@ export function LessonToolsPanel({
   activeNotes,
   activeBlackNotes,
   computerKeyboardEnabled,
+  microphoneEnabled,
   selectedPracticeMode,
   volume,
   isMuted,
@@ -39,6 +43,7 @@ export function LessonToolsPanel({
   onNaturalKeyPress,
   onSharpKeyPress,
   onComputerKeyboardChange,
+  onMicrophoneChange,
   onPracticeModeChange,
   onVolumeChange,
   onMutedChange,
@@ -76,6 +81,10 @@ export function LessonToolsPanel({
           <ComputerKeyboardToggle
             enabled={computerKeyboardEnabled}
             onChange={onComputerKeyboardChange}
+          />
+          <MicrophoneToggle
+            enabled={microphoneEnabled}
+            onChange={onMicrophoneChange}
           />
           <PracticeModeSelector
             modes={lesson.practiceModes}

@@ -1,5 +1,5 @@
-import { coreLessonPedagogy } from "@/lib/practice/pedagogy";
 import { createMeasure, notes } from "@/lib/music/score-authoring";
+import { coreLessonPedagogy } from "@/lib/practice/pedagogy";
 import type { Lesson } from "@/types/lesson";
 
 const songPracticeModes = [
@@ -66,8 +66,7 @@ export const playableSongLessons: Lesson[] = [
         instruction: "Busca dónde cambia el patrón y dónde la melodía se queda quieta.",
         activePhrase: "B",
         conceptTitle: "Cierre de frase",
-        conceptExplanation:
-          "Una repetición al final ayuda a sentir que la idea musical descansa.",
+        conceptExplanation: "Una repetición al final ayuda a sentir que la idea musical descansa.",
         melodyDirection: "mixed",
       },
       {
@@ -128,8 +127,7 @@ export const playableSongLessons: Lesson[] = [
         instruction: "Mira cómo la melodía vuelve hacia la izquierda del teclado.",
         activeMeasure: 2,
         conceptTitle: "Respuesta descendente",
-        conceptExplanation:
-          "Las canciones cortas suelen alternar una llamada y una respuesta.",
+        conceptExplanation: "Las canciones cortas suelen alternar una llamada y una respuesta.",
         melodyDirection: "down",
       },
       {

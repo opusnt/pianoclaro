@@ -105,9 +105,11 @@ export function generateMinorScaleQuestions(exercise: MinorScaleExercise): Minor
   }
 
   if (exercise.type === "missing_note") {
-    return missingNotePlan.slice(0, exercise.totalRounds).map((plan, index) =>
-      buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
-    );
+    return missingNotePlan
+      .slice(0, exercise.totalRounds)
+      .map((plan, index) =>
+        buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
+      );
   }
 
   if (exercise.type === "natural_vs_harmonic") {
@@ -181,7 +183,8 @@ export function getExpectedOptionForQuestion(question: MinorScaleQuestion) {
 
   if (question.prompt.includes("séptimo grado más alto")) return "LA menor armónica";
   if (question.prompt.includes("dos notas cambian")) return "Sexta y séptima";
-  if (question.prompt.includes("cuál suena menor")) return question.prompt.includes("ambas") ? "Segunda" : "LA menor natural";
+  if (question.prompt.includes("cuál suena menor"))
+    return question.prompt.includes("ambas") ? "Segunda" : "LA menor natural";
   if (question.prompt.includes("Cuál suena mayor")) return "Primera";
   if (question.prompt.includes("Cuál cambió")) return "Tercera nota";
   if (question.prompt.includes("está...")) return "Un semitono más abajo";
@@ -340,7 +343,10 @@ function buildFinalChallengeQuestions(exercise: MinorScaleExercise): MinorScaleQ
       comparisonScaleId: "a-minor-natural",
       differenceIndexes: getNaturalHarmonicDifferenceIndexes(),
       prompts: [
-        { prompt: "¿Cuál tiene el séptimo grado más alto?", options: ["LA menor natural", "LA menor armónica"] },
+        {
+          prompt: "¿Cuál tiene el séptimo grado más alto?",
+          options: ["LA menor natural", "LA menor armónica"],
+        },
         { prompt: "Toca SOL# en LA menor armónica.", noteTargetMidi: 68 },
       ],
     }),
@@ -350,7 +356,10 @@ function buildFinalChallengeQuestions(exercise: MinorScaleExercise): MinorScaleQ
       comparisonScaleId: "a-minor-natural",
       differenceIndexes: getNaturalMelodicDifferenceIndexes(),
       prompts: [
-        { prompt: "¿Qué dos notas cambian en la melódica?", options: ["Sexta y séptima", "Segunda y quinta"] },
+        {
+          prompt: "¿Qué dos notas cambian en la melódica?",
+          options: ["Sexta y séptima", "Segunda y quinta"],
+        },
         { prompt: "Toca FA# en LA menor melódica.", noteTargetMidi: 66 },
         { prompt: "Completa LA menor melódica ascendente.", sequence: true },
       ],

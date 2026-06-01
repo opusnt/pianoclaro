@@ -8,7 +8,13 @@ type ChordScorePanelProps = {
   progressLabel: string;
 };
 
-export function ChordScorePanel({ score, accuracy, combo, comboMax, progressLabel }: ChordScorePanelProps) {
+export function ChordScorePanel({
+  score,
+  accuracy,
+  combo,
+  comboMax,
+  progressLabel,
+}: ChordScorePanelProps) {
   const items = [
     { icon: Trophy, label: "Score", value: String(score) },
     { icon: Gauge, label: "Accuracy", value: `${Math.round(accuracy * 100)}%` },

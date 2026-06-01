@@ -1,5 +1,5 @@
-import type { ExerciseAttempt, RhythmTendency } from "@/types/rhythm";
 import { appendLocalAnalyticsEvent } from "@/lib/analytics/local-analytics";
+import type { ExerciseAttempt, RhythmTendency } from "@/types/rhythm";
 
 export type RhythmAnalyticsEventName =
   | "rhythm_module_started"

@@ -10,15 +10,24 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
     "Construye acordes desde cada grado de una escala mayor y toca progresiones por números romanos.",
   objective:
     "Enseñar que cada nota de una escala puede generar una tríada, y que el conjunto de esas tríadas forma el campo armónico.",
-  mainConcepts: ["campo armónico", "grado", "números romanos", "tríada diatónica", "progresión", "función básica"],
-  practicalSkill: "Construir el campo armónico mayor y tocar progresiones I-V-vi-IV en varias tonalidades.",
+  mainConcepts: [
+    "campo armónico",
+    "grado",
+    "números romanos",
+    "tríada diatónica",
+    "progresión",
+    "función básica",
+  ],
+  practicalSkill:
+    "Construir el campo armónico mayor y tocar progresiones I-V-vi-IV en varias tonalidades.",
   keyboardVisualization:
     "Teclado con escala, grado activo, notas del acorde y selección múltiple para validar tríadas e inversiones.",
   auditoryExercises: ["identify-chord", "analyze-progression"],
   executionExercises: ["build-chord", "play-progression"],
   recognitionExercises: ["identify-chord", "analyze-progression"],
   creativeMiniChallenge: "Tocar I-V-vi-IV en DO mayor y moverla a SOL mayor.",
-  finalAssessment: "Desafío mixto de construcción, cualidad, números romanos, funciones y progresiones.",
+  finalAssessment:
+    "Desafío mixto de construcción, cualidad, números romanos, funciones y progresiones.",
   unlockCriteria: [{ type: "module-completed", moduleId: "chord-inversions" }],
   contributesToSkills: {
     harmony: 35,
@@ -32,7 +41,12 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
   prerequisites: ["chord-inversions"],
   expectedResult:
     "El usuario puede construir el campo armónico mayor, identificar grados y tocar progresiones simples por grados.",
-  laterUnlockedSkills: ["Progresiones populares", "Acompañamiento", "Composición básica", "Análisis de canciones"],
+  laterUnlockedSkills: [
+    "Progresiones populares",
+    "Acompañamiento",
+    "Composición básica",
+    "Análisis de canciones",
+  ],
   microLessons: [
     {
       id: "scale-to-triad",
@@ -40,7 +54,8 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
       objective: "Formar una tríada saltando notas dentro de la escala.",
       idealMinutes: 5,
       mainConcept: "Construcción por terceras",
-      briefExplanation: "Toma una nota, salta una, toma la siguiente, salta otra y toma la siguiente.",
+      briefExplanation:
+        "Toma una nota, salta una, toma la siguiente, salta otra y toma la siguiente.",
       visualExample: "DO RE MI FA SOL con DO-MI-SOL resaltado.",
       suggestedInteraction: "Seleccionar las tres notas del grado pedido.",
       exerciseType: "build-chord",
@@ -60,18 +75,40 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
     },
   ],
   ux: {
-    entryExperience: "El usuario ve DO mayor como escala y luego descubre DO-MI-SOL saltando notas.",
+    entryExperience:
+      "El usuario ve DO mayor como escala y luego descubre DO-MI-SOL saltando notas.",
     firstScreen: "Lista secuencial de ejercicios con progreso local.",
     conceptDelivery: "Textos breves con grilla de grados y validación inmediata por acorde.",
     animationMoments: ["Grado activo", "Notas del acorde resaltadas", "Progresión avanzando"],
     audioMoments: ["Escala", "Acorde simultáneo", "Progresión"],
-    cognitiveLoadRules: ["No enseñar séptimas", "No introducir dominantes secundarios", "No analizar modulaciones"],
+    cognitiveLoadRules: [
+      "No enseñar séptimas",
+      "No introducir dominantes secundarios",
+      "No analizar modulaciones",
+    ],
     progressFeeling: ["Score", "Combo", "Desbloqueo secuencial"],
-    visualFeedback: ["Escala permitida", "Grado actual", "Acorde correcto", "Error por nota faltante"],
+    visualFeedback: [
+      "Escala permitida",
+      "Grado actual",
+      "Acorde correcto",
+      "Error por nota faltante",
+    ],
     soundFeedback: ["Acorde", "Arpegio", "Éxito/error"],
-    celebrations: ["Campo de DO completo", "Primera progresión por grados", "Transposición lograda"],
-    errorHandling: ["Mostrar cualidad correcta", "Mostrar notas faltantes", "Recordar patrón M-m-m-M-M-m-dim"],
-    smartHints: ["Traduce el grado antes de tocar", "Usa solo notas de la escala", "I es casa, IV prepara, V tensiona"],
+    celebrations: [
+      "Campo de DO completo",
+      "Primera progresión por grados",
+      "Transposición lograda",
+    ],
+    errorHandling: [
+      "Mostrar cualidad correcta",
+      "Mostrar notas faltantes",
+      "Recordar patrón M-m-m-M-M-m-dim",
+    ],
+    smartHints: [
+      "Traduce el grado antes de tocar",
+      "Usa solo notas de la escala",
+      "I es casa, IV prepara, V tensiona",
+    ],
   },
   keyboard: {
     visibleOctaves: { mobile: 2, desktop: 2 },
@@ -126,9 +163,21 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
     spatialSoundLearning: ["La escala y el acorde se escuchan antes de tocar"],
   },
   adaptivity: {
-    frustrationSignals: ["accuracy < 60%", "errores repetidos por cualidad", "errores en progresiones"],
-    lowerDifficultyActions: ["Solo DO mayor", "Mostrar notas de cada acorde", "Mostrar patrón M-m-m-M-M-m-dim"],
-    raiseDifficultyActions: ["Agregar SOL/FA/RE", "Ocultar notas del acorde", "Transponer progresiones"],
+    frustrationSignals: [
+      "accuracy < 60%",
+      "errores repetidos por cualidad",
+      "errores en progresiones",
+    ],
+    lowerDifficultyActions: [
+      "Solo DO mayor",
+      "Mostrar notas de cada acorde",
+      "Mostrar patrón M-m-m-M-M-m-dim",
+    ],
+    raiseDifficultyActions: [
+      "Agregar SOL/FA/RE",
+      "Ocultar notas del acorde",
+      "Transponer progresiones",
+    ],
     repetitionRules: ["Repetir grados o cualidades débiles"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],
   },
@@ -137,7 +186,8 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
       id: "major-second-degree",
       error: "Tocar II como acorde mayor en una escala mayor",
       detection: "Selecciona tercera mayor donde corresponde tercera menor",
-      correction: "Recordar patrón: I mayor, ii menor, iii menor, IV mayor, V mayor, vi menor, vii° disminuido.",
+      correction:
+        "Recordar patrón: I mayor, ii menor, iii menor, IV mayor, V mayor, vi menor, vii° disminuido.",
     },
   ],
   pedagogyRationale: [
@@ -148,7 +198,13 @@ export const harmonicFieldDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: constructor de campo armónico",
     setup: "28 rondas mixtas con grados, cualidades, acordes, funciones y progresiones.",
-    tasks: ["Construir acordes", "Identificar cualidad", "Traducir grados", "Tocar progresiones", "Cambiar tonalidad"],
+    tasks: [
+      "Construir acordes",
+      "Identificar cualidad",
+      "Traducir grados",
+      "Tocar progresiones",
+      "Cambiar tonalidad",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 7 errores"],
     celebration: "Ya puedes leer progresiones por grados y moverlas entre tonalidades.",
     summary: ["Campo armónico mayor", "I ii iii IV V vi vii°", "I-V-vi-IV", "Funciones básicas"],

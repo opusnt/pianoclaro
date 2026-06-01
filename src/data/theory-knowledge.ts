@@ -43,7 +43,8 @@ export const extractedTheoryKnowledge: TheoryKnowledgeItem[] = [
     extractedFrom: "sightread/src/types.ts",
     pianoClaroUse:
       "Preparar lecciones que puedan pasar de mock visual a lectura real, reproducción, feedback y Web MIDI.",
-    lessonHook: "Cada nota no es solo un nombre: también tiene cuándo empieza, cuánto dura y en qué compás vive.",
+    lessonHook:
+      "Cada nota no es solo un nombre: también tiene cuándo empieza, cuánto dura y en qué compás vive.",
   },
   {
     id: "manos-y-pistas",
@@ -54,7 +55,8 @@ export const extractedTheoryKnowledge: TheoryKnowledgeItem[] = [
     extractedFrom: "sightread/src/types.ts",
     pianoClaroUse:
       "Agregar modos de práctica por mano cuando las lecciones tengan bajo, acordes o acompañamientos.",
-    lessonHook: "Primero mano derecha para leer melodía; luego mano izquierda para sostener la armonía.",
+    lessonHook:
+      "Primero mano derecha para leer melodía; luego mano izquierda para sostener la armonía.",
   },
   {
     id: "generacion-ejercicios",

@@ -236,7 +236,10 @@ export function getAccidentalsForKey(keyId: string) {
 export function validateScaleWithKeySignature(keyId: string, playedNotes: string[]) {
   const key = requireKeySignature(keyId);
   const playedMidi = playedNotes.map(noteToMidi);
-  return key.midiNotes.length === playedMidi.length && key.midiNotes.every((midi, index) => midi === playedMidi[index]);
+  return (
+    key.midiNotes.length === playedMidi.length &&
+    key.midiNotes.every((midi, index) => midi === playedMidi[index])
+  );
 }
 
 export function classifyAccidentalType(keyId: string): AccidentalType {
@@ -290,7 +293,9 @@ export function getAccidentalTypeLabel(type: AccidentalType) {
 }
 
 export function getWeakestKeys(answers: KeySignatureAnswer[]) {
-  return getWeakestByKey(answers, "keyId").map((keyId) => getKeySignatureById(keyId)?.displayName ?? keyId);
+  return getWeakestByKey(answers, "keyId").map(
+    (keyId) => getKeySignatureById(keyId)?.displayName ?? keyId,
+  );
 }
 
 export function getWeakestAccidentals(answers: KeySignatureAnswer[]) {
@@ -311,7 +316,10 @@ export function getWeakestAccidentals(answers: KeySignatureAnswer[]) {
 export function getWeakestRelativePairs(answers: KeySignatureAnswer[]) {
   return answers
     .filter((answer) => !answer.isCorrect && answer.errorDetails?.expectedRelativeKey)
-    .map((answer) => `${getKeySignatureById(answer.keyId)?.displayName ?? answer.keyId} / ${answer.errorDetails?.expectedRelativeKey}`)
+    .map(
+      (answer) =>
+        `${getKeySignatureById(answer.keyId)?.displayName ?? answer.keyId} / ${answer.errorDetails?.expectedRelativeKey}`,
+    )
     .filter((value, index, values) => values.indexOf(value) === index);
 }
 

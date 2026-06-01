@@ -12,7 +12,13 @@ type ExerciseProgressCardProps = {
   onSelect: () => void;
 };
 
-export function ExerciseProgressCard({ exercise, index, progress, selected, onSelect }: ExerciseProgressCardProps) {
+export function ExerciseProgressCard({
+  exercise,
+  index,
+  progress,
+  selected,
+  onSelect,
+}: ExerciseProgressCardProps) {
   const locked = !progress?.unlocked;
   const completed = Boolean(progress?.completed);
 
@@ -29,15 +35,24 @@ export function ExerciseProgressCard({ exercise, index, progress, selected, onSe
     >
       <div className="flex items-start gap-3">
         <span className="mt-1 text-blue-deep">
-          {locked ? <Lock className="h-5 w-5" /> : completed ? <CheckCircle2 className="h-5 w-5" /> : <PlayCircle className="h-5 w-5" />}
+          {locked ? (
+            <Lock className="h-5 w-5" />
+          ) : completed ? (
+            <CheckCircle2 className="h-5 w-5" />
+          ) : (
+            <PlayCircle className="h-5 w-5" />
+          )}
         </span>
         <span className="min-w-0">
-          <span className="block text-xs font-bold uppercase text-muted">Ejercicio {index + 1}</span>
+          <span className="block text-xs font-bold uppercase text-muted">
+            Ejercicio {index + 1}
+          </span>
           <span className="mt-1 block text-base font-bold text-blue-deep">{exercise.title}</span>
           <span className="mt-1 block text-sm leading-5 text-muted">{exercise.description}</span>
           {progress?.attempts ? (
             <span className="mt-2 block text-xs font-bold text-blue-deep">
-              Mejor precisión: {Math.round(progress.bestAccuracy * 100)}% · intentos {progress.attempts}
+              Mejor precisión: {Math.round(progress.bestAccuracy * 100)}% · intentos{" "}
+              {progress.attempts}
             </span>
           ) : null}
         </span>

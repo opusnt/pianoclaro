@@ -94,7 +94,8 @@ export function buildChordInversionAttempt({
     mistakes: scoring.mistakes,
     weakestChords: getWeakestChordIds(answers),
     weakestInversions: getWeakestInversionTypes(answers),
-    bassMistakes: answers.filter((answer) => answer.hasCorrectNotes && !answer.hasCorrectBass).length,
+    bassMistakes: answers.filter((answer) => answer.hasCorrectNotes && !answer.hasCorrectBass)
+      .length,
     completed: true,
     passed,
   };
@@ -135,4 +136,3 @@ export function getChordInversionFeedback({
 
   return `La respuesta correcta era ${Array.isArray(answer.expectedAnswer) ? answer.expectedAnswer.join(" · ") : answer.expectedAnswer}.`;
 }
-

@@ -1,12 +1,6 @@
 import { getExpectedOptionForQuestion } from "@/lib/pentatonic/questions";
-import {
-  pointsForImprovisation,
-  pointsForPentatonicAnswer,
-} from "@/lib/pentatonic/scoring";
-import {
-  getDisplayNoteName,
-  getPentatonicScaleById,
-} from "@/lib/pentatonic/theory";
+import { pointsForImprovisation, pointsForPentatonicAnswer } from "@/lib/pentatonic/scoring";
+import { getDisplayNoteName, getPentatonicScaleById } from "@/lib/pentatonic/theory";
 import type { PentatonicAnswer, PentatonicQuestion } from "@/types/pentatonic";
 
 export function isNoteAllowedInPentatonicScale(scaleId: string, selectedMidi: number) {

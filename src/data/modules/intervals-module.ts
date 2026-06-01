@@ -1,3 +1,4 @@
+import { firstFiveNotesModuleId } from "@/data/learning-slugs";
 import type { DetailedLearningModule } from "@/types/curriculum";
 
 export const intervalsDetailedModule: DetailedLearningModule = {
@@ -26,7 +27,8 @@ export const intervalsDetailedModule: DetailedLearningModule = {
   executionExercises: ["find-interval", "play-indicated-note"],
   recognitionExercises: ["find-interval", "recognize-heard-note"],
   creativeMiniChallenge: "Crear una mini pregunta-respuesta usando un paso corto y un salto medio.",
-  finalAssessment: "Desafío mixto de 20 rondas: tocar intervalos, reconocer dirección y clasificar distancia.",
+  finalAssessment:
+    "Desafío mixto de 20 rondas: tocar intervalos, reconocer dirección y clasificar distancia.",
   unlockCriteria: [{ type: "module-completed", moduleId: "basic-rhythm" }],
   contributesToSkills: {
     ear: 30,
@@ -36,7 +38,7 @@ export const intervalsDetailedModule: DetailedLearningModule = {
   },
   estimatedMinutes: 45,
   difficulty: "inicial",
-  prerequisites: ["keyboard-notes", "basic-rhythm"],
+  prerequisites: [firstFiveNotesModuleId, "basic-rhythm"],
   expectedResult:
     "El usuario puede explicar que un intervalo es distancia, ubicar semitonos en teclado y reconocer movimientos básicos de oído.",
   laterUnlockedSkills: [
@@ -51,7 +53,8 @@ export const intervalsDetailedModule: DetailedLearningModule = {
       objective: "Entender que cada tecla consecutiva es 1 semitono.",
       idealMinutes: 4,
       mainConcept: "Semitono",
-      briefExplanation: "La distancia mínima del piano ocurre entre dos teclas vecinas, blancas o negras.",
+      briefExplanation:
+        "La distancia mínima del piano ocurre entre dos teclas vecinas, blancas o negras.",
       visualExample: "Tecla base iluminada y tecla vecina a izquierda o derecha.",
       suggestedInteraction: "Tocar la tecla consecutiva indicada.",
       exerciseType: "find-interval",
@@ -87,7 +90,8 @@ export const intervalsDetailedModule: DetailedLearningModule = {
       objective: "Distinguir notas sucesivas y simultáneas.",
       idealMinutes: 5,
       mainConcept: "Textura del intervalo",
-      briefExplanation: "Un intervalo melódico suena en secuencia; uno armónico suena al mismo tiempo.",
+      briefExplanation:
+        "Un intervalo melódico suena en secuencia; uno armónico suena al mismo tiempo.",
       visualExample: "Opciones melódico/armónico.",
       suggestedInteraction: "Escuchar y clasificar.",
       exerciseType: "recognize-heard-note",
@@ -187,7 +191,11 @@ export const intervalsDetailedModule: DetailedLearningModule = {
   },
   adaptivity: {
     frustrationSignals: ["accuracy < 60%", "dos errores seguidos", "intervalos débiles repetidos"],
-    lowerDifficultyActions: ["Mostrar etiquetas", "Mostrar pista visual", "Reducir intervalos posibles"],
+    lowerDifficultyActions: [
+      "Mostrar etiquetas",
+      "Mostrar pista visual",
+      "Reducir intervalos posibles",
+    ],
     raiseDifficultyActions: ["Ocultar etiquetas", "Mezclar dirección", "Aumentar rango futuro"],
     repetitionRules: ["Repetir intervalos con más de 3 errores en futuras rondas"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],

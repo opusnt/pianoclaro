@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, CheckCircle2, LockKeyhole } from "lucide-react";
+import Link from "next/link";
 
 import { getNextModule } from "@/lib/modules/module-sequence";
 

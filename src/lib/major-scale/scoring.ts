@@ -109,7 +109,9 @@ export function getWeakestScales(answers: ScaleAnswer[]) {
   return Object.entries(counts)
     .sort((a, b) => b[1] - a[1])
     .filter(([, count]) => count >= 2)
-    .map(([scaleId]) => scaleDefinitions.find((scale) => scale.id === scaleId)?.displayName ?? scaleId);
+    .map(
+      ([scaleId]) => scaleDefinitions.find((scale) => scale.id === scaleId)?.displayName ?? scaleId,
+    );
 }
 
 export function getScaleFeedback({

@@ -21,17 +21,22 @@ const qualityOptions = ["mayor", "menor", "disminuido"];
 const functionOptions = ["casa", "preparación", "tensión"];
 const popProgression: ScaleDegree[] = ["I", "V", "vi", "IV"];
 
-export function generateHarmonicFieldQuestions(exercise: HarmonicFieldExercise): HarmonicFieldQuestion[] {
+export function generateHarmonicFieldQuestions(
+  exercise: HarmonicFieldExercise,
+): HarmonicFieldQuestion[] {
   if (exercise.type === "scale_to_chords") {
     return ["I", "ii", "V"].slice(0, exercise.totalRounds).map((degree, index) =>
       buildChordConstructionQuestion(exercise, "c-major", degree as ScaleDegree, index, {
-        promptPrefix: index === 0 ? "Desde DO mayor, salta una nota y forma el acorde del I grado" : undefined,
+        promptPrefix:
+          index === 0 ? "Desde DO mayor, salta una nota y forma el acorde del I grado" : undefined,
       }),
     );
   }
 
   if (exercise.type === "build_c_major_field") {
-    return degreeOptions.map((degree, index) => buildChordConstructionQuestion(exercise, "c-major", degree, index));
+    return degreeOptions.map((degree, index) =>
+      buildChordConstructionQuestion(exercise, "c-major", degree, index),
+    );
   }
 
   if (exercise.type === "identify_chord_quality") {
@@ -53,15 +58,17 @@ export function generateHarmonicFieldQuestions(exercise: HarmonicFieldExercise):
   }
 
   if (exercise.type === "transpose_progression") {
-    return exercise.allowedFields.flatMap((fieldId) =>
-      popProgression.map((degree, index) =>
-        buildChordConstructionQuestion(exercise, fieldId, degree, index, {
-          progressionId: `${fieldId}:I-V-vi-IV`,
-          mode: "progression",
-          promptPrefix: `${requireField(fieldId).displayName}: toca el grado ${degree}`,
-        }),
-      ),
-    ).slice(0, exercise.totalRounds);
+    return exercise.allowedFields
+      .flatMap((fieldId) =>
+        popProgression.map((degree, index) =>
+          buildChordConstructionQuestion(exercise, fieldId, degree, index, {
+            progressionId: `${fieldId}:I-V-vi-IV`,
+            mode: "progression",
+            promptPrefix: `${requireField(fieldId).displayName}: toca el grado ${degree}`,
+          }),
+        ),
+      )
+      .slice(0, exercise.totalRounds);
   }
 
   if (exercise.type === "basic_functions") {
@@ -121,22 +128,24 @@ function buildChordConstructionQuestion(
 }
 
 function buildQualityQuestions(exercise: HarmonicFieldExercise) {
-  return exercise.allowedFields.flatMap((fieldId) => {
-    const field = requireField(fieldId);
-    return field.chords.map((chord, index) => ({
-      id: `${exercise.id}-${fieldId}-${chord.degree}-${index}`,
-      exerciseId: exercise.id,
-      fieldId,
-      taskType: exercise.type,
-      degree: chord.degree,
-      chordRoot: chord.root,
-      chordQuality: chord.quality,
-      prompt: `¿Qué cualidad tiene el ${chord.degree} grado en ${field.displayName}?`,
-      mode: "visual" as const,
-      answerOptions: qualityOptions,
-      expectedAnswer: getQualityLabel(chord.quality),
-    }));
-  }).slice(0, exercise.totalRounds);
+  return exercise.allowedFields
+    .flatMap((fieldId) => {
+      const field = requireField(fieldId);
+      return field.chords.map((chord, index) => ({
+        id: `${exercise.id}-${fieldId}-${chord.degree}-${index}`,
+        exerciseId: exercise.id,
+        fieldId,
+        taskType: exercise.type,
+        degree: chord.degree,
+        chordRoot: chord.root,
+        chordQuality: chord.quality,
+        prompt: `¿Qué cualidad tiene el ${chord.degree} grado en ${field.displayName}?`,
+        mode: "visual" as const,
+        answerOptions: qualityOptions,
+        expectedAnswer: getQualityLabel(chord.quality),
+      }));
+    })
+    .slice(0, exercise.totalRounds);
 }
 
 function buildRomanNumeralQuestions(exercise: HarmonicFieldExercise) {
@@ -196,28 +205,32 @@ function buildAnalyzeProgressionQuestions(exercise: HarmonicFieldExercise) {
     { fieldId: "g-major", names: "SOL - RE - MI menor - DO" },
   ];
 
-  return plans.flatMap((plan, planIndex) =>
-    popProgression.map((degree, index) => {
-      const field = requireField(plan.fieldId);
-      const chord = getChordByDegree(field, degree);
-      return {
-        id: `${exercise.id}-${plan.fieldId}-${degree}-${planIndex}-${index}`,
-        exerciseId: exercise.id,
-        fieldId: plan.fieldId,
-        taskType: exercise.type,
-        degree,
-        chordRoot: chord.root,
-        chordQuality: chord.quality,
-        expectedDegree: degree,
-        progression: popProgression,
-        expectedChordSequence: getChordProgressionFromDegrees(field, popProgression).map((item) => item.displayName),
-        prompt: `${plan.names}. El acorde ${chord.displayName} corresponde al grado...`,
-        mode: "visual" as const,
-        answerOptions: degreeOptions,
-        expectedAnswer: degree,
-      };
-    }),
-  ).slice(0, exercise.totalRounds);
+  return plans
+    .flatMap((plan, planIndex) =>
+      popProgression.map((degree, index) => {
+        const field = requireField(plan.fieldId);
+        const chord = getChordByDegree(field, degree);
+        return {
+          id: `${exercise.id}-${plan.fieldId}-${degree}-${planIndex}-${index}`,
+          exerciseId: exercise.id,
+          fieldId: plan.fieldId,
+          taskType: exercise.type,
+          degree,
+          chordRoot: chord.root,
+          chordQuality: chord.quality,
+          expectedDegree: degree,
+          progression: popProgression,
+          expectedChordSequence: getChordProgressionFromDegrees(field, popProgression).map(
+            (item) => item.displayName,
+          ),
+          prompt: `${plan.names}. El acorde ${chord.displayName} corresponde al grado...`,
+          mode: "visual" as const,
+          answerOptions: degreeOptions,
+          expectedAnswer: degree,
+        };
+      }),
+    )
+    .slice(0, exercise.totalRounds);
 }
 
 function buildFinalChallengeQuestions(exercise: HarmonicFieldExercise) {
@@ -230,12 +243,20 @@ function buildFinalChallengeQuestions(exercise: HarmonicFieldExercise) {
     ...buildFunctionQuestions({ ...exercise, totalRounds: 4 }),
     ...["g-major", "f-major", "d-major"].flatMap((fieldId, fieldIndex) =>
       ["I", "V", "vi", "vii°"].map((degree, index) =>
-        buildChordConstructionQuestion(exercise, fieldId, degree as ScaleDegree, fieldIndex * 10 + index),
+        buildChordConstructionQuestion(
+          exercise,
+          fieldId,
+          degree as ScaleDegree,
+          fieldIndex * 10 + index,
+        ),
       ),
     ),
   ];
 
-  return [...mixed, ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` }))]
+  return [
+    ...mixed,
+    ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` })),
+  ]
     .slice(0, exercise.totalRounds)
     .map((question) => ({ ...question, taskType: "final_challenge" as const }));
 }
@@ -245,5 +266,7 @@ export function formatProgressionLabel(progression: ScaleDegree[]) {
 }
 
 export function formatChordOptionsForField(fieldId: string) {
-  return requireField(fieldId).chords.map((chord) => `${chord.degree}: ${getDisplayPitchName(chord.root)}`);
+  return requireField(fieldId).chords.map(
+    (chord) => `${chord.degree}: ${getDisplayPitchName(chord.root)}`,
+  );
 }

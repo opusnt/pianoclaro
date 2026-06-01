@@ -105,14 +105,19 @@ export function ExerciseStartPanel({
         <div>
           <p className="text-xs font-black uppercase text-gold-soft">Antes de practicar</p>
           <h3 className="mt-2 text-3xl font-black leading-tight text-blue-deep">{title}</h3>
-          <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-muted">{description}</p>
+          <p className="mt-3 max-w-3xl text-base font-semibold leading-7 text-muted">
+            {description}
+          </p>
           <p className="mt-4 max-w-3xl rounded-2xl bg-blue-soft/35 p-4 text-sm font-bold leading-6 text-blue-deep">
             {copy.concept}
           </p>
 
           <div className="mt-5 grid gap-3 md:grid-cols-3">
             {copy.steps.map((step, index) => (
-              <article key={step.title} className="rounded-2xl border border-blue-deep/10 bg-white/80 p-4">
+              <article
+                key={step.title}
+                className="rounded-2xl border border-blue-deep/10 bg-white/80 p-4"
+              >
                 <p className="text-xs font-black uppercase text-gold-soft">Paso {index + 1}</p>
                 <h4 className="mt-2 text-sm font-black text-blue-deep">{step.title}</h4>
                 <p className="mt-2 text-sm font-semibold leading-6 text-muted">{step.text}</p>

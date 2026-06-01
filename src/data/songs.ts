@@ -154,7 +154,8 @@ export const songs: Song[] = [
     licenseLabel: "Propio",
     readiness: "proxima",
     recommendedModule: "Acompañamiento",
-    pedagogicalUse: "Reemplaza referencias protegidas por una pieza propia con el mismo objetivo técnico.",
+    pedagogicalUse:
+      "Reemplaza referencias protegidas por una pieza propia con el mismo objetivo técnico.",
   },
 ];
 

@@ -12,7 +12,16 @@ import type { ChordExercise, ChordQuestion } from "@/types/chords";
 const noteVsChordOptions = ["Nota sola", "Acorde"];
 const qualityOptions = ["mayor", "menor"];
 
-const audioPlan = ["c-major", "c-minor", "a-minor", "g-major", "d-major", "d-minor", "c-major", "a-minor"];
+const audioPlan = [
+  "c-major",
+  "c-minor",
+  "a-minor",
+  "g-major",
+  "d-major",
+  "d-minor",
+  "c-major",
+  "a-minor",
+];
 const missingPlan = [
   { chordId: "c-major", missingNoteIndex: 1 },
   { chordId: "g-major", missingNoteIndex: 2 },
@@ -49,9 +58,9 @@ export function generateChordQuestions(exercise: ChordExercise): ChordQuestion[]
   }
 
   if (exercise.type === "major_vs_minor_audio") {
-    return audioPlan.slice(0, exercise.totalRounds).map((chordId, index) =>
-      buildQualityQuestion(exercise, chordId, index),
-    );
+    return audioPlan
+      .slice(0, exercise.totalRounds)
+      .map((chordId, index) => buildQualityQuestion(exercise, chordId, index));
   }
 
   if (exercise.type === "build_major_chords" || exercise.type === "build_minor_chords") {
@@ -59,14 +68,18 @@ export function generateChordQuestions(exercise: ChordExercise): ChordQuestion[]
   }
 
   if (exercise.type === "missing_chord_note") {
-    return missingPlan.slice(0, exercise.totalRounds).map((plan, index) =>
-      buildMissingNoteQuestion(exercise, plan.chordId, plan.missingNoteIndex, index),
-    );
+    return missingPlan
+      .slice(0, exercise.totalRounds)
+      .map((plan, index) =>
+        buildMissingNoteQuestion(exercise, plan.chordId, plan.missingNoteIndex, index),
+      );
   }
 
   if (exercise.type === "diminished_augmented_intro") {
     return exercise.allowedChords.map((chordId, index) =>
-      index % 2 === 0 ? buildChordSequenceQuestion(exercise, chordId) : buildQualityWideQuestion(exercise, chordId, index),
+      index % 2 === 0
+        ? buildChordSequenceQuestion(exercise, chordId)
+        : buildQualityWideQuestion(exercise, chordId, index),
     );
   }
 
@@ -103,7 +116,11 @@ function buildChordSequenceQuestion(exercise: ChordExercise, chordId: string): C
   };
 }
 
-function buildQualityQuestion(exercise: ChordExercise, chordId: string, index: number): ChordQuestion {
+function buildQualityQuestion(
+  exercise: ChordExercise,
+  chordId: string,
+  index: number,
+): ChordQuestion {
   const chord = requireChord(chordId);
   return {
     id: `${exercise.id}-${chordId}-${index}`,
@@ -117,7 +134,11 @@ function buildQualityQuestion(exercise: ChordExercise, chordId: string, index: n
   };
 }
 
-function buildQualityWideQuestion(exercise: ChordExercise, chordId: string, index: number): ChordQuestion {
+function buildQualityWideQuestion(
+  exercise: ChordExercise,
+  chordId: string,
+  index: number,
+): ChordQuestion {
   const chord = requireChord(chordId);
   return {
     id: `${exercise.id}-${chordId}-quality-${index}`,
@@ -166,10 +187,15 @@ function buildFinalChallengeQuestions(exercise: ChordExercise) {
     buildQualityQuestion(exercise, "g-major", 10),
     buildMissingNoteQuestion(exercise, "e-minor", 2, 11),
   ];
-  return [...mixed, ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` }))].slice(0, exercise.totalRounds).map((question) => ({
-    ...question,
-    taskType: "final_challenge" as const,
-  }));
+  return [
+    ...mixed,
+    ...mixed.map((question, index) => ({ ...question, id: `${question.id}-b-${index}` })),
+  ]
+    .slice(0, exercise.totalRounds)
+    .map((question) => ({
+      ...question,
+      taskType: "final_challenge" as const,
+    }));
 }
 
 function buildMissingNoteOptions(chordId: string, missingNoteIndex: number) {

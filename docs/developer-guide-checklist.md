@@ -2,20 +2,46 @@
 
 Usar este checklist en cada tanda de arquitectura o módulo nuevo.
 
-## Cuando Agregues Un Módulo Jugable
+## Cuando Agregues Un Módulo De Teoría Musical
 
+- [ ] Existe o se actualizó su unidad de aprendizaje en `src/data/learning-path.ts`.
 - [ ] Existe `src/types/<module>.ts`.
 - [ ] Existe `src/data/<module>.ts`.
 - [ ] Existe `src/data/modules/<module>-module.ts`.
 - [ ] Existe dominio en `src/lib/<module>/`.
 - [ ] Existe UI en `src/components/modules/<module>/`.
 - [ ] Está registrado en `src/lib/modules/playable-module-registry.tsx`.
+- [ ] La unidad define prerequisitos, criterios de dominio, evidencia y reparación.
+- [ ] La unidad define pregunta guía, plan de práctica, autoevaluación y reto de transferencia.
+- [ ] La unidad expone reparación para el alumno y señales de avance.
+- [ ] La pantalla del módulo muestra autoestudio con `LessonNarrativePanel` o un equivalente justificado.
 - [ ] Tiene tests de teoría.
 - [ ] Tiene tests de preguntas, scoring y progreso.
 - [ ] Respeta `docs/responsive-policy.md`.
 - [ ] Las superficies musicales anchas usan `.responsive-scroll`.
 - [ ] Fue revisado en mobile de 390px y desktop ancho.
 - [ ] `docs/developer-guide.md` sigue describiendo el patrón vigente.
+
+## Cuando Agregues Una Lección De Piano
+
+- [ ] La lección tiene `moduleId` consistente con `src/data/lesson-modules.ts`.
+- [ ] La lección está asociada a una unidad en `src/data/learning-path.ts`.
+- [ ] La unidad declara qué módulo de teoría musical entrena la misma habilidad, si aplica.
+- [ ] La lección enseña una sola decisión musical observable.
+- [ ] Cierra con una acción: tocar, escuchar, elegir, leer o aplicar.
+- [ ] Sus conceptos aparecen en lenguaje para usuario principiante.
+- [ ] Pasa `tests/content/learning-path.test.ts`.
+
+## Cuando Cambies La Estructura Educativa
+
+- [ ] La separación principal sigue siendo `Teoría musical` (`/modulos`) y `Lecciones de piano` (`/lecciones`).
+- [ ] La página `/rutas` muestra ambos carriles como rutas de autoaprendizaje, no como guía docente.
+- [ ] Las mejoras pedagógicas aparecen como acciones, feedback, reparación o autoevaluación visibles para el alumno.
+- [ ] No se agregan textos que dependan de un tutor inexistente para que el usuario sepa qué hacer.
+- [ ] `learningExperienceTracks` sigue actualizado en `src/data/learning-path.ts`.
+- [ ] Las experiencias multipágina viven en `src/data/learning-experiences.ts`.
+- [ ] Cada experiencia define páginas, actividades, input, feedback, criterios de éxito y reparación.
+- [ ] Pasa `tests/content/learning-experiences.test.ts`.
 
 ## Cuando Cambies UI O Responsive
 
@@ -63,6 +89,7 @@ Usar este checklist en cada tanda de arquitectura o módulo nuevo.
 Una tanda no debe considerarse cerrada si:
 
 - cambió arquitectura y la guía no fue revisada;
+- cambió la estructura educativa y `src/data/learning-path.ts` no fue revisado;
 - cambió seguridad y no hay test;
 - cambió responsive y no se revisó `docs/responsive-policy.md`;
 - cambió registry de módulos y no pasa `tests/modules/playable-module-registry.test.ts`;

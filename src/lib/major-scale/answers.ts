@@ -51,7 +51,7 @@ export function buildMajorScaleNoteAnswer({
   const previousMidi =
     playedNotes.length > 0
       ? noteToMidi(playedNotes[playedNotes.length - 1])
-      : scale?.midiNotes[0] ?? question.expectedMidiNotes?.[0] ?? expectedMidi;
+      : (scale?.midiNotes[0] ?? question.expectedMidiNotes?.[0] ?? expectedMidi);
   const actualInterval = getIntervalBetweenMidiNotes(previousMidi, selectedMidi);
   const expectedInterval = getIntervalBetweenMidiNotes(previousMidi, expectedMidi);
 

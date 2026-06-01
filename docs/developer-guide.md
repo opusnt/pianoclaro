@@ -28,6 +28,7 @@ No hay microservicios. No deben agregarse sin una necesidad operacional clara.
 | Aplicación | Hooks y control de estado de experiencias interactivas | `src/components/**/hooks` |
 | Dominio musical | Reglas de ritmo, intervalos, escalas, acordes, práctica y notación | `src/lib` |
 | Datos mock | Contenido educativo y pricing temporal | `src/data` |
+| Ruta de aprendizaje | Unidades que conectan teoría musical, lecciones de piano, habilidades y dominio | `src/data/learning-path.ts`, `src/lib/learning-path` |
 | Repositorios | Fronteras reemplazables para contenido y progreso | `src/lib/content`, `src/lib/progress` |
 | Infraestructura local | Web Audio, localStorage y analytics local | `src/lib/audio`, `src/lib/analytics` |
 | Server modular futuro | Auth, autorización, validación, progreso oficial y auditoría | `src/server` |
@@ -74,7 +75,8 @@ flowchart TD
 
 | Módulo | Responsabilidad |
 | --- | --- |
-| `lesson` | Lecciones con partitura, teclado, feedback y práctica guiada |
+| `lesson` | Lecciones de piano con partitura, teclado, feedback y práctica guiada |
+| `learning-path` | Secuencia de autoaprendizaje que une teoría musical, lecciones de piano, competencias, criterios de dominio y reparación |
 | `rhythm` | Timing, beat, scoring rítmico y progreso |
 | `intervals` | Distancias visuales y auditivas |
 | `major-scale` | Fórmula y práctica de escala mayor |
@@ -86,9 +88,49 @@ flowchart TD
 | `practice` | Evaluación de práctica y foco pedagógico |
 | `server` | Contratos futuros para seguridad backend |
 
-## Registry De Módulos Jugables
+## Carriles De Aprendizaje
 
-Los módulos jugables se registran en:
+La navegación principal separa el producto en dos carriles:
+
+- **Teoría musical** (`/modulos`): módulos interactivos donde el usuario entiende conceptos musicales resolviendo ejercicios con teclado, audio, scoring y feedback.
+- **Lecciones de piano** (`/lecciones`): sesiones guiadas para practicar lectura, teclado y repertorio por fragmentos pequeños.
+
+La página `/rutas` debe explicar cómo se conectan ambos carriles. No debe
+presentar las mejoras pedagógicas como instrucciones para un docente externo.
+Cada mejora debe aparecer en producto como una de estas superficies:
+
+- acción concreta para el alumno;
+- señal de logro;
+- feedback automático;
+- reparación si se atasca;
+- autoevaluación antes de avanzar;
+- reto de transferencia musical.
+
+Los carriles viven en `learningExperienceTracks` dentro de:
+
+```txt
+src/data/learning-path.ts
+```
+
+Las experiencias multipágina viven en:
+
+```txt
+src/data/learning-experiences.ts
+src/types/learning-experience.ts
+```
+
+Una experiencia debe definir páginas y actividades, no solo texto. Cada
+actividad necesita:
+
+- acción concreta del usuario;
+- modo de input;
+- feedback esperado;
+- criterios de éxito;
+- reparación si el usuario se atasca.
+
+## Registry De Módulos De Teoría Musical
+
+Los módulos de teoría musical se registran en:
 
 ```txt
 src/lib/modules/playable-module-registry.tsx
@@ -102,7 +144,7 @@ src/app/modulos/[id]/page.tsx
 
 no debe crecer con nuevos `if (module.id === "...")`.
 
-Para agregar un módulo jugable:
+Para agregar un módulo de teoría musical:
 
 1. Crear tipos en `src/types/<module>.ts`.
 2. Crear datos jugables en `src/data/<module>.ts`.
@@ -120,6 +162,42 @@ tests/modules/playable-module-registry.test.ts
 ```
 
 debe pasar siempre.
+
+## Unidades De Aprendizaje
+
+La secuencia de autoaprendizaje integrada vive en:
+
+```txt
+src/data/learning-path.ts
+src/lib/learning-path/learning-path.ts
+```
+
+Cada unidad conecta:
+
+- lecciones de piano (`lessonSlugs`);
+- módulo de teoría musical (`playableModuleId`);
+- habilidades principales (`primarySkillIds`);
+- prerequisitos (`prerequisiteUnitIds`);
+- criterios de dominio;
+- evidencia esperada;
+- acciones de reparación.
+
+La página:
+
+```txt
+src/app/lecciones/page.tsx
+```
+
+debe usar estas unidades como fuente de verdad para evitar que las lecciones de
+piano queden desconectadas de la teoría musical.
+
+Para agregar una lección o módulo nuevo:
+
+1. Actualizar o crear una unidad en `src/data/learning-path.ts`.
+2. Definir qué habilidad observable produce.
+3. Asociar lecciones de piano y módulo de teoría musical si existen.
+4. Definir criterios de dominio y reparación.
+5. Ejecutar `tests/content/learning-path.test.ts`.
 
 ## Política Responsive
 
@@ -318,6 +396,7 @@ Esta guía debe actualizarse cuando cambie cualquiera de estas piezas:
 
 - `src/server`
 - `src/lib/modules/playable-module-registry.tsx`
+- `src/data/learning-path.ts`
 - `src/lib/content`
 - `src/lib/progress`
 - estructura de un módulo interactivo

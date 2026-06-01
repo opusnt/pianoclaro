@@ -72,9 +72,11 @@ export function generateMajorScaleQuestions(exercise: MajorScaleExercise): Scale
   }
 
   if (exercise.type === "missing_note") {
-    return missingNotePlan.slice(0, exercise.totalRounds).map((plan, index) =>
-      buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
-    );
+    return missingNotePlan
+      .slice(0, exercise.totalRounds)
+      .map((plan, index) =>
+        buildMissingNoteQuestion(exercise, plan.scaleId, plan.missingNoteIndex, index),
+      );
   }
 
   if (exercise.type === "build_from_tonic") {
@@ -84,9 +86,17 @@ export function generateMajorScaleQuestions(exercise: MajorScaleExercise): Scale
   }
 
   if (exercise.type === "audio_recognition") {
-    return audioPlan.slice(0, exercise.totalRounds).map((plan, index) =>
-      buildAudioQuestion(exercise, plan.scaleId, index, plan.isCorrectScale, plan.alteredNoteIndex),
-    );
+    return audioPlan
+      .slice(0, exercise.totalRounds)
+      .map((plan, index) =>
+        buildAudioQuestion(
+          exercise,
+          plan.scaleId,
+          index,
+          plan.isCorrectScale,
+          plan.alteredNoteIndex,
+        ),
+      );
   }
 
   return buildFinalChallengeQuestions(exercise);

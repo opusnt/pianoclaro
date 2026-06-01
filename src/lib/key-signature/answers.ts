@@ -94,9 +94,10 @@ export function buildKeySignatureOptionAnswer({
           expectedAccidentals: key?.accidentals,
           selectedAccidentals: [option],
           expectedRelativeKey:
-            question.taskType === "find_relative_key" || question.taskType === "relative_keys_compare"
-              ? relative?.displayName ??
-                (typeof question.expectedAnswer === "string" ? question.expectedAnswer : undefined)
+            question.taskType === "find_relative_key" ||
+            question.taskType === "relative_keys_compare"
+              ? (relative?.displayName ??
+                (typeof question.expectedAnswer === "string" ? question.expectedAnswer : undefined))
               : undefined,
           selectedRelativeKey: option,
         },

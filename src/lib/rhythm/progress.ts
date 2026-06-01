@@ -1,4 +1,3 @@
-import type { ExerciseAttempt, RhythmExercise, RhythmProgress } from "@/types/rhythm";
 import {
   createSequentialExerciseProgress,
   getNextAvailableExerciseId,
@@ -7,6 +6,7 @@ import {
   unlockNextSequentialExercise,
   writeModuleProgress,
 } from "@/lib/modules/sequential-progress";
+import type { ExerciseAttempt, RhythmExercise, RhythmProgress } from "@/types/rhythm";
 
 const progressKey = "piano-claro:rhythm-progress:v1";
 

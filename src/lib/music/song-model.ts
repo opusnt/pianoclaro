@@ -1,7 +1,7 @@
-import type { Lesson, MeasureMock, NoteName, ScoreMock } from "@/types/lesson";
-import type { KeySignatureName } from "@/types/theory";
-import type { NoteDuration } from "@/types/music";
 import { getDurationBeats, getMeasureEvents } from "@/lib/music/notation";
+import type { Lesson, MeasureMock, NoteName, ScoreMock } from "@/types/lesson";
+import type { NoteDuration } from "@/types/music";
+import type { KeySignatureName } from "@/types/theory";
 
 export type PianoClef = "treble" | "bass";
 export type PracticeHand = "right" | "left" | "both";
@@ -124,11 +124,7 @@ export function getKeySignatureName(keySignature: string): KeySignatureName {
   return normalizedKeySignature[keySignature] ?? "C";
 }
 
-export function scoreToSong(
-  score: ScoreMock,
-  id = score.title,
-  tempoBpm = 72,
-): PianoClaroSong {
+export function scoreToSong(score: ScoreMock, id = score.title, tempoBpm = 72): PianoClaroSong {
   const beatsPerMeasure = getBeatsPerMeasure(score.timeSignature);
   const secondsPerBeat = getSecondsPerBeat(tempoBpm);
   const timelineEvents = score.measures.flatMap((measure) => {

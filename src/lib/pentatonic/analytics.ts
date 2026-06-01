@@ -28,7 +28,10 @@ type PentatonicPayload = {
 };
 
 export function trackPentatonicEvent(name: PentatonicAnalyticsEvent, payload: PentatonicPayload) {
-  appendLocalAnalyticsEvent({ name, payload: { ...payload, timestamp: payload.timestamp ?? new Date().toISOString() } });
+  appendLocalAnalyticsEvent({
+    name,
+    payload: { ...payload, timestamp: payload.timestamp ?? new Date().toISOString() },
+  });
 }
 
 export function trackPentatonicAttempt(moduleId: string, attempt: PentatonicAttempt) {

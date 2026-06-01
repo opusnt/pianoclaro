@@ -1,5 +1,5 @@
-import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import Link from "next/link";
 
 type ButtonLinkProps = {
   href: string;
@@ -10,8 +10,7 @@ type ButtonLinkProps = {
 };
 
 const variants = {
-  primary:
-    "bg-blue-deep text-white shadow-soft hover:bg-[#0d2949] focus-visible:outline-blue-deep",
+  primary: "bg-blue-deep text-white shadow-soft hover:bg-[#0d2949] focus-visible:outline-blue-deep",
   secondary:
     "border border-blue-deep/20 bg-white/72 text-blue-deep hover:border-blue-deep/45 hover:bg-white",
   ghost: "text-blue-deep hover:bg-blue-soft/50",

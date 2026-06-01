@@ -44,12 +44,7 @@ export type KeySignatureDetails = {
   beginnerExplanation: string;
 };
 
-export type TheoryConceptArea =
-  | "teclado"
-  | "lectura"
-  | "ritmo"
-  | "tonalidad"
-  | "practica";
+export type TheoryConceptArea = "teclado" | "lectura" | "ritmo" | "tonalidad" | "practica";
 
 export type TheoryKnowledgeItem = {
   id: string;

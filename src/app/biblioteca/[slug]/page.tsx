@@ -34,7 +34,9 @@ export default async function SongPracticePage({ params }: SongPracticePageProps
   }
 
   const playableSongLessons = contentRepository.getPlayableSongLessons();
-  const currentIndex = playableSongLessons.findIndex((currentLesson) => currentLesson.slug === slug);
+  const currentIndex = playableSongLessons.findIndex(
+    (currentLesson) => currentLesson.slug === slug,
+  );
   const previousLesson = playableSongLessons[currentIndex - 1];
   const nextLesson = playableSongLessons[currentIndex + 1];
 

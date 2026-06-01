@@ -1,3 +1,4 @@
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import type { LessonModule } from "@/types/lesson";
 
 export const lessonModules: LessonModule[] = [
@@ -7,11 +8,7 @@ export const lessonModules: LessonModule[] = [
     description:
       "Primer módulo para conectar pentagrama, teclado, pulso y práctica guiada desde el inicio.",
     level: "Inicial",
-    lessonSlugs: [
-      "tus-primeras-5-notas",
-      "lee-antes-de-tocar",
-      "tu-primera-mini-cancion",
-    ],
+    lessonSlugs: [keyboardNotesLessonSlug, "lee-antes-de-tocar", "tu-primera-mini-cancion"],
     nextModuleHint: "Próximo módulo sugerido: ritmo y lectura por compases.",
   },
   {

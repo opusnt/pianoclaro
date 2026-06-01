@@ -10,15 +10,24 @@ export const minorScaleDetailedModule: DetailedLearningModule = {
     "Compara mayor y menor, construye menor natural y reconoce menor armónica y melódica ascendente.",
   objective:
     "Enseñar escalas menores desde una experiencia visual, auditiva y práctica, sin entrar todavía en campo armónico menor.",
-  mainConcepts: ["menor natural", "menor armónica", "menor melódica", "tónica", "octava", "color menor"],
-  practicalSkill: "Construir y tocar escalas menores simples, y distinguir auditivamente mayor vs menor.",
+  mainConcepts: [
+    "menor natural",
+    "menor armónica",
+    "menor melódica",
+    "tónica",
+    "octava",
+    "color menor",
+  ],
+  practicalSkill:
+    "Construir y tocar escalas menores simples, y distinguir auditivamente mayor vs menor.",
   keyboardVisualization:
     "Teclado A3-C6 con tónica, ruta menor, nota esperada y notas diferenciales entre variantes.",
   auditoryExercises: ["recognize-heard-note", "complete-scale"],
   executionExercises: ["complete-scale", "play-indicated-note"],
   recognitionExercises: ["complete-scale", "recognize-heard-note"],
   creativeMiniChallenge: "Transformar una mini frase mayor en una versión con color menor.",
-  finalAssessment: "Desafío mixto de 24 rondas sobre menor natural, armónica y melódica ascendente.",
+  finalAssessment:
+    "Desafío mixto de 24 rondas sobre menor natural, armónica y melódica ascendente.",
   unlockCriteria: [{ type: "module-completed", moduleId: "major-scale" }],
   contributesToSkills: {
     scales: 40,
@@ -124,8 +133,17 @@ export const minorScaleDetailedModule: DetailedLearningModule = {
     ],
     progressFeeling: ["Barra por unidades", "Combo", "Desbloqueo de variantes"],
     visualFeedback: ["Tónica azul", "Siguiente dorado", "Completada verde", "Diferencia morada"],
-    soundFeedback: ["Oscilador tipo piano", "Comparación de escalas", "Tono positivo", "Tono de error"],
-    celebrations: ["LA menor completada", "Variante armónica detectada", "Constructor menor finalizado"],
+    soundFeedback: [
+      "Oscilador tipo piano",
+      "Comparación de escalas",
+      "Tono positivo",
+      "Tono de error",
+    ],
+    celebrations: [
+      "LA menor completada",
+      "Variante armónica detectada",
+      "Constructor menor finalizado",
+    ],
     errorHandling: ["Mostrar nota esperada", "Explicar grado modificado", "Recordar patrón actual"],
     smartHints: [
       "Escucha la tercera nota",
@@ -137,7 +155,13 @@ export const minorScaleDetailedModule: DetailedLearningModule = {
     visibleOctaves: { mobile: 2, desktop: 2 },
     horizontalScroll: "mobile-only",
     labelMode: "on-hint",
-    illumination: ["Tónica", "Ruta", "Nota esperada", "Notas diferenciales", "Respuesta incorrecta"],
+    illumination: [
+      "Tónica",
+      "Ruta",
+      "Nota esperada",
+      "Notas diferenciales",
+      "Respuesta incorrecta",
+    ],
     animations: ["Pulso de siguiente nota", "Destello de diferencia", "Avance de patrón"],
     colorSystem: {
       naturalKey: "#fffdf7",
@@ -207,8 +231,16 @@ export const minorScaleDetailedModule: DetailedLearningModule = {
   },
   adaptivity: {
     frustrationSignals: ["accuracy < 60%", "errores en teclas negras", "confusión entre variantes"],
-    lowerDifficultyActions: ["Mostrar etiquetas", "Volver a LA menor natural", "Marcar notas modificadas"],
-    raiseDifficultyActions: ["Ocultar etiquetas", "Incluir DO menor y MI menor", "Reducir ayudas visuales"],
+    lowerDifficultyActions: [
+      "Mostrar etiquetas",
+      "Volver a LA menor natural",
+      "Marcar notas modificadas",
+    ],
+    raiseDifficultyActions: [
+      "Ocultar etiquetas",
+      "Incluir DO menor y MI menor",
+      "Reducir ayudas visuales",
+    ],
     repetitionRules: ["Repetir pasos, escalas o variantes con errores frecuentes"],
     unlockRules: ["Cada ejercicio aprobado desbloquea el siguiente"],
   },
@@ -240,7 +272,12 @@ export const minorScaleDetailedModule: DetailedLearningModule = {
   finalChallenge: {
     name: "Desafío final: constructor menor",
     setup: "24 rondas mixtas con escalas menores naturales y variantes de LA menor.",
-    tasks: ["Reconocer mayor/menor", "Tocar menor natural", "Completar nota faltante", "Distinguir natural/armónica/melódica"],
+    tasks: [
+      "Reconocer mayor/menor",
+      "Tocar menor natural",
+      "Completar nota faltante",
+      "Distinguir natural/armónica/melódica",
+    ],
     passCriteria: ["accuracy >= 75%", "máximo 6 errores", "completar todas las rondas"],
     celebration: "Completaste tu primer mapa de colores menores.",
     summary: ["Menor natural", "Menor armónica", "Menor melódica ascendente", "Mayor vs menor"],

@@ -1,4 +1,8 @@
-import { getChordDisplaySequence, getFunctionLabel, requireField } from "@/lib/harmonic-field/theory";
+import {
+  getChordDisplaySequence,
+  getFunctionLabel,
+  requireField,
+} from "@/lib/harmonic-field/theory";
 import type { ScaleDegree } from "@/types/harmonic-field";
 
 type HarmonicFieldVisualizerProps = {
@@ -6,7 +10,10 @@ type HarmonicFieldVisualizerProps = {
   activeDegree?: ScaleDegree;
 };
 
-export function HarmonicFieldVisualizer({ fieldId = "c-major", activeDegree }: HarmonicFieldVisualizerProps) {
+export function HarmonicFieldVisualizer({
+  fieldId = "c-major",
+  activeDegree,
+}: HarmonicFieldVisualizerProps) {
   const field = requireField(fieldId);
 
   return (
@@ -32,7 +39,9 @@ export function HarmonicFieldVisualizer({ fieldId = "c-major", activeDegree }: H
               >
                 <p className="text-xl font-black text-blue-deep">{chord.degree}</p>
                 <p className="mt-1 text-sm font-bold text-blue-deep">{chord.displayName}</p>
-                <p className="mt-1 text-xs font-semibold text-muted">{getChordDisplaySequence(chord)}</p>
+                <p className="mt-1 text-xs font-semibold text-muted">
+                  {getChordDisplaySequence(chord)}
+                </p>
                 <p className="mt-2 rounded-full bg-white px-2 py-1 text-xs font-bold text-blue-deep">
                   {getFunctionLabel(chord.functionRole)}
                 </p>

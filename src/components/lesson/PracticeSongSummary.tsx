@@ -46,15 +46,7 @@ export function PracticeSongSummary({ song }: PracticeSongSummaryProps) {
   );
 }
 
-function Metric({
-  icon,
-  label,
-  value,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-}) {
+function Metric({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
   return (
     <div className="rounded-2xl border border-blue-deep/10 bg-ivory p-3">
       <div className="flex items-center gap-2 text-gold-soft">{icon}</div>

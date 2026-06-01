@@ -54,12 +54,60 @@ const inversionLabels: Record<ChordInversionType, string> = {
 };
 
 const baseTriads = [
-  { chordId: "c-major", chordDisplayName: "DO mayor", quality: "major", root: "C", notes: ["C", "E", "G"], midiNotes: [60, 64, 67], difficulty: 1 },
-  { chordId: "g-major", chordDisplayName: "SOL mayor", quality: "major", root: "G", notes: ["G", "B", "D"], midiNotes: [55, 59, 62], difficulty: 2 },
-  { chordId: "f-major", chordDisplayName: "FA mayor", quality: "major", root: "F", notes: ["F", "A", "C"], midiNotes: [53, 57, 60], difficulty: 2 },
-  { chordId: "a-minor", chordDisplayName: "LA menor", quality: "minor", root: "A", notes: ["A", "C", "E"], midiNotes: [57, 60, 64], difficulty: 1 },
-  { chordId: "e-minor", chordDisplayName: "MI menor", quality: "minor", root: "E", notes: ["E", "G", "B"], midiNotes: [52, 55, 59], difficulty: 2 },
-  { chordId: "d-minor", chordDisplayName: "RE menor", quality: "minor", root: "D", notes: ["D", "F", "A"], midiNotes: [50, 53, 57], difficulty: 2 },
+  {
+    chordId: "c-major",
+    chordDisplayName: "DO mayor",
+    quality: "major",
+    root: "C",
+    notes: ["C", "E", "G"],
+    midiNotes: [60, 64, 67],
+    difficulty: 1,
+  },
+  {
+    chordId: "g-major",
+    chordDisplayName: "SOL mayor",
+    quality: "major",
+    root: "G",
+    notes: ["G", "B", "D"],
+    midiNotes: [55, 59, 62],
+    difficulty: 2,
+  },
+  {
+    chordId: "f-major",
+    chordDisplayName: "FA mayor",
+    quality: "major",
+    root: "F",
+    notes: ["F", "A", "C"],
+    midiNotes: [53, 57, 60],
+    difficulty: 2,
+  },
+  {
+    chordId: "a-minor",
+    chordDisplayName: "LA menor",
+    quality: "minor",
+    root: "A",
+    notes: ["A", "C", "E"],
+    midiNotes: [57, 60, 64],
+    difficulty: 1,
+  },
+  {
+    chordId: "e-minor",
+    chordDisplayName: "MI menor",
+    quality: "minor",
+    root: "E",
+    notes: ["E", "G", "B"],
+    midiNotes: [52, 55, 59],
+    difficulty: 2,
+  },
+  {
+    chordId: "d-minor",
+    chordDisplayName: "RE menor",
+    quality: "minor",
+    root: "D",
+    notes: ["D", "F", "A"],
+    midiNotes: [50, 53, 57],
+    difficulty: 2,
+  },
 ] satisfies Array<{
   chordId: string;
   chordDisplayName: string;
@@ -87,19 +135,28 @@ export const chordInversionDefinitions: ChordInversionDefinition[] = baseTriads.
       notes: noteOrder,
       midiNotes,
       slashNotation: inversionType === "root_position" ? triad.root : `${triad.root}/${bassNote}`,
-      difficulty: inversionType === "root_position" ? triad.difficulty : ((triad.difficulty + 1) as 2 | 3),
+      difficulty:
+        inversionType === "root_position" ? triad.difficulty : ((triad.difficulty + 1) as 2 | 3),
     };
   }),
 );
 
-export function buildTriadInversionMidi(rootMidiNotes: number[], inversionType: ChordInversionType): number[] {
+export function buildTriadInversionMidi(
+  rootMidiNotes: number[],
+  inversionType: ChordInversionType,
+): number[] {
   if (inversionType === "root_position") return rootMidiNotes;
-  if (inversionType === "first_inversion") return [rootMidiNotes[1], rootMidiNotes[2], rootMidiNotes[0] + 12];
-  if (inversionType === "second_inversion") return [rootMidiNotes[2], rootMidiNotes[0] + 12, rootMidiNotes[1] + 12];
+  if (inversionType === "first_inversion")
+    return [rootMidiNotes[1], rootMidiNotes[2], rootMidiNotes[0] + 12];
+  if (inversionType === "second_inversion")
+    return [rootMidiNotes[2], rootMidiNotes[0] + 12, rootMidiNotes[1] + 12];
   throw new Error("Unknown inversion type");
 }
 
-export function buildTriadInversionNotes(rootNotes: string[], inversionType: ChordInversionType): string[] {
+export function buildTriadInversionNotes(
+  rootNotes: string[],
+  inversionType: ChordInversionType,
+): string[] {
   if (inversionType === "root_position") return rootNotes;
   if (inversionType === "first_inversion") return [rootNotes[1], rootNotes[2], rootNotes[0]];
   if (inversionType === "second_inversion") return [rootNotes[2], rootNotes[0], rootNotes[1]];
@@ -124,7 +181,8 @@ export function validateInversion(
 ) {
   const expected = normalizePitchClasses(expectedPitchClasses);
   const played = normalizePitchClasses(playedNotes);
-  const hasCorrectNotes = expected.length === played.length && expected.every((note, index) => note === played[index]);
+  const hasCorrectNotes =
+    expected.length === played.length && expected.every((note, index) => note === played[index]);
   const userBass = getPlayedBassPitchClass(playedNotes);
   const hasCorrectBass = userBass === normalizePitchClasses([expectedBassPitchClass])[0];
 
@@ -135,7 +193,10 @@ export function validateInversion(
   };
 }
 
-export function identifyInversion(chordPitchClasses: string[], bassPitchClass: string): ChordInversionType {
+export function identifyInversion(
+  chordPitchClasses: string[],
+  bassPitchClass: string,
+): ChordInversionType {
   const normalizedChord = chordPitchClasses.map(stripOctave);
   const normalizedBass = stripOctave(bassPitchClass);
   if (normalizedBass === normalizedChord[0]) return "root_position";
@@ -208,7 +269,8 @@ export function getPlayedBassPitchClass(playedNotes: string[]) {
 
 export function countCorrectInversionNotes(expectedNotes: string[], playedNotes: string[]) {
   const expected = new Set(normalizePitchClasses(expectedNotes));
-  return [...new Set(normalizePitchClasses(playedNotes))].filter((note) => expected.has(note)).length;
+  return [...new Set(normalizePitchClasses(playedNotes))].filter((note) => expected.has(note))
+    .length;
 }
 
 export function haveSamePitchClasses(first: string[], second: string[]) {
@@ -246,7 +308,10 @@ function inversionIdSuffix(inversionType: ChordInversionType) {
   return "second";
 }
 
-function countAnswerErrors<TKey extends "chordId" | "inversionType">(answers: ChordInversionAnswer[], key: TKey) {
+function countAnswerErrors<TKey extends "chordId" | "inversionType">(
+  answers: ChordInversionAnswer[],
+  key: TKey,
+) {
   const counts = new Map<string, number>();
   answers
     .filter((answer) => !answer.isCorrect)
@@ -256,4 +321,3 @@ function countAnswerErrors<TKey extends "chordId" | "inversionType">(answers: Ch
     .filter(([, count]) => count === max && count > 0)
     .map(([value]) => value);
 }
-

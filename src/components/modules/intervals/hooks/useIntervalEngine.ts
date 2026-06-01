@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { trackIntervalEvent } from "@/lib/intervals/analytics";
 import {
   buildIntervalNoteAnswer,
   buildIntervalOptionAnswer,
@@ -15,7 +16,6 @@ import {
   playIntervalSuccess,
   playMelodicInterval,
 } from "@/lib/intervals/audio";
-import { trackIntervalEvent } from "@/lib/intervals/analytics";
 import { generateIntervalQuestions } from "@/lib/intervals/questions";
 import {
   buildIntervalAttempt,
@@ -117,7 +117,10 @@ export function useIntervalEngine({
 
     const audio = getAudio();
 
-    if (currentQuestion.taskType === "melodic_vs_harmonic" && currentQuestion.playbackType === "harmonic") {
+    if (
+      currentQuestion.taskType === "melodic_vs_harmonic" &&
+      currentQuestion.playbackType === "harmonic"
+    ) {
       await playHarmonicInterval({
         audio,
         baseNote: currentQuestion.baseNote,

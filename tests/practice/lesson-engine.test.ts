@@ -2,13 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { lessons } from "@/data/lessons";
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
 import { getLessonFocusFromPracticeSong, getStudyRoutine } from "@/lib/practice/lesson-engine";
 import { lessonToPracticeSong } from "@/lib/music/song-model";
 import { createMeasure, note, rest } from "@/lib/music/score-authoring";
 import type { Lesson } from "@/types/lesson";
 
 test("deriva foco por nota activa y compás", () => {
-  const lesson = lessons.find((item) => item.slug === "tus-primeras-5-notas");
+  const lesson = lessons.find((item) => item.slug === keyboardNotesLessonSlug);
   assert.ok(lesson);
   const step = lesson.steps[1];
   const focus = getLessonFocusFromPracticeSong(lessonToPracticeSong(lesson), step);

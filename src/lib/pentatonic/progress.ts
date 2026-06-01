@@ -6,11 +6,7 @@ import {
   unlockNextSequentialExercise,
   writeModuleProgress,
 } from "@/lib/modules/sequential-progress";
-import type {
-  PentatonicAttempt,
-  PentatonicExercise,
-  PentatonicProgress,
-} from "@/types/pentatonic";
+import type { PentatonicAttempt, PentatonicExercise, PentatonicProgress } from "@/types/pentatonic";
 
 const progressKey = "piano-claro:pentatonic-progress:v1";
 
@@ -72,9 +68,11 @@ export function applyPentatonicAttemptToProgress({
       bestAccuracy: Math.max(current?.bestAccuracy ?? 0, attempt.accuracy),
       attempts: (current?.attempts ?? 0) + 1,
       weakestScales: attempt.weakestScales,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
       replayUsedCount:
-        (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -101,7 +99,9 @@ export function applyPentatonicAttemptToProgress({
       ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
         completedExercises.length
       : 0;
-  const needsReview = Array.from(new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestScales)));
+  const needsReview = Array.from(
+    new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestScales)),
+  );
 
   return {
     ...progress,

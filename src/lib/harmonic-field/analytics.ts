@@ -14,7 +14,10 @@ type HarmonicFieldEventPayload = Record<string, unknown> & {
   exerciseId?: string;
 };
 
-export function trackHarmonicFieldEvent(name: HarmonicFieldEventName, payload: HarmonicFieldEventPayload = {}) {
+export function trackHarmonicFieldEvent(
+  name: HarmonicFieldEventName,
+  payload: HarmonicFieldEventPayload = {},
+) {
   const event = {
     name,
     ...payload,

@@ -1,5 +1,5 @@
-import { pianoLabelByNote } from "@/lib/music/notes";
 import type { PianoNoteName } from "@/lib/music/notes";
+import { pianoLabelByNote } from "@/lib/music/notes";
 import type { NoteName } from "@/types/lesson";
 
 export type NoteInputEvaluation = {
@@ -43,4 +43,3 @@ export function evaluateNoteInput({
     message: `Escuchaste ${pianoLabelByNote[playedNote]}, pero la partitura espera ${expectedLabels}. Mira la posición antes de tocar.`,
   };
 }
-

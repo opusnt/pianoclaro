@@ -2,14 +2,13 @@
 
 import { Music2 } from "lucide-react";
 import { useMemo } from "react";
-
-import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 import {
   buildKeyboardNotes,
   getDisplayNoteName,
   midiToInternalNote,
   noteToMidi,
 } from "@/lib/minor-scale/theory";
+import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 
 type MinorScaleKeyboardProps = {
   tonicMidi?: number;
@@ -61,25 +60,38 @@ export function MinorScaleKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.internalName)}
-                className={`focus-ring relative flex h-full min-w-[42px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass({
+                className={`focus-ring relative flex h-full min-w-[42px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass(
+                  {
+                    midi: key.midi,
+                    tonicMidi,
+                    expectedMidi,
+                    selectedMidi,
+                    completedSet,
+                    routeSet,
+                    differenceSet,
+                  },
+                )}`}
+                aria-label={`Tocar ${key.displayName}`}
+              >
+                {getBadge({
                   midi: key.midi,
                   tonicMidi,
                   expectedMidi,
                   selectedMidi,
                   completedSet,
-                  routeSet,
                   differenceSet,
-                })}`}
-                aria-label={`Tocar ${key.displayName}`}
-              >
-                {getBadge({ midi: key.midi, tonicMidi, expectedMidi, selectedMidi, completedSet, differenceSet })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{key.displayName.replace(/\d/g, "")}</span>
+                })}
+                <span className={showLabels ? "opacity-100" : "opacity-0"}>
+                  {key.displayName.replace(/\d/g, "")}
+                </span>
               </button>
             ))}
           </div>
 
           {blackKeys.map((key) => {
-            const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < key.midi);
+            const previousWhiteIndex = whiteKeys.findLastIndex(
+              (whiteKey) => whiteKey.midi < key.midi,
+            );
             const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
@@ -88,20 +100,31 @@ export function MinorScaleKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.internalName)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 w-[3.8%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass({
+                className={`focus-ring absolute top-0 z-10 flex h-28 w-[3.8%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(
+                  {
+                    midi: key.midi,
+                    tonicMidi,
+                    expectedMidi,
+                    selectedMidi,
+                    completedSet,
+                    routeSet,
+                    differenceSet,
+                  },
+                )}`}
+                style={{ left: `${left}%` }}
+                aria-label={`Tocar ${key.displayName}`}
+              >
+                {getBadge({
                   midi: key.midi,
                   tonicMidi,
                   expectedMidi,
                   selectedMidi,
                   completedSet,
-                  routeSet,
                   differenceSet,
-                })}`}
-                style={{ left: `${left}%` }}
-                aria-label={`Tocar ${key.displayName}`}
-              >
-                {getBadge({ midi: key.midi, tonicMidi, expectedMidi, selectedMidi, completedSet, differenceSet })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{key.displayName.replace(/\d/g, "")}</span>
+                })}
+                <span className={showLabels ? "opacity-100" : "opacity-0"}>
+                  {key.displayName.replace(/\d/g, "")}
+                </span>
               </button>
             );
           })}
@@ -109,11 +132,21 @@ export function MinorScaleKeyboard({
       </div>
 
       <div className="mt-4 grid gap-2 text-xs font-semibold text-muted sm:grid-cols-5">
-        <p><span className="font-bold text-blue-deep">Tónica:</span> azul</p>
-        <p><span className="font-bold text-gold-soft">Próxima:</span> dorado</p>
-        <p><span className="font-bold text-emerald-700">Completada:</span> verde</p>
-        <p><span className="font-bold text-purple-700">Diferencia:</span> borde</p>
-        <p><span className="font-bold text-red-700">Error:</span> rojo + texto</p>
+        <p>
+          <span className="font-bold text-blue-deep">Tónica:</span> azul
+        </p>
+        <p>
+          <span className="font-bold text-gold-soft">Próxima:</span> dorado
+        </p>
+        <p>
+          <span className="font-bold text-emerald-700">Completada:</span> verde
+        </p>
+        <p>
+          <span className="font-bold text-purple-700">Diferencia:</span> borde
+        </p>
+        <p>
+          <span className="font-bold text-red-700">Error:</span> rojo + texto
+        </p>
       </div>
     </div>
   );

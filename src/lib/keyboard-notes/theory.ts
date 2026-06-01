@@ -1,8 +1,14 @@
-import { pianoLabelByNote, solfegeByNote, type PianoNoteName, type SharpNoteName } from "@/lib/music/notes";
+import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
+import {
+  type PianoNoteName,
+  pianoLabelByNote,
+  type SharpNoteName,
+  solfegeByNote,
+} from "@/lib/music/notes";
 import type { KeyboardNotesBlackKey, KeyboardNotesWhiteKey } from "@/types/keyboard-notes";
 import type { NoteName } from "@/types/music";
 
-export const keyboardNotesModuleId = "keyboard-notes";
+export const keyboardNotesModuleId = keyboardNotesLessonSlug;
 
 export const whiteNoteOrder: NoteName[] = ["C", "D", "E", "F", "G", "A", "B"];
 

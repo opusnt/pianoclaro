@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { ArrowRight, BookOpen, Keyboard, Music, Timer } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { ArrowRight, BookOpen, Keyboard, Music, Timer } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 
-import { lessonProgressRepository, type LessonProgressStore } from "@/lib/progress";
+import { type LessonProgressStore, lessonProgressRepository } from "@/lib/progress";
 import type { Lesson } from "@/types/lesson";
 
 type ProgressDashboardProps = {

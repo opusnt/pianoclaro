@@ -87,7 +87,12 @@ export const pentatonicExercises: PentatonicExercise[] = [
     totalRounds: 10,
     requiredAccuracy: 0.75,
     unlockedBy: "relative-pentatonics",
-    allowedScales: ["c-major-pentatonic", "g-major-pentatonic", "f-major-pentatonic", "a-minor-pentatonic"],
+    allowedScales: [
+      "c-major-pentatonic",
+      "g-major-pentatonic",
+      "f-major-pentatonic",
+      "a-minor-pentatonic",
+    ],
     allowHints: true,
     showNoteLabels: true,
   },

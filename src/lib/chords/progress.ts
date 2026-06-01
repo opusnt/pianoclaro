@@ -10,7 +10,10 @@ import type { ChordAttempt, ChordExercise, ChordProgress } from "@/types/chords"
 
 const progressKey = "piano-claro:chord-progress:v1";
 
-export function createInitialChordProgress(moduleId: string, exercises: ChordExercise[]): ChordProgress {
+export function createInitialChordProgress(
+  moduleId: string,
+  exercises: ChordExercise[],
+): ChordProgress {
   return {
     moduleId,
     completed: false,
@@ -67,8 +70,11 @@ export function applyChordAttemptToProgress({
       attempts: (current?.attempts ?? 0) + 1,
       weakestChords: attempt.weakestChords,
       weakestQualities: attempt.weakestQualities,
-      helpUsedCount: (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
-      replayUsedCount: (current?.replayUsedCount ?? 0) + attempt.answers.filter((answer) => answer.replayUsed).length,
+      helpUsedCount:
+        (current?.helpUsedCount ?? 0) + attempt.answers.filter((answer) => answer.helpUsed).length,
+      replayUsedCount:
+        (current?.replayUsedCount ?? 0) +
+        attempt.answers.filter((answer) => answer.replayUsed).length,
       lastAttempt: attempt,
     },
   };
@@ -84,15 +90,21 @@ export function applyChordAttemptToProgress({
   const completedExercises = Object.values(nextExercises).filter((exercise) => exercise.completed);
   const totalAccuracy =
     completedExercises.length > 0
-      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) / completedExercises.length
+      ? completedExercises.reduce((total, exercise) => total + exercise.bestAccuracy, 0) /
+        completedExercises.length
       : 0;
-  const needsReview = Array.from(new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestChords)));
-  const weakestQualities = Object.values(nextExercises).flatMap((exercise) => exercise.weakestQualities);
+  const needsReview = Array.from(
+    new Set(Object.values(nextExercises).flatMap((exercise) => exercise.weakestChords)),
+  );
+  const weakestQualities = Object.values(nextExercises).flatMap(
+    (exercise) => exercise.weakestQualities,
+  );
 
   return {
     ...progress,
     completed:
-      progress.completed || Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
+      progress.completed ||
+      Boolean(attempt.passed && isFinalExercise({ exercises, exerciseId: attempt.exerciseId })),
     currentExerciseId: getNextAvailableExerciseId({
       exercises,
       exerciseProgress: nextExercises,

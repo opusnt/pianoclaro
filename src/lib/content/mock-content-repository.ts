@@ -1,9 +1,3 @@
-import { lessonModules } from "@/data/lesson-modules";
-import { getLessonBySlug, getLessonsByModule, lessons } from "@/data/lessons";
-import {
-  detailedLearningModules,
-  getDetailedLearningModuleById,
-} from "@/data/modules";
 import {
   curriculumStages,
   exerciseTypes,
@@ -11,6 +5,22 @@ import {
   moduleBlueprints,
   skillBranches,
 } from "@/data/curriculum";
+import {
+  getLearningExperienceById,
+  getLearningExperienceByUnitId,
+  getLearningExperiencesByTrack,
+  learningExperiences,
+} from "@/data/learning-experiences";
+import {
+  getLearningUnitById,
+  getLearningUnitByLessonSlug,
+  getLearningUnitByPlayableModuleId,
+  learningExperienceTracks,
+  learningUnits,
+} from "@/data/learning-path";
+import { lessonModules } from "@/data/lesson-modules";
+import { getLessonBySlug, getLessonsByModule, lessons } from "@/data/lessons";
+import { detailedLearningModules, getDetailedLearningModuleById } from "@/data/modules";
 import { pricingPlans } from "@/data/pricing";
 import { getRouteBySlug, learningRoutes } from "@/data/routes";
 import { getPlayableSongLessonBySlug, playableSongLessons } from "@/data/song-lessons";
@@ -24,6 +34,15 @@ export const mockContentRepository: ContentRepository = {
   getLessonBySlug,
   getLessonsByModule,
   getLessonModules: () => lessonModules,
+  getLearningExperienceTracks: () => learningExperienceTracks,
+  getLearningExperiences: () => learningExperiences,
+  getLearningExperienceById,
+  getLearningExperiencesByTrack,
+  getLearningExperienceByUnitId,
+  getLearningUnits: () => learningUnits,
+  getLearningUnitById,
+  getLearningUnitByLessonSlug,
+  getLearningUnitByPlayableModuleId,
   getSongs: () => songs,
   getPlayableSongLessons: () => playableSongLessons,
   getPlayableSongLessonBySlug,

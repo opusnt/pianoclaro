@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { trackMajorScaleEvent } from "@/lib/major-scale/analytics";
 import {
   buildMajorScaleNoteAnswer,
   buildMajorScaleOptionAnswer,
@@ -14,20 +15,13 @@ import {
   playScaleSequence,
   playScaleSuccess,
 } from "@/lib/major-scale/audio";
-import { trackMajorScaleEvent } from "@/lib/major-scale/analytics";
-import {
-  getExerciseUnitCount,
-  generateMajorScaleQuestions,
-} from "@/lib/major-scale/questions";
+import { generateMajorScaleQuestions, getExerciseUnitCount } from "@/lib/major-scale/questions";
 import {
   buildMajorScaleAttempt,
   getScaleFeedback,
   scoreScaleAnswers,
 } from "@/lib/major-scale/scoring";
-import {
-  getScaleById,
-  noteToMidi,
-} from "@/lib/major-scale/theory";
+import { getScaleById, noteToMidi } from "@/lib/major-scale/theory";
 import type {
   MajorScaleAttempt,
   MajorScaleExercise,
@@ -133,7 +127,8 @@ export function useMajorScaleEngine({
       return;
     }
 
-    const midiNotes = currentQuestion.expectedMidiNotes ?? getQuestionScaleMidiNotes(currentQuestion);
+    const midiNotes =
+      currentQuestion.expectedMidiNotes ?? getQuestionScaleMidiNotes(currentQuestion);
     if (markReplay) {
       setReplayUsed(true);
     }
@@ -163,7 +158,12 @@ export function useMajorScaleEngine({
   }
 
   function answerWithNote(note: string) {
-    if (!currentQuestion || currentQuestion.answerOptions || state !== "active" || questionComplete) {
+    if (
+      !currentQuestion ||
+      currentQuestion.answerOptions ||
+      state !== "active" ||
+      questionComplete
+    ) {
       return;
     }
 
@@ -204,7 +204,9 @@ export function useMajorScaleEngine({
     void playScaleSuccess(getAudio());
 
     if (nextPlayedNotes.length >= (currentQuestion.expectedNotes?.length ?? 0)) {
-      setMessage(`Bien: completaste ${getScaleById(currentQuestion.scaleId)?.displayName ?? "la escala"}.`);
+      setMessage(
+        `Bien: completaste ${getScaleById(currentQuestion.scaleId)?.displayName ?? "la escala"}.`,
+      );
       return;
     }
 

@@ -2,13 +2,8 @@
 
 import { Music2 } from "lucide-react";
 import { useMemo } from "react";
-
+import { buildKeyboardNotes, getNoteLabel, noteToMidi } from "@/lib/intervals/theory";
 import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
-import {
-  buildKeyboardNotes,
-  getNoteLabel,
-  noteToMidi,
-} from "@/lib/intervals/theory";
 
 type IntervalKeyboardProps = {
   baseNote?: string;
@@ -82,24 +77,35 @@ export function IntervalKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.id)}
-                className={`focus-ring relative flex h-full items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass({
+                className={`focus-ring relative flex h-full items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass(
+                  {
+                    note: key.id,
+                    baseNote,
+                    targetNote,
+                    selectedNote,
+                    isCorrect,
+                    showLabels,
+                  },
+                )}`}
+                aria-label={`Tocar ${getNoteLabel(key.id)}`}
+              >
+                {getKeyBadge({
                   note: key.id,
                   baseNote,
                   targetNote,
                   selectedNote,
                   isCorrect,
                   showLabels,
-                })}`}
-                aria-label={`Tocar ${getNoteLabel(key.id)}`}
-              >
-                {getKeyBadge({ note: key.id, baseNote, targetNote, selectedNote, isCorrect, showLabels })}
+                })}
                 <span className={showLabels ? "opacity-100" : "opacity-0"}>{key.label}</span>
               </button>
             ))}
           </div>
 
           {blackKeys.map((key) => {
-            const previousWhiteIndex = whiteKeys.findLastIndex((whiteKey) => whiteKey.midi < key.midi);
+            const previousWhiteIndex = whiteKeys.findLastIndex(
+              (whiteKey) => whiteKey.midi < key.midi,
+            );
             const left = getBlackKeyLeftPercent(previousWhiteIndex, whiteKeys.length);
 
             return (
@@ -108,19 +114,30 @@ export function IntervalKeyboard({
                 type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.id)}
-                className={`focus-ring absolute top-0 z-10 flex h-28 w-[7.5%] min-w-8 max-w-14 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.68rem] font-bold shadow-md transition ${getBlackKeyClass({
+                className={`focus-ring absolute top-0 z-10 flex h-28 w-[7.5%] min-w-8 max-w-14 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.68rem] font-bold shadow-md transition ${getBlackKeyClass(
+                  {
+                    note: key.id,
+                    baseNote,
+                    targetNote,
+                    selectedNote,
+                    isCorrect,
+                    showLabels,
+                  },
+                )}`}
+                style={{ left: `${left}%` }}
+                aria-label={`Tocar ${getNoteLabel(key.id)}`}
+              >
+                {getKeyBadge({
                   note: key.id,
                   baseNote,
                   targetNote,
                   selectedNote,
                   isCorrect,
                   showLabels,
-                })}`}
-                style={{ left: `${left}%` }}
-                aria-label={`Tocar ${getNoteLabel(key.id)}`}
-              >
-                {getKeyBadge({ note: key.id, baseNote, targetNote, selectedNote, isCorrect, showLabels })}
-                <span className={showLabels ? "opacity-100" : "opacity-0"}>{key.label.replace(/\d/g, "")}</span>
+                })}
+                <span className={showLabels ? "opacity-100" : "opacity-0"}>
+                  {key.label.replace(/\d/g, "")}
+                </span>
               </button>
             );
           })}
@@ -128,9 +145,15 @@ export function IntervalKeyboard({
       </div>
 
       <div className="mt-4 grid gap-2 text-xs font-semibold text-muted sm:grid-cols-3">
-        <p><span className="font-bold text-blue-deep">Base:</span> azul</p>
-        <p><span className="font-bold text-emerald-700">Correcta:</span> verde</p>
-        <p><span className="font-bold text-red-700">Error:</span> rojo + texto</p>
+        <p>
+          <span className="font-bold text-blue-deep">Base:</span> azul
+        </p>
+        <p>
+          <span className="font-bold text-emerald-700">Correcta:</span> verde
+        </p>
+        <p>
+          <span className="font-bold text-red-700">Error:</span> rojo + texto
+        </p>
       </div>
     </div>
   );
@@ -162,7 +185,11 @@ function getKeyClass({
 function getBlackKeyClass(input: KeyStateInput) {
   const whiteClass = getKeyClass(input);
 
-  if (whiteClass.includes("emerald") || whiteClass.includes("red") || whiteClass.includes("bg-blue-deep")) {
+  if (
+    whiteClass.includes("emerald") ||
+    whiteClass.includes("red") ||
+    whiteClass.includes("bg-blue-deep")
+  ) {
     return whiteClass;
   }
 

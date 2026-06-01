@@ -46,7 +46,9 @@ export function LessonStepPanel({
                 />
                 <span>
                   <span className="block text-sm font-bold">{step.title}</span>
-                  <span className={`mt-1 block text-xs ${isActive ? "text-white/72" : "text-muted"}`}>
+                  <span
+                    className={`mt-1 block text-xs ${isActive ? "text-white/72" : "text-muted"}`}
+                  >
                     {step.description}
                   </span>
                 </span>

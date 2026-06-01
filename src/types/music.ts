@@ -16,6 +16,7 @@ export type NotatedNoteEvent = {
   kind: "note";
   pitch: NotatedPitch;
   duration: NoteDuration;
+  isChord?: boolean;
 };
 
 export type NotatedRestEvent = {

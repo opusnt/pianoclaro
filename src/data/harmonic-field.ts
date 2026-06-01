@@ -60,7 +60,8 @@ export const harmonicFieldExercises: HarmonicFieldExercise[] = [
     id: "play-pop-progression",
     moduleId: HARMONIC_FIELD_MODULE_ID,
     title: "Toca I - V - vi - IV",
-    description: "Toca una progresión popular en DO mayor usando acordes completos o inversiones válidas.",
+    description:
+      "Toca una progresión popular en DO mayor usando acordes completos o inversiones válidas.",
     type: "play_pop_progression",
     totalRounds: 4,
     requiredAccuracy: 0.75,

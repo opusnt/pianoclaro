@@ -2,11 +2,11 @@
 
 import { Headphones, Keyboard, Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useRef } from "react";
-
+import { useRhythmEngine } from "@/components/modules/rhythm/hooks/useRhythmEngine";
+import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
 import { RhythmVisualizer } from "@/components/modules/rhythm/RhythmVisualizer";
 import { ScorePanel } from "@/components/modules/rhythm/ScorePanel";
 import { TimingFeedback } from "@/components/modules/rhythm/TimingFeedback";
-import { useRhythmEngine } from "@/components/modules/rhythm/hooks/useRhythmEngine";
 import { getAdaptiveHint } from "@/lib/rhythm/scoring";
 import type { ExerciseAttempt, RhythmExercise, RhythmExerciseProgress } from "@/types/rhythm";
 
@@ -21,7 +21,8 @@ export function RhythmExerciseScreen({
   progress,
   onAttemptComplete,
 }: RhythmExerciseScreenProps) {
-  const failedAttempts = progress?.lastAttempt && !progress.lastAttempt.passed && progress.attempts >= 2 ? 2 : 0;
+  const failedAttempts =
+    progress?.lastAttempt && !progress.lastAttempt.passed && progress.attempts >= 2 ? 2 : 0;
   const engine = useRhythmEngine({
     exercise,
     failedAttempts,
@@ -29,7 +30,8 @@ export function RhythmExerciseScreen({
   });
   const isIntro = engine.state === "intro";
   const submitInputRef = useRef(engine.submitInput);
-  const visualizerMode = engine.state === "previewing" ? "listen" : engine.state === "playing" ? "play" : "idle";
+  const visualizerMode =
+    engine.state === "previewing" ? "listen" : engine.state === "playing" ? "play" : "idle";
   const beatLabel =
     engine.beatEvents.length > 0
       ? `${Math.min(engine.currentBeatIndex + 1, engine.beatEvents.length)}/${engine.beatEvents.length}`
@@ -53,6 +55,12 @@ export function RhythmExerciseScreen({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  useMidiKeyboardInput({
+    enabled: engine.state === "playing" || engine.state === "countdown",
+    onNaturalKeyPress: () => submitInputRef.current("keyboard", "Midi"),
+    onSharpKeyPress: () => submitInputRef.current("keyboard", "Midi"),
+  });
+
   return (
     <section className="rounded-2xl border border-blue-deep/10 bg-white/85 p-5 shadow-soft">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
@@ -72,7 +80,9 @@ export function RhythmExerciseScreen({
               Escuchar ritmo
             </button>
           ) : null}
-          {engine.state === "paused" || engine.state === "failed" || engine.state === "completed" ? (
+          {engine.state === "paused" ||
+          engine.state === "failed" ||
+          engine.state === "completed" ? (
             <button
               type="button"
               onClick={engine.startExercise}
@@ -95,7 +105,11 @@ export function RhythmExerciseScreen({
           <button
             type="button"
             onClick={engine.pauseExercise}
-            disabled={engine.state !== "playing" && engine.state !== "countdown" && engine.state !== "previewing"}
+            disabled={
+              engine.state !== "playing" &&
+              engine.state !== "countdown" &&
+              engine.state !== "previewing"
+            }
             className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35 disabled:cursor-not-allowed disabled:opacity-45"
           >
             <Pause aria-hidden="true" className="h-4 w-4" />
@@ -171,16 +185,16 @@ export function RhythmExerciseScreen({
                 <p className="text-xs font-bold uppercase text-muted">Estado</p>
                 <p className="mt-2 text-sm font-bold text-blue-deep">
                   {engine.state === "previewing"
-                  ? "Escuchando el patrón"
-                  : engine.state === "countdown"
-                    ? "Prepárate"
-                  : engine.state === "playing"
-                    ? "Tocando"
-                    : engine.state === "paused"
-                      ? "Pausado"
-                    : engine.state === "completed"
-                      ? "Aprobado"
-                      : "Reintentar"}
+                    ? "Escuchando el patrón"
+                    : engine.state === "countdown"
+                      ? "Prepárate"
+                      : engine.state === "playing"
+                        ? "Tocando"
+                        : engine.state === "paused"
+                          ? "Pausado"
+                          : engine.state === "completed"
+                            ? "Aprobado"
+                            : "Reintentar"}
                 </p>
               </div>
             </div>
@@ -221,8 +235,14 @@ function RhythmStartPanel({
 
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <RhythmStartStep title="1. Escucha" text="Detecta la distancia entre cada beat." />
-            <RhythmStartStep title="2. Anticipa" text="Mira el anillo: se acerca al centro antes del toque." />
-            <RhythmStartStep title="3. Toca" text="Usa el círculo central, barra espaciadora o Enter." />
+            <RhythmStartStep
+              title="2. Anticipa"
+              text="Mira el anillo: se acerca al centro antes del toque."
+            />
+            <RhythmStartStep
+              title="3. Toca"
+              text="Usa el círculo central, barra espaciadora o Enter."
+            />
           </div>
         </div>
 
@@ -325,9 +345,7 @@ function InputHint({ isActive }: { isActive: boolean }) {
   return (
     <div
       className={`rounded-2xl border p-4 ${
-        isActive
-          ? "border-blue-deep/15 bg-blue-soft/35"
-          : "border-blue-deep/10 bg-white/85"
+        isActive ? "border-blue-deep/15 bg-blue-soft/35" : "border-blue-deep/10 bg-white/85"
       }`}
     >
       <p className="text-xs font-bold uppercase text-muted">Input</p>

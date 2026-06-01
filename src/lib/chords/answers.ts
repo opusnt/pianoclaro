@@ -7,14 +7,16 @@ import {
   normalizePitchSet,
   validateChordNotes,
 } from "@/lib/chords/theory";
-import type { ChordAnswer, ChordQuestion, ChordQuality } from "@/types/chords";
+import type { ChordAnswer, ChordQuality, ChordQuestion } from "@/types/chords";
 
 export function resolveExpectedChordNotes(question: ChordQuestion) {
   const chord = getChordById(question.chordId);
   if (!chord) return [];
 
   return chord.midiNotes.map((midi) => {
-    const expected = question.expectedNotes?.find((note) => normalizePitchSet([note])[0] === midi % 12);
+    const expected = question.expectedNotes?.find(
+      (note) => normalizePitchSet([note])[0] === midi % 12,
+    );
     return expected ?? chord.notes[chord.midiNotes.indexOf(midi)];
   });
 }
@@ -38,8 +40,12 @@ export function buildChordNotesAnswer({
   const correctNotesCount = countCorrectChordNotes(expectedNotes, selectedNotes);
   const expectedPitchSet = new Set(normalizePitchSet(expectedNotes));
   const selectedPitchSet = new Set(normalizePitchSet(selectedNotes));
-  const missingNotes = expectedNotes.filter((note) => !selectedPitchSet.has(normalizePitchSet([note])[0]));
-  const wrongNote = selectedNotes.find((note) => !expectedPitchSet.has(normalizePitchSet([note])[0]));
+  const missingNotes = expectedNotes.filter(
+    (note) => !selectedPitchSet.has(normalizePitchSet([note])[0]),
+  );
+  const wrongNote = selectedNotes.find(
+    (note) => !expectedPitchSet.has(normalizePitchSet([note])[0]),
+  );
 
   return {
     questionId: question.id,

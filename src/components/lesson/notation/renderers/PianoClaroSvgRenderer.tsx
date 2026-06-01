@@ -1,15 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { NoteGlyph } from "@/components/lesson/notation/NoteGlyph";
 import { RestGlyph } from "@/components/lesson/notation/RestGlyph";
-import type {
-  NotationRendererProps,
-  ScoreNoteSelection,
-} from "@/components/lesson/notation/types";
-import { getStaffPosition } from "@/lib/music/staff-position";
+import type { NotationRendererProps, ScoreNoteSelection } from "@/components/lesson/notation/types";
 import { getMeasureEvents } from "@/lib/music/notation";
-import {
-  getPositionedMeasureEvents,
-  isPositionedNoteEvent,
-} from "@/lib/music/notation-layout";
+import { getPositionedMeasureEvents, isPositionedNoteEvent } from "@/lib/music/notation-layout";
+import { getStaffPosition } from "@/lib/music/staff-position";
 import type { NoteName, ScoreMock } from "@/types/lesson";
 
 const rowHeight = 12;
@@ -36,22 +31,63 @@ export function PianoClaroSvgRenderer({
   hintNotePosition,
   onNoteSelect,
 }: NotationRendererProps) {
-  const measuresPerSystem = score.measures.length <= 2 ? 2 : 3;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(960);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver((entries) => {
+      if (entries[0]) {
+        setContainerWidth(entries[0].contentRect.width);
+      }
+    });
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const systemHeight = 250;
-  const scoreWidth = 960;
   const leftPadding = 126;
   const rightPadding = 34;
-  const measureWidth = (scoreWidth - leftPadding - rightPadding) / measuresPerSystem;
+  const availableWidth = containerWidth - leftPadding - rightPadding;
+  const minMeasureWidth = 220;
+  
+  let measuresPerSystem = Math.floor(availableWidth / minMeasureWidth);
+  measuresPerSystem = Math.max(1, Math.min(measuresPerSystem, score.measures.length, 4));
+  
+  const scoreWidth = containerWidth;
+  const measureWidth = availableWidth / measuresPerSystem;
   const systemCount = Math.ceil(score.measures.length / measuresPerSystem);
   const scoreHeight = systemCount * systemHeight + 20;
 
+  let activeCursorX: number | null = null;
+  let activeCursorY: number | null = null;
+
+  if (activeNotePosition) {
+    const measureIndex = score.measures.findIndex((m) => m.number === activeNotePosition.measureNumber);
+    if (measureIndex !== -1) {
+      const measure = score.measures[measureIndex];
+      const systemIndex = Math.floor(measureIndex / measuresPerSystem);
+      const positionInSystem = measureIndex % measuresPerSystem;
+      const systemTop = systemIndex * systemHeight;
+      const measureStart = leftPadding + positionInSystem * measureWidth;
+      
+      const positionedEvents = getPositionedMeasureEvents({ measure, measureStart, measureWidth });
+      const activeEvent = positionedEvents.find((e) => e.noteIndex === activeNotePosition.noteIndex);
+      if (activeEvent) {
+        activeCursorX = activeEvent.x;
+        activeCursorY = systemTop + 68;
+      }
+    }
+  }
+
   return (
-    <svg
-      role="img"
-      aria-label={`Partitura mock ${score.title}`}
-      viewBox={`0 0 ${scoreWidth} ${scoreHeight}`}
-      className="h-auto w-full min-w-[640px] rounded-2xl bg-ivory md:min-w-0"
-    >
+    <div ref={containerRef} className="w-full">
+      <svg
+        role="img"
+        aria-label={`Partitura mock ${score.title}`}
+        viewBox={`0 0 ${scoreWidth} ${scoreHeight}`}
+        className="h-auto w-full rounded-2xl bg-ivory"
+      >
       <rect width={scoreWidth} height={scoreHeight} rx="18" fill="#fbf8ef" />
 
       {Array.from({ length: systemCount }).map((_, systemIndex) => {
@@ -61,8 +97,7 @@ export function PianoClaroSvgRenderer({
           systemIndex * measuresPerSystem,
           systemIndex * measuresPerSystem + measuresPerSystem,
         );
-        const lastMeasureX =
-          leftPadding + Math.max(systemMeasures.length, 1) * measureWidth - 18;
+        const lastMeasureX = leftPadding + Math.max(systemMeasures.length, 1) * measureWidth - 18;
 
         return (
           <g key={`system-${systemIndex}`}>
@@ -165,9 +200,7 @@ export function PianoClaroSvgRenderer({
               const isPlaybackNote =
                 activeNotePosition?.measureNumber === measure.number &&
                 activeNotePosition.noteIndex === noteIndex;
-              const isNoteActive = activeNotePosition
-                ? isPlaybackNote
-                : activeNotes.includes(note);
+              const isNoteActive = activeNotePosition ? isPlaybackNote : activeNotes.includes(note);
 
               return (
                 <g
@@ -238,6 +271,23 @@ export function PianoClaroSvgRenderer({
         );
       })}
 
+      {activeCursorX !== null && activeCursorY !== null && (
+        <line
+          style={{
+            transform: `translate(${activeCursorX}px, ${activeCursorY}px)`,
+            transition: "transform 250ms linear"
+          }}
+          x1={0}
+          x2={0}
+          y1={-14}
+          y2={140}
+          stroke="#d7b46a"
+          strokeWidth="4"
+          strokeLinecap="round"
+          opacity="0.8"
+        />
+      )}
+
       {hintNotePosition ? (
         <KeyboardHint
           score={score}
@@ -249,6 +299,7 @@ export function PianoClaroSvgRenderer({
         />
       ) : null}
     </svg>
+    </div>
   );
 }
 
@@ -273,12 +324,11 @@ function KeyboardHint({
     return currentMeasure.number === selection.measureNumber;
   });
   const measureStart = leftPadding + positionInSystem * measureWidth;
-  const noteX =
-    measure
-      ? getPositionedMeasureEvents({ measure, measureStart, measureWidth }).find(
-          (event) => event.noteIndex === selection.noteIndex,
-        )?.x ?? measureStart + 38
-      : measureStart + 38;
+  const noteX = measure
+    ? (getPositionedMeasureEvents({ measure, measureStart, measureWidth }).find(
+        (event) => event.noteIndex === selection.noteIndex,
+      )?.x ?? measureStart + 38)
+    : measureStart + 38;
   const noteYPosition = getStaffPosition({
     note: selection.note,
     clef: score.clef,
@@ -292,7 +342,15 @@ function KeyboardHint({
 
   return (
     <g>
-      <rect x={hintX} y={hintY} width={hintWidth} height={hintHeight} rx="14" fill="#dbe9f7" opacity="0.95" />
+      <rect
+        x={hintX}
+        y={hintY}
+        width={hintWidth}
+        height={hintHeight}
+        rx="14"
+        fill="#dbe9f7"
+        opacity="0.95"
+      />
       <polygon
         points={`${noteX - 14},${hintY + hintHeight} ${noteX + 14},${hintY + hintHeight} ${noteX},${noteYPosition - 24}`}
         fill="#dbe9f7"

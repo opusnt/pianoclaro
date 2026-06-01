@@ -8,11 +8,7 @@ import {
   readIntervalProgress,
   writeIntervalProgress,
 } from "@/lib/intervals/progress";
-import type {
-  IntervalAttempt,
-  IntervalExercise,
-  IntervalProgress,
-} from "@/types/intervals";
+import type { IntervalAttempt, IntervalExercise, IntervalProgress } from "@/types/intervals";
 
 export function useIntervalProgress(moduleId: string, exercises: IntervalExercise[]) {
   const [progress, setProgress] = useState<IntervalProgress>(() =>

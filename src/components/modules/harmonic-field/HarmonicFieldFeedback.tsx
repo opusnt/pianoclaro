@@ -22,7 +22,11 @@ export function HarmonicFieldFeedback({ message, answer }: HarmonicFieldFeedback
       aria-live="polite"
     >
       <div className="flex items-start gap-3">
-        {tone === "negative" ? <AlertTriangle className="mt-0.5 h-5 w-5" /> : <CheckCircle2 className="mt-0.5 h-5 w-5" />}
+        {tone === "negative" ? (
+          <AlertTriangle className="mt-0.5 h-5 w-5" />
+        ) : (
+          <CheckCircle2 className="mt-0.5 h-5 w-5" />
+        )}
         <p className="text-sm font-bold leading-6">{message}</p>
       </div>
     </div>
