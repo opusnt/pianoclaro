@@ -289,8 +289,8 @@ function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScor
       <div className="text-center space-y-6">
         <p className="text-lg font-bold text-slate-700">¿Cómo se toca la ÚLTIMA nota?</p>
         <div className="flex justify-center gap-4">
-          <Button onClick={() => handleGuess("natural")} variant="outline" className="text-lg py-6 px-8">Blanca (Natural)</Button>
-          <Button onClick={() => handleGuess("sharp")} variant="outline" className="text-lg py-6 px-8">Negra (Alterada)</Button>
+          <Button onClick={() => handleGuess("natural")} variant="outline" className="text-lg py-6 px-8">Natural</Button>
+          <Button onClick={() => handleGuess("sharp")} variant="outline" className="text-lg py-6 px-8">Alterada</Button>
         </div>
         
         <div className="h-8">
