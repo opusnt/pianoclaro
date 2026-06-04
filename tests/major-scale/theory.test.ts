@@ -2,11 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  MAJOR_SCALE_CUMULATIVE_STEPS,
-  MAJOR_SCALE_INTERVALS,
   buildMajorScaleFromMidi,
   getDisplayNoteName,
   getScaleById,
+  MAJOR_SCALE_CUMULATIVE_STEPS,
+  MAJOR_SCALE_INTERVALS,
   noteToMidi,
   validatePlayedScale,
 } from "@/lib/major-scale/theory";

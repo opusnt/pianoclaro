@@ -25,7 +25,7 @@ export function getPositionedMeasureEvents({
     if (event.kind === "note" && event.isChord) return beats;
     return beats + getDurationBeats(event.duration);
   }, 0);
-  
+
   const usableWidth = Math.max(measureWidth - 96, 1);
   let elapsedBeats = 0;
   let noteIndex = 0;
@@ -33,10 +33,10 @@ export function getPositionedMeasureEvents({
   return events.map((event, eventIndex) => {
     const durationBeats = getDurationBeats(event.duration);
     const isChord = event.kind === "note" && event.isChord;
-    
+
     const startsAtBeat = elapsedBeats + 1;
     const xRatio = totalBeats > 0 ? elapsedBeats / totalBeats : 0;
-    
+
     const positionedEvent: PositionedMeasureEvent = {
       event,
       eventIndex,

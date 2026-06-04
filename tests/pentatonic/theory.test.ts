@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
-  MAJOR_PENTATONIC_INTERVALS,
-  MAJOR_PENTATONIC_STEPS,
-  MINOR_PENTATONIC_INTERVALS,
-  MINOR_PENTATONIC_STEPS,
   areRelativePentatonics,
   buildPentatonicScaleFromMidi,
   getDisplayPitchName,
   getPentatonicScaleById,
+  MAJOR_PENTATONIC_INTERVALS,
+  MAJOR_PENTATONIC_STEPS,
+  MINOR_PENTATONIC_INTERVALS,
+  MINOR_PENTATONIC_STEPS,
   validatePlayedPentatonicScale,
 } from "@/lib/pentatonic/theory";
 
@@ -28,12 +28,54 @@ test("construye y valida pentatónicas desde MIDI", () => {
 });
 
 test("mantiene escalas predefinidas del módulo", () => {
-  assert.deepEqual(getPentatonicScaleById("c-major-pentatonic")?.notes, ["C", "D", "E", "G", "A", "C"]);
-  assert.deepEqual(getPentatonicScaleById("a-minor-pentatonic")?.notes, ["A", "C", "D", "E", "G", "A"]);
-  assert.deepEqual(getPentatonicScaleById("g-major-pentatonic")?.notes, ["G", "A", "B", "D", "E", "G"]);
-  assert.deepEqual(getPentatonicScaleById("e-minor-pentatonic")?.notes, ["E", "G", "A", "B", "D", "E"]);
-  assert.deepEqual(getPentatonicScaleById("f-major-pentatonic")?.notes, ["F", "G", "A", "C", "D", "F"]);
-  assert.deepEqual(getPentatonicScaleById("d-minor-pentatonic")?.notes, ["D", "F", "G", "A", "C", "D"]);
+  assert.deepEqual(getPentatonicScaleById("c-major-pentatonic")?.notes, [
+    "C",
+    "D",
+    "E",
+    "G",
+    "A",
+    "C",
+  ]);
+  assert.deepEqual(getPentatonicScaleById("a-minor-pentatonic")?.notes, [
+    "A",
+    "C",
+    "D",
+    "E",
+    "G",
+    "A",
+  ]);
+  assert.deepEqual(getPentatonicScaleById("g-major-pentatonic")?.notes, [
+    "G",
+    "A",
+    "B",
+    "D",
+    "E",
+    "G",
+  ]);
+  assert.deepEqual(getPentatonicScaleById("e-minor-pentatonic")?.notes, [
+    "E",
+    "G",
+    "A",
+    "B",
+    "D",
+    "E",
+  ]);
+  assert.deepEqual(getPentatonicScaleById("f-major-pentatonic")?.notes, [
+    "F",
+    "G",
+    "A",
+    "C",
+    "D",
+    "F",
+  ]);
+  assert.deepEqual(getPentatonicScaleById("d-minor-pentatonic")?.notes, [
+    "D",
+    "F",
+    "G",
+    "A",
+    "C",
+    "D",
+  ]);
 });
 
 test("detecta pentatónicas relativas", () => {

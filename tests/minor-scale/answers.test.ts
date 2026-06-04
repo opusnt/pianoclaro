@@ -68,7 +68,10 @@ test("resuelve notas MIDI, intervalos siguientes y respuestas de opción menores
     answerOptions: ["LA menor natural", "LA menor armónica"],
   };
 
-  assert.deepEqual(getMinorQuestionScaleMidiNotes(optionQuestion), [57, 59, 60, 62, 64, 65, 68, 69]);
+  assert.deepEqual(
+    getMinorQuestionScaleMidiNotes(optionQuestion),
+    [57, 59, 60, 62, 64, 65, 68, 69],
+  );
   assert.equal(midiToMinorScaleNote(optionQuestion, 68), "G#4");
   assert.equal(getMinorScaleNextInterval(sequenceQuestion, 1), 1);
   assert.equal(getMinorScaleWrongStep(sequenceQuestion, 1), 1);

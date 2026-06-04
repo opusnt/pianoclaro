@@ -16,8 +16,14 @@ export function MicrophoneToggle({ enabled, onChange }: MicrophoneToggleProps) {
             Toca en tu piano acústico real. Usaremos el micrófono para detectar tus notas.
           </p>
         </div>
-        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${enabled ? 'bg-gold-soft text-white' : 'bg-blue-soft text-blue-deep'}`}>
-          {enabled ? <Mic aria-hidden="true" className="h-5 w-5" /> : <MicOff aria-hidden="true" className="h-5 w-5" />}
+        <span
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${enabled ? "bg-gold-soft text-white" : "bg-blue-soft text-blue-deep"}`}
+        >
+          {enabled ? (
+            <Mic aria-hidden="true" className="h-5 w-5" />
+          ) : (
+            <MicOff aria-hidden="true" className="h-5 w-5" />
+          )}
         </span>
       </div>
       <button

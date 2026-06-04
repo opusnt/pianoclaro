@@ -41,14 +41,29 @@ test("genera 24 rondas para el desafío final menor", () => {
   const questions = generateMinorScaleQuestions(exercise);
 
   assert.equal(questions.length, 24);
-  assert.equal(questions.every((question) => question.taskType === "final_challenge"), true);
+  assert.equal(
+    questions.every((question) => question.taskType === "final_challenge"),
+    true,
+  );
 });
 
 test("calcula puntaje de escalas menores con ayuda y replay", () => {
-  assert.equal(pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }), 100);
-  assert.equal(pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }), 60);
-  assert.equal(pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }), 75);
-  assert.equal(pointsForMinorScaleAnswer({ isCorrect: false, helpUsed: false, replayUsed: false }), 0);
+  assert.equal(
+    pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }),
+    100,
+  );
+  assert.equal(
+    pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }),
+    60,
+  );
+  assert.equal(
+    pointsForMinorScaleAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }),
+    75,
+  );
+  assert.equal(
+    pointsForMinorScaleAnswer({ isCorrect: false, helpUsed: false, replayUsed: false }),
+    0,
+  );
 
   const scoring = scoreMinorScaleAnswers(
     [

@@ -4,11 +4,7 @@ import test from "node:test";
 import { createMeasure, note, notes, rest } from "@/lib/music/score-authoring";
 
 test("construye compases completos desde eventos musicales", () => {
-  const measure = createMeasure(3, [
-    rest("negra"),
-    note("C", "blanca"),
-    note("D", "negra"),
-  ]);
+  const measure = createMeasure(3, [rest("negra"), note("C", "blanca"), note("D", "negra")]);
 
   assert.deepEqual(measure.notes, ["C", "D"]);
   assert.deepEqual(measure.solfege, ["Do", "Re"]);

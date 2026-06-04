@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import * as Pitchfinder from "pitchfinder";
+import { useEffect, useRef } from "react";
 import type { PianoNoteName, SharpNoteName } from "@/lib/music/notes";
 import type { NoteName } from "@/types/lesson";
 

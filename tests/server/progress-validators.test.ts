@@ -1,8 +1,7 @@
-import test from "node:test";
 import assert from "node:assert/strict";
-
-import { parseProgressMutationInput } from "@/server/progress/validators";
+import test from "node:test";
 import { ServerAppError } from "@/server/errors";
+import { parseProgressMutationInput } from "@/server/progress/validators";
 
 test("acepta payload mínimo de progreso oficial", () => {
   const parsed = parseProgressMutationInput({

@@ -1,5 +1,5 @@
-import test from "node:test";
 import assert from "node:assert/strict";
+import test from "node:test";
 
 import { detailedLearningModules } from "@/data/modules";
 import {
@@ -23,7 +23,11 @@ test("cada módulo jugable existe en el catálogo curricular detallado", () => {
   const detailedIds = new Set(detailedLearningModules.map((module) => module.id));
 
   playableModuleIds.forEach((moduleId) => {
-    assert.equal(detailedIds.has(moduleId), true, `${moduleId} no existe en detailedLearningModules`);
+    assert.equal(
+      detailedIds.has(moduleId),
+      true,
+      `${moduleId} no existe en detailedLearningModules`,
+    );
   });
 });
 

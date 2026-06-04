@@ -1,18 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
+import { getPositionedMeasureEvents, isPositionedNoteEvent } from "@/lib/music/notation-layout";
 import { createMeasure, note, rest } from "@/lib/music/score-authoring";
-import {
-  getPositionedMeasureEvents,
-  isPositionedNoteEvent,
-} from "@/lib/music/notation-layout";
 
 test("posiciona eventos según su duración real dentro del compás", () => {
-  const measure = createMeasure(1, [
-    rest("negra"),
-    note("C", "blanca"),
-    note("D", "negra"),
-  ]);
+  const measure = createMeasure(1, [rest("negra"), note("C", "blanca"), note("D", "negra")]);
 
   const events = getPositionedMeasureEvents({
     measure,

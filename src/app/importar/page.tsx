@@ -26,9 +26,7 @@ export default function ImportXmlPage() {
         const parsed = parseMusicXml(text);
         setScore(parsed);
       } catch (err) {
-        setError(
-          "Ocurrió un error al leer la partitura. Asegúrate de que es un MusicXML válido.",
-        );
+        setError("Ocurrió un error al leer la partitura. Asegúrate de que es un MusicXML válido.");
       }
     };
     reader.readAsText(file);
@@ -50,8 +48,8 @@ export default function ImportXmlPage() {
           Importador MusicXML
         </h1>
         <p className="mt-3 text-muted">
-          Trae tus propias partituras desde MuseScore, Sibelius o Finale y pruébalas en
-          nuestro motor de renderizado inteligente.
+          Trae tus propias partituras desde MuseScore, Sibelius o Finale y pruébalas en nuestro
+          motor de renderizado inteligente.
         </p>
       </div>
 
@@ -78,9 +76,7 @@ export default function ImportXmlPage() {
           role="button"
         >
           <FileUp className="mb-4 h-16 w-16 text-blue-deep/50" />
-          <h3 className="text-xl font-bold text-blue-deep">
-            Arrastra tu archivo MusicXML aquí
-          </h3>
+          <h3 className="text-xl font-bold text-blue-deep">Arrastra tu archivo MusicXML aquí</h3>
           <p className="mt-2 text-sm text-muted">
             O haz clic para explorar en tu computadora (.xml, .musicxml)
           </p>

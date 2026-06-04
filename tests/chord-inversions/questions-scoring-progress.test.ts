@@ -1,10 +1,16 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { chordInversionExercises, CHORD_INVERSION_MODULE_ID } from "@/data/chord-inversions";
-import { createInitialChordInversionProgress, applyChordInversionAttemptToProgress } from "@/lib/chord-inversions/progress";
+import { CHORD_INVERSION_MODULE_ID, chordInversionExercises } from "@/data/chord-inversions";
+import {
+  applyChordInversionAttemptToProgress,
+  createInitialChordInversionProgress,
+} from "@/lib/chord-inversions/progress";
 import { generateChordInversionQuestions } from "@/lib/chord-inversions/questions";
-import { buildChordInversionAttempt, pointsForChordInversionAnswer } from "@/lib/chord-inversions/scoring";
+import {
+  buildChordInversionAttempt,
+  pointsForChordInversionAnswer,
+} from "@/lib/chord-inversions/scoring";
 import type { ChordInversionAnswer } from "@/types/chord-inversions";
 
 test("genera preguntas jugables para inversiones de acordes", () => {
@@ -21,8 +27,14 @@ test("genera desafío final de 24 rondas mixtas", () => {
   const questions = generateChordInversionQuestions(final);
 
   assert.equal(questions.length, 24);
-  assert.equal(questions.some((question) => question.mode === "progression"), true);
-  assert.equal(questions.some((question) => Boolean(question.answerOptions)), true);
+  assert.equal(
+    questions.some((question) => question.mode === "progression"),
+    true,
+  );
+  assert.equal(
+    questions.some((question) => Boolean(question.answerOptions)),
+    true,
+  );
 });
 
 test("puntúa parcialmente notas correctas con bajo incorrecto", () => {
@@ -71,13 +83,22 @@ test("desbloquea el siguiente ejercicio al aprobar", () => {
   const attempt = buildChordInversionAttempt({
     exercise,
     startedAt: "2026-01-01T00:00:00.000Z",
-    answers: Array.from({ length: exercise.totalRounds }, (_, index) => ({ ...answer, questionId: `q${index}` })),
+    answers: Array.from({ length: exercise.totalRounds }, (_, index) => ({
+      ...answer,
+      questionId: `q${index}`,
+    })),
     totalUnits: exercise.totalRounds,
   });
-  const progress = createInitialChordInversionProgress(CHORD_INVERSION_MODULE_ID, chordInversionExercises);
-  const next = applyChordInversionAttemptToProgress({ progress, exercises: chordInversionExercises, attempt });
+  const progress = createInitialChordInversionProgress(
+    CHORD_INVERSION_MODULE_ID,
+    chordInversionExercises,
+  );
+  const next = applyChordInversionAttemptToProgress({
+    progress,
+    exercises: chordInversionExercises,
+    attempt,
+  });
 
   assert.equal(attempt.passed, true);
   assert.equal(next.exercises["build-first-inversion"]?.unlocked, true);
 });
-

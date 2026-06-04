@@ -1,8 +1,8 @@
-import test from "node:test";
 import assert from "node:assert/strict";
+import test from "node:test";
 
-import { chordExercises, CHORD_MODULE_ID } from "@/data/chords";
-import { createInitialChordProgress, applyChordAttemptToProgress } from "@/lib/chords/progress";
+import { CHORD_MODULE_ID, chordExercises } from "@/data/chords";
+import { applyChordAttemptToProgress, createInitialChordProgress } from "@/lib/chords/progress";
 import { generateChordQuestions } from "@/lib/chords/questions";
 import { buildChordAttempt, scoreChordAnswers } from "@/lib/chords/scoring";
 import type { ChordAnswer } from "@/types/chords";
@@ -13,7 +13,10 @@ test("genera preguntas jugables para construcción de acordes", () => {
 
   const questions = generateChordQuestions(buildMajor);
   assert.equal(questions.length, 4);
-  assert.deepEqual(questions[0].expectedNotes?.map((note) => note.replace(/\d/g, "")), ["C", "E", "G"]);
+  assert.deepEqual(
+    questions[0].expectedNotes?.map((note) => note.replace(/\d/g, "")),
+    ["C", "E", "G"],
+  );
 });
 
 test("genera desafío final de 24 rondas mixtas", () => {
@@ -52,18 +55,21 @@ test("calcula puntaje parcial para acordes con dos notas correctas", () => {
 test("desbloquea el siguiente ejercicio al aprobar", () => {
   const progress = createInitialChordProgress(CHORD_MODULE_ID, chordExercises);
   const firstExercise = chordExercises[0];
-  const answers = Array.from({ length: firstExercise.totalRounds }, (_, index): ChordAnswer => ({
-    questionId: `q${index}`,
-    selectedOption: "Acorde",
-    isCorrect: true,
-    expectedAnswer: "Acorde",
-    userAnswer: "Acorde",
-    helpUsed: false,
-    replayUsed: false,
-    chordId: "c-major",
-    chordQuality: "major",
-    points: 100,
-  }));
+  const answers = Array.from(
+    { length: firstExercise.totalRounds },
+    (_, index): ChordAnswer => ({
+      questionId: `q${index}`,
+      selectedOption: "Acorde",
+      isCorrect: true,
+      expectedAnswer: "Acorde",
+      userAnswer: "Acorde",
+      helpUsed: false,
+      replayUsed: false,
+      chordId: "c-major",
+      chordQuality: "major",
+      points: 100,
+    }),
+  );
   const attempt = buildChordAttempt({
     exercise: firstExercise,
     startedAt: "2026-01-01T00:00:00.000Z",

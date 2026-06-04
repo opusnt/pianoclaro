@@ -15,7 +15,9 @@ test("construye inversiones MIDI manteniendo orden grave a agudo", () => {
 });
 
 test("mantiene definiciones predefinidas para DO mayor y LA menor", () => {
-  const byId = Object.fromEntries(chordInversionDefinitions.map((inversion) => [inversion.id, inversion]));
+  const byId = Object.fromEntries(
+    chordInversionDefinitions.map((inversion) => [inversion.id, inversion]),
+  );
 
   assert.deepEqual(byId["c-major-root"]?.notes, ["C", "E", "G"]);
   assert.deepEqual(byId["c-major-first"]?.notes, ["E", "G", "C"]);
@@ -42,4 +44,3 @@ test("identifica inversión desde nota de bajo", () => {
   assert.equal(identifyInversion(["C", "E", "G"], "E"), "first_inversion");
   assert.equal(identifyInversion(["C", "E", "G"], "G"), "second_inversion");
 });
-

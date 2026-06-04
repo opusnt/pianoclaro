@@ -1,9 +1,9 @@
-import test from "node:test";
 import assert from "node:assert/strict";
+import test from "node:test";
 
 import {
-  CHORD_FORMULAS,
   buildChordFromMidi,
+  CHORD_FORMULAS,
   chordDefinitions,
   countCorrectChordNotes,
   getDisplayPitchName,

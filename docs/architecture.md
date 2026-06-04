@@ -14,6 +14,8 @@ responsabilidades internas:
 - audio local
 - persistencia local de progreso
 
+**Actualización Reciente (V2):** La aplicación ha comenzado a migrar de sus prototipos iniciales a una estructura de **Módulos estandarizados** (`/modulos/[id]/unidad-[id]`). Para garantizar una experiencia de usuario *premium* y cohesiva (con estética "Midnight Blue" y recursos 3D generados), el código y las rutas antiguas se han encapsulado en un directorio `/legacy/`.
+
 Este enfoque es correcto para la etapa actual: mantiene bajo el costo operativo
 sin renunciar a una evolución ordenada hacia audio real, MIDI, autenticación y
 base de datos.
@@ -44,6 +46,8 @@ flowchart LR
 | Capa | Responsabilidad | Ubicación principal |
 | --- | --- | --- |
 | Presentación | páginas, layout, cards, visualización | `src/app`, `src/components` |
+| Enrutamiento Moderno | Módulos interactivos y Dashboard premium | `src/app/modulos/`, `src/app/page.tsx` |
+| Enrutamiento Legacy | Prototipos antiguos aislados para no romper UX | `src/app/legacy/` |
 | Aplicación | flujo de lecciones, estado de sesión, navegación | `src/components/lesson/LessonLayout.tsx`, `src/components/lesson/hooks` |
 | Currículo | etapas, módulos futuros, skill tree, ejercicios y desbloqueos | `src/types/curriculum.ts`, `src/data/curriculum.ts` |
 | Dominio musical | notas, posiciones, teoría, canción practicable | `src/lib/music`, `src/types/music.ts`, `src/types/theory.ts` |
@@ -226,8 +230,11 @@ sequenceDiagram
 - [x] crear mapa curricular de etapas, módulos, habilidades, ejercicios y desbloqueos
 - [x] agregar tests de dominio para `song-model`, `lesson-engine` y `staff-position`
 
-### Fase 2: notación y práctica reales
+### Fase 2: Módulos interactivos y notación real (EN CURSO)
 
+- [x] Refactorizar la arquitectura de rutas a `/modulos/[id]/unidad-[id]` (Módulo 1: Fundamentos).
+- [x] Aislar prototipos antiguos en `/legacy/`.
+- [x] Elevar la estética global ("Midnight Blue", Glassmorphism, Assets 3D).
 - integrar VexFlow como renderer principal detrás del registro
 - mantener el contrato `NotationRendererProps`
 - introducir importación MusicXML/MIDI controlada

@@ -1,154 +1,168 @@
-import { ArrowRight, BookOpen, CheckCircle2, Lightbulb, Music, Play } from "lucide-react";
-
-import { ButtonLink } from "@/components/ButtonLink";
-import { HeroMusicScene } from "@/components/HeroMusicScene";
-import { PricingCard } from "@/components/PricingCard";
-import { RouteCard } from "@/components/RouteCard";
-import { contentRepository } from "@/lib/content";
-
-const pillars = [
-  {
-    title: "Toca",
-    text: "Practica con una partitura pequeña, un teclado visual y pasos que se sienten alcanzables.",
-    icon: Music,
-  },
-  {
-    title: "Lee",
-    text: "Conecta notas, pentagrama y ritmo desde el primer día, sin separar teoría y práctica.",
-    icon: BookOpen,
-  },
-  {
-    title: "Entiende",
-    text: "Cada canción introduce el concepto musical justo cuando lo necesitas para tocar mejor.",
-    icon: Lightbulb,
-  },
-];
-
-const differentiators = [
-  "Español nativo",
-  "Partitura guiada",
-  "Teoría dentro de canciones",
-  "Repertorio latino y popular",
-  "Feedback futuro con MIDI/audio",
-];
+import { ArrowRight, GraduationCap, Sparkles, Star } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function HomePage() {
-  const learningRoutes = contentRepository.getRoutes();
-  const pricingPlans = contentRepository.getPricingPlans();
-
   return (
-    <main>
-      <section className="relative isolate flex min-h-[82svh] items-center overflow-hidden border-b border-blue-deep/10 px-4 py-20 sm:px-6 lg:px-8">
-        <HeroMusicScene />
+    <main className="min-h-screen bg-[#070b14] text-slate-200 relative overflow-hidden">
+      {/* Background Image / Mesh */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/hero_bg.png"
+          alt="Abstract Background"
+          fill
+          className="object-cover opacity-60 mix-blend-screen"
+          priority
+        />
+        {/* Gradients to fade out the image at the bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#070b14]/80 to-[#070b14]" />
+      </div>
+
+      {/* Hero Section */}
+      <section className="relative z-10 flex min-h-[45svh] items-end px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase text-blue-deep">Piano Claro</p>
-            <h1 className="mt-5 text-5xl font-bold leading-[1.02] text-blue-deep sm:text-6xl lg:text-7xl">
-              Aprende piano leyendo música desde el primer día
+          <div className="max-w-2xl bg-white/5 backdrop-blur-3xl p-8 rounded-[2rem] border border-white/10 shadow-2xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-sm mb-6 border border-cyan-500/30">
+              <Sparkles className="w-4 h-4" />
+              <span>Tu progreso te espera</span>
+            </div>
+            <h1 className="text-4xl font-black leading-[1.1] text-white sm:text-5xl tracking-tight">
+              Bienvenido de vuelta a Piano Claro
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/78">
-              Una plataforma en español para tocar, leer partituras y entender la música paso a
-              paso.
+            <p className="mt-4 text-lg text-slate-400">
+              Continúa tu aprendizaje donde lo dejaste. Tu ruta recomendada está lista y
+              esperándote.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/rutas" icon={Play}>
-                Comenzar gratis
-              </ButtonLink>
-              <ButtonLink href="#como-funciona" variant="secondary" icon={ArrowRight}>
-                Ver cómo funciona
-              </ButtonLink>
-            </div>
           </div>
         </div>
       </section>
 
-      <section id="como-funciona" className="px-4 py-18 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-          <div>
-            <p className="text-sm font-bold uppercase text-gold-soft">Método</p>
-            <h2 className="mt-3 text-3xl font-bold text-blue-deep sm:text-4xl">
-              No memorices teclas, entiende música
-            </h2>
-            <p className="mt-4 text-base leading-7 text-muted">
-              Piano Claro organiza la lectura musical como una experiencia práctica: ves la nota,
-              encuentras la tecla, escuchas el pulso y entiendes por qué esa decisión musical
-              importa.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {pillars.map((pillar) => (
-              <article
-                key={pillar.title}
-                className="rounded-lg border border-blue-deep/10 bg-white/78 p-5 shadow-[0_12px_30px_rgba(18,52,91,0.08)]"
-              >
-                <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-blue-soft text-blue-deep">
-                  <pillar.icon aria-hidden="true" className="h-5 w-5" />
-                </span>
-                <h3 className="mt-5 text-xl font-bold text-blue-deep">{pillar.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-muted">{pillar.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white/42 px-4 py-18 sm:px-6 lg:px-8">
+      {/* Dashboard Content */}
+      <section className="relative z-10 px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase text-gold-soft">Rutas</p>
-              <h2 className="mt-3 text-3xl font-bold text-blue-deep sm:text-4xl">
-                Elige una forma clara de avanzar
-              </h2>
-            </div>
-            <ButtonLink href="/rutas" variant="ghost" icon={ArrowRight}>
-              Ver todas las rutas
-            </ButtonLink>
-          </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {learningRoutes.slice(0, 4).map((route) => (
-              <RouteCard key={route.slug} route={route} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-4 py-18 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_1fr] lg:items-start">
-          <div>
-            <p className="text-sm font-bold uppercase text-gold-soft">Diferenciación</p>
-            <h2 className="mt-3 text-3xl font-bold text-blue-deep sm:text-4xl">
-              Diseñado para aprender con contexto
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-2xl font-black text-white flex items-center gap-3">
+              <Star className="w-6 h-6 text-amber-400 fill-amber-400" />
+              Tu Ruta Actual
             </h2>
-            <p className="mt-4 text-base leading-7 text-muted">
-              El MVP ya deja preparada la arquitectura para convertir partituras mock en lectura
-              real, práctica con audio y feedback desde teclado digital.
-            </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {differentiators.map((item) => (
-              <div
-                key={item}
-                className="flex min-h-16 items-center gap-3 rounded-lg border border-blue-deep/10 bg-white/78 px-4 py-3"
-              >
-                <CheckCircle2 aria-hidden="true" className="h-5 w-5 shrink-0 text-teal-soft" />
-                <span className="font-semibold text-blue-deep">{item}</span>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Módulo Principal (Módulo 1) */}
+            <div className="lg:col-span-2">
+              <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl p-8 transition-all hover:bg-white/10 group relative overflow-hidden h-full flex flex-col justify-between">
+                {/* Glow Effect */}
+                <div className="absolute -top-32 -right-32 w-96 h-96 bg-fuchsia-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+                <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-cyan-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex flex-col sm:flex-row gap-8 items-start mb-8">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-6">
+                        <span className="px-4 py-1.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 font-bold text-sm border border-fuchsia-500/30">
+                          Módulo 1
+                        </span>
+                        <span className="text-slate-400 font-semibold text-sm">9 Unidades</span>
+                      </div>
+
+                      <h3 className="text-4xl font-black text-white mb-4 tracking-tight">
+                        Fundamentos del Piano
+                      </h3>
+
+                      <p className="text-slate-400 text-lg max-w-xl">
+                        Descubre cómo funciona el sonido, aprende a leer el pentagrama de forma
+                        intuitiva y toca tus primeras notas conectando ritmo y altura.
+                      </p>
+                    </div>
+
+                    {/* 3D Icon Piano */}
+                    <div className="shrink-0 w-32 h-32 md:w-48 md:h-48 relative drop-shadow-[0_0_30px_rgba(236,72,153,0.3)] group-hover:scale-105 transition-transform duration-500 ease-out">
+                      <Image
+                        src="/icon_piano.png"
+                        alt="Piano Keys"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                    <Link
+                      href="/modulos/1/unidad-1"
+                      className="inline-flex flex-1 items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-2xl font-black hover:from-cyan-400 hover:to-blue-500 transition-all active:scale-95 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] text-lg"
+                    >
+                      <span>Comenzar Módulo</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                    <Link
+                      href="/modulos/1/unidad-9"
+                      className="inline-flex items-center justify-center gap-2 px-8 py-5 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all active:scale-95"
+                    >
+                      <GraduationCap className="w-5 h-5 text-fuchsia-400" />
+                      Entrenamiento Final
+                    </Link>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
 
-      <section className="bg-blue-deep px-4 py-18 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase text-gold-soft">Pricing</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl">Comienza simple, crece después</h2>
-          </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {pricingPlans.map((plan) => (
-              <PricingCard key={plan.id} plan={plan} />
-            ))}
+            {/* Sidebar / Próximos pasos */}
+            <div className="flex flex-col gap-6">
+              <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 relative overflow-hidden group hover:bg-white/10 transition-colors">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 blur-[50px] -mr-10 -mt-10" />
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 shrink-0 relative drop-shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                    <Image
+                      src="/icon_sheet.png"
+                      alt="Sheet Music"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-cyan-300 text-sm mb-1 uppercase tracking-wider">
+                      Módulo 2
+                    </h3>
+                    <h4 className="font-black text-white text-xl">Acordes y Armonía</h4>
+                  </div>
+                </div>
+                <p className="text-sm text-slate-400 mb-4">
+                  Aprende a acompañar canciones usando tríadas mayores y menores.
+                </p>
+                <div className="inline-block px-3 py-1 rounded-full bg-white/10 text-slate-300 text-xs font-bold uppercase tracking-wider border border-white/10">
+                  Próximamente
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 relative overflow-hidden group hover:bg-white/10 transition-colors">
+                <div className="absolute bottom-0 right-0 w-32 h-32 bg-fuchsia-500/20 blur-[50px] -mr-10 -mb-10" />
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-16 h-16 shrink-0 relative drop-shadow-[0_0_15px_rgba(236,72,153,0.3)]">
+                    <Image
+                      src="/icon_metronome.png"
+                      alt="Metronome"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-fuchsia-300 text-sm mb-1 uppercase tracking-wider">
+                      Catálogo
+                    </h3>
+                    <h4 className="font-black text-white text-xl">Material Antiguo</h4>
+                  </div>
+                </div>
+                <p className="text-sm text-slate-400 mb-4">
+                  Explora prototipos, minijuegos y lecciones sueltas que sirvieron como base.
+                </p>
+                <Link
+                  href="/legacy/rutas"
+                  className="inline-flex items-center gap-1 text-fuchsia-400 hover:text-fuchsia-300 font-bold text-sm transition-colors"
+                >
+                  Explorar Legacy <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </section>

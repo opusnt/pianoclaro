@@ -49,11 +49,8 @@ test("permite compensar latencia de entrada de forma explícita", () => {
 
   assert.equal(adjustInputTimestamp(1060, 60), 1000);
   assert.equal(
-    evaluateHit(
-      { timestamp: 1060, inputType: "keyboard" },
-      events,
-      { inputLatencyOffsetMs: 60 },
-    )?.grade,
+    evaluateHit({ timestamp: 1060, inputType: "keyboard" }, events, { inputLatencyOffsetMs: 60 })
+      ?.grade,
     "perfect",
   );
 });

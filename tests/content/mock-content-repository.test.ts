@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { contentRepository } from "@/lib/content";
 import { firstFiveNotesModuleId, keyboardNotesLessonSlug } from "@/data/learning-slugs";
+import { contentRepository } from "@/lib/content";
 
 test("expone el catálogo mock a través del repositorio de contenido", () => {
   assert.ok(contentRepository.getRoutes().length > 0);

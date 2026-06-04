@@ -1,7 +1,7 @@
 "use client";
 
-import type { ScoreNoteSelection } from "@/components/lesson/notation/types";
 import { useEffect, useRef } from "react";
+import type { ScoreNoteSelection } from "@/components/lesson/notation/types";
 
 type OsmdRendererProps = {
   xmlData: string;
@@ -21,7 +21,7 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
     const setup = async () => {
       // Import dinámico para que Next.js no falle en SSR
       const { OpenSheetMusicDisplay } = await import("opensheetmusicdisplay");
-      
+
       if (!isMounted) return;
 
       const osmd = new OpenSheetMusicDisplay(containerRef.current!, {
@@ -37,7 +37,7 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
       });
 
       osmdRef.current = osmd;
-      
+
       try {
         await osmd.load(xmlData);
         if (isMounted) {
@@ -97,7 +97,7 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
   const handleClick = (e: React.MouseEvent) => {
     if (!osmdRef.current || !onNoteSelect) return;
     const osmd = osmdRef.current;
-    
+
     try {
       const svgElement = containerRef.current?.querySelector("svg");
       if (!svgElement) return;
@@ -116,14 +116,15 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
 
       // Buscar la nota más cercana en un radio de 5 unidades OSMD
       const nearestNote = osmd.GraphicSheet.GetNearestNote(clickPoint, { x: 5, y: 5 });
-      
+
       if (nearestNote && nearestNote.sourceNote) {
         const sourceNote = nearestNote.sourceNote;
-        const measureNumber = sourceNote.SourceMeasure?.MeasureNumber || 
-                              sourceNote.ParentStaffEntry?.ParentMeasure?.MeasureNumber ||
-                              sourceNote.VoiceEntry?.ParentVoiceEntry?.ParentStaffEntry?.ParentMeasure?.MeasureNumber || 
-                              1;
-                              
+        const measureNumber =
+          sourceNote.SourceMeasure?.MeasureNumber ||
+          sourceNote.ParentStaffEntry?.ParentMeasure?.MeasureNumber ||
+          sourceNote.VoiceEntry?.ParentVoiceEntry?.ParentStaffEntry?.ParentMeasure?.MeasureNumber ||
+          1;
+
         let noteName = "C";
         const pitch = sourceNote.Pitch;
         if (pitch !== undefined && pitch !== null) {
@@ -135,11 +136,12 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
           }
         }
 
-        // OSMD no nos da el índice exacto tan fácil, así que lo mandamos al inicio del compás 
+        // OSMD no nos da el índice exacto tan fácil, así que lo mandamos al inicio del compás
         // o tratamos de mantener el índice actual si ya estábamos ahí
-        const currentNoteIndex = (activeNotePosition && activeNotePosition.measureNumber === measureNumber)
-          ? activeNotePosition.noteIndex 
-          : 0;
+        const currentNoteIndex =
+          activeNotePosition && activeNotePosition.measureNumber === measureNumber
+            ? activeNotePosition.noteIndex
+            : 0;
 
         onNoteSelect({
           measureNumber: measureNumber,
@@ -160,10 +162,7 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
   };
 
   return (
-    <div 
-      className="w-full rounded-xl bg-white p-4 relative cursor-pointer" 
-      onClick={handleClick}
-    >
+    <div className="w-full rounded-xl bg-white p-4 relative cursor-pointer" onClick={handleClick}>
       <div ref={containerRef} className="w-full min-h-[200px]" />
     </div>
   );

@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useComputerKeyboardInput } from "@/components/lesson/hooks/useComputerKeyboardInput";
-import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
-import { useMicrophonePitchDetection } from "@/components/lesson/hooks/useMicrophonePitchDetection";
 import { useLessonPractice } from "@/components/lesson/hooks/useLessonPractice";
 import { useLessonProgress } from "@/components/lesson/hooks/useLessonProgress";
+import { useMicrophonePitchDetection } from "@/components/lesson/hooks/useMicrophonePitchDetection";
+import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
 import { LessonCompleteModal } from "@/components/lesson/LessonCompleteModal";
 import { LessonHeader } from "@/components/lesson/LessonHeader";
 import { LessonNavigation } from "@/components/lesson/LessonNavigation";

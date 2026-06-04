@@ -7,10 +7,7 @@ import {
   createInitialKeySignatureProgress,
 } from "@/lib/key-signature/progress";
 import { generateKeySignatureQuestions } from "@/lib/key-signature/questions";
-import {
-  pointsForKeySignatureAnswer,
-  scoreKeySignatureAnswers,
-} from "@/lib/key-signature/scoring";
+import { pointsForKeySignatureAnswer, scoreKeySignatureAnswers } from "@/lib/key-signature/scoring";
 import type { KeySignatureAnswer, KeySignatureAttempt } from "@/types/key-signature";
 
 test("genera preguntas para armadura como regla global", () => {
@@ -20,8 +17,14 @@ test("genera preguntas para armadura como regla global", () => {
   const questions = generateKeySignatureQuestions(exercise);
 
   assert.equal(questions.length, 6);
-  assert.equal(questions.every((question) => question.keyId === "g-major"), true);
-  assert.equal(questions.every((question) => question.selectedNoteTargetMidi === 66), true);
+  assert.equal(
+    questions.every((question) => question.keyId === "g-major"),
+    true,
+  );
+  assert.equal(
+    questions.every((question) => question.selectedNoteTargetMidi === 66),
+    true,
+  );
 });
 
 test("genera desafío final de 24 rondas mixtas", () => {
@@ -31,14 +34,29 @@ test("genera desafío final de 24 rondas mixtas", () => {
   const questions = generateKeySignatureQuestions(exercise);
 
   assert.equal(questions.length, 24);
-  assert.equal(questions.every((question) => question.taskType === "final_challenge"), true);
+  assert.equal(
+    questions.every((question) => question.taskType === "final_challenge"),
+    true,
+  );
 });
 
 test("calcula puntaje de armaduras con ayuda y replay", () => {
-  assert.equal(pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }), 100);
-  assert.equal(pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }), 60);
-  assert.equal(pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }), 75);
-  assert.equal(pointsForKeySignatureAnswer({ isCorrect: false, helpUsed: false, replayUsed: false }), 0);
+  assert.equal(
+    pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }),
+    100,
+  );
+  assert.equal(
+    pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }),
+    60,
+  );
+  assert.equal(
+    pointsForKeySignatureAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }),
+    75,
+  );
+  assert.equal(
+    pointsForKeySignatureAnswer({ isCorrect: false, helpUsed: false, replayUsed: false }),
+    0,
+  );
 
   const answers: KeySignatureAnswer[] = [
     answer({ questionId: "1", keyId: "g-major", isCorrect: true, points: 100 }),

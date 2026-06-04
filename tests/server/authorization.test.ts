@@ -1,12 +1,11 @@
-import test from "node:test";
 import assert from "node:assert/strict";
-
+import test from "node:test";
+import type { ServerSession } from "@/server/auth/types";
 import {
   requireAuthenticated,
   requireResourceOwnerOrRole,
   requireRole,
 } from "@/server/authorization/policies";
-import type { ServerSession } from "@/server/auth/types";
 import { ServerAppError } from "@/server/errors";
 
 const futureSession: ServerSession = {

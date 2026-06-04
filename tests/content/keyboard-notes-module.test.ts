@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { keyboardNotesModule } from "@/data/modules/keyboard-notes-module";
 import { firstFiveNotesModuleId } from "@/data/learning-slugs";
+import { keyboardNotesModule } from "@/data/modules/keyboard-notes-module";
 import { mockContentRepository } from "@/lib/content/mock-content-repository";
 
 test("define el módulo 1 con microlecciones cortas y completas", () => {

@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { getNotationRenderer } from "@/components/lesson/notation/renderer-registry";
 import { OsmdRenderer } from "@/components/lesson/notation/renderers/OsmdRenderer";
 import { WaterfallRenderer } from "@/components/lesson/notation/renderers/WaterfallRenderer";
 import type { NotationRendererProps } from "@/components/lesson/notation/types";
-import { useState } from "react";
 
 type NotationViewerProps = NotationRendererProps & {
   initialViewMode?: "professional" | "didactic" | "waterfall";
@@ -10,7 +10,9 @@ type NotationViewerProps = NotationRendererProps & {
 
 export function NotationViewer(props: NotationViewerProps) {
   const Renderer = getNotationRenderer();
-  const [viewMode, setViewMode] = useState<"professional" | "didactic" | "waterfall">(props.initialViewMode || "professional");
+  const [viewMode, setViewMode] = useState<"professional" | "didactic" | "waterfall">(
+    props.initialViewMode || "professional",
+  );
 
   if (props.score.xmlData) {
     return (
@@ -20,21 +22,21 @@ export function NotationViewer(props: NotationViewerProps) {
             <p className="text-xs font-bold uppercase text-muted">Laboratorio de Partituras</p>
             <h2 className="text-xl font-bold text-blue-deep sm:text-2xl">{props.score.title}</h2>
           </div>
-          
+
           <div className="flex bg-slate-100 rounded-lg p-1 self-start sm:self-auto overflow-x-auto max-w-full">
-            <button 
+            <button
               onClick={() => setViewMode("professional")}
               className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "professional" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
             >
               OSMD
             </button>
-            <button 
+            <button
               onClick={() => setViewMode("didactic")}
               className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "didactic" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
             >
               Didáctica
             </button>
-            <button 
+            <button
               onClick={() => setViewMode("waterfall")}
               className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "waterfall" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
             >
@@ -44,8 +46,8 @@ export function NotationViewer(props: NotationViewerProps) {
         </div>
         <div className="mt-4">
           {viewMode === "professional" ? (
-            <OsmdRenderer 
-              xmlData={props.score.xmlData} 
+            <OsmdRenderer
+              xmlData={props.score.xmlData}
               activeNotePosition={props.activeNotePosition}
               onNoteSelect={props.onNoteSelect}
             />

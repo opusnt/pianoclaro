@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
+import { buildKeyboardNotesProgressSnapshot } from "@/lib/keyboard-notes/progress";
 import {
   buildKeyboard,
   getKeyboardNotesAccuracy,
@@ -10,7 +10,6 @@ import {
   nextCOctave,
   nextPatternTarget,
 } from "@/lib/keyboard-notes/theory";
-import { buildKeyboardNotesProgressSnapshot } from "@/lib/keyboard-notes/progress";
 
 test("construye el teclado base del módulo 1 con dos octavas", () => {
   const keyboard = buildKeyboard([4, 5]);

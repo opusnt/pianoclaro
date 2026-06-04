@@ -1,7 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { curriculumStages, exerciseTypes, moduleBlueprints, skillBranches } from "@/data/curriculum";
+import {
+  curriculumStages,
+  exerciseTypes,
+  moduleBlueprints,
+  skillBranches,
+} from "@/data/curriculum";
 
 test("define el mapa curricular completo de 5 etapas y 16 módulos", () => {
   assert.equal(curriculumStages.length, 5);

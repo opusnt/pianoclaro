@@ -2,9 +2,8 @@
 
 import { BarChart3, CheckCircle2, Music2, RotateCcw, Trophy } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-import { NotationViewer } from "@/components/lesson/NotationViewer";
 import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
+import { NotationViewer } from "@/components/lesson/NotationViewer";
 import type { ScoreNoteSelection } from "@/components/lesson/notation/types";
 import { AppliedLearningPanel } from "@/components/modules/shared/AppliedLearningPanel";
 import { ExerciseProgressCard } from "@/components/modules/shared/ExerciseProgressCard";
@@ -173,16 +172,16 @@ export function ModuleFirstFiveNotesScreen({
         answerExercise(solfegeByNote[note]);
       } else if (selectedExercise.id === "five-note-sequence" && sequenceTarget) {
         if (note === sequenceTarget.note) {
-          handleScoreNoteSelect({ 
-            measureNumber: sequenceTarget.measureNumber, 
-            noteIndex: sequenceTarget.noteIndex, 
-            note 
+          handleScoreNoteSelect({
+            measureNumber: sequenceTarget.measureNumber,
+            noteIndex: sequenceTarget.noteIndex,
+            note,
           });
         } else {
-          handleScoreNoteSelect({ 
-            measureNumber: sequenceTarget.measureNumber, 
-            noteIndex: -1, 
-            note 
+          handleScoreNoteSelect({
+            measureNumber: sequenceTarget.measureNumber,
+            noteIndex: -1,
+            note,
           });
         }
       }

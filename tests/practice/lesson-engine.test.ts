@@ -1,11 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { lessons } from "@/data/lessons";
 import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
-import { getLessonFocusFromPracticeSong, getStudyRoutine } from "@/lib/practice/lesson-engine";
-import { lessonToPracticeSong } from "@/lib/music/song-model";
+import { lessons } from "@/data/lessons";
 import { createMeasure, note, rest } from "@/lib/music/score-authoring";
+import { lessonToPracticeSong } from "@/lib/music/song-model";
+import { getLessonFocusFromPracticeSong, getStudyRoutine } from "@/lib/practice/lesson-engine";
 import type { Lesson } from "@/types/lesson";
 
 test("deriva foco por nota activa y compás", () => {
@@ -16,7 +15,10 @@ test("deriva foco por nota activa y compás", () => {
 
   assert.deepEqual(focus.notes, ["D"]);
   assert.equal(focus.measure, 1);
-  assert.deepEqual(focus.events.map((event) => event.note), ["D"]);
+  assert.deepEqual(
+    focus.events.map((event) => event.note),
+    ["D"],
+  );
 });
 
 test("deriva foco por frase completa", () => {
@@ -62,10 +64,7 @@ test("mantiene silencios dentro de la línea temporal del foco", () => {
     ],
   };
 
-  const focus = getLessonFocusFromPracticeSong(
-    lessonToPracticeSong(lesson),
-    lesson.steps[0],
-  );
+  const focus = getLessonFocusFromPracticeSong(lessonToPracticeSong(lesson), lesson.steps[0]);
 
   assert.deepEqual(
     focus.timelineEvents.map((event) => event.kind),

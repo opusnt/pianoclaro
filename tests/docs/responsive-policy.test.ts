@@ -18,7 +18,11 @@ test("la política responsive documenta las reglas operativas", () => {
     "overflow-x-auto",
     "min-w-[...]",
   ].forEach((requiredText) => {
-    assert.equal(policy.includes(requiredText), true, `Falta en responsive-policy: ${requiredText}`);
+    assert.equal(
+      policy.includes(requiredText),
+      true,
+      `Falta en responsive-policy: ${requiredText}`,
+    );
   });
 });
 

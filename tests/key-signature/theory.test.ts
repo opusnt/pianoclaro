@@ -41,9 +41,18 @@ test("resuelve relativas mayores y menores", () => {
 });
 
 test("valida escalas con armadura usando alteraciones fijas", () => {
-  assert.equal(validateScaleWithKeySignature("g-major", ["G4", "A4", "B4", "C5", "D5", "E5", "F#5", "G5"]), true);
-  assert.equal(validateScaleWithKeySignature("g-major", ["G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"]), false);
-  assert.equal(validateScaleWithKeySignature("f-major", ["F4", "G4", "A4", "Bb4", "C5", "D5", "E5", "F5"]), true);
+  assert.equal(
+    validateScaleWithKeySignature("g-major", ["G4", "A4", "B4", "C5", "D5", "E5", "F#5", "G5"]),
+    true,
+  );
+  assert.equal(
+    validateScaleWithKeySignature("g-major", ["G4", "A4", "B4", "C5", "D5", "E5", "F5", "G5"]),
+    false,
+  );
+  assert.equal(
+    validateScaleWithKeySignature("f-major", ["F4", "G4", "A4", "Bb4", "C5", "D5", "E5", "F5"]),
+    true,
+  );
 });
 
 test("muestra nombres en español", () => {

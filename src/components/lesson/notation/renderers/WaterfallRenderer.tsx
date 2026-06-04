@@ -52,7 +52,7 @@ export function WaterfallRenderer({
         (e) =>
           e.kind === "note" &&
           e.measureNumber === activeNotePosition.measureNumber &&
-          e.noteIndex === activeNotePosition.noteIndex
+          e.noteIndex === activeNotePosition.noteIndex,
       );
       if (activeEvent) {
         targetBeatRef.current = activeEvent.startsAtBeat;
@@ -145,7 +145,7 @@ export function WaterfallRenderer({
       // Dibujar Hit Line (teclado virtual inferior)
       ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
       ctx.fillRect(0, hitLineY, width, height - hitLineY);
-      
+
       ctx.shadowColor = "#38BDF8";
       ctx.shadowBlur = playing ? 10 : 0;
       ctx.strokeStyle = "#38BDF8";
@@ -157,7 +157,20 @@ export function WaterfallRenderer({
       ctx.shadowBlur = 0; // reset
 
       // Letras de las teclas en el hit line
-      const labels = ["Do", "Do#", "Re", "Re#", "Mi", "Fa", "Fa#", "Sol", "Sol#", "La", "La#", "Si"];
+      const labels = [
+        "Do",
+        "Do#",
+        "Re",
+        "Re#",
+        "Mi",
+        "Fa",
+        "Fa#",
+        "Sol",
+        "Sol#",
+        "La",
+        "La#",
+        "Si",
+      ];
       ctx.fillStyle = "#94A3B8";
       ctx.font = "12px sans-serif";
       ctx.textAlign = "center";
@@ -170,22 +183,22 @@ export function WaterfallRenderer({
         if (event.kind !== "note") return;
 
         const beatsAhead = event.startsAtBeat - currentBeat;
-        const noteY = hitLineY - (beatsAhead * pixelsPerBeat);
-        
+        const noteY = hitLineY - beatsAhead * pixelsPerBeat;
+
         const noteHeight = Math.max(event.durationBeats * pixelsPerBeat - 4, 10);
-        
+
         if (noteY - noteHeight > height || noteY < -noteHeight - 50) return;
 
         const pitchClass = event.midiNote % 12;
         const laneX = pitchClass * laneWidth;
         const color = laneColors[pitchClass];
 
-        const isActive = noteY >= hitLineY && (noteY - noteHeight) <= hitLineY;
+        const isActive = noteY >= hitLineY && noteY - noteHeight <= hitLineY;
 
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = isActive ? 15 : 0;
-        
+
         if (ctx.roundRect) {
           ctx.beginPath();
           ctx.roundRect(laneX + 2, noteY - noteHeight, laneWidth - 4, noteHeight, 6);
@@ -226,19 +239,19 @@ export function WaterfallRenderer({
           if (!practiceSong) return;
           const rect = canvasRef.current?.getBoundingClientRect();
           if (!rect) return;
-          
+
           const x = e.clientX - rect.left;
           const laneWidth = rect.width / 12;
           const laneIndex = Math.floor(x / laneWidth);
-          
+
           // Buscar qué nota coincide
           const scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
           const noteName = scale[laneIndex];
-          
+
           if (noteName.includes("#")) {
-             if (onSharpKeyPress) onSharpKeyPress(noteName as any);
+            if (onSharpKeyPress) onSharpKeyPress(noteName as any);
           } else {
-             if (onNaturalKeyPress) onNaturalKeyPress(noteName as any);
+            if (onNaturalKeyPress) onNaturalKeyPress(noteName as any);
           }
         }}
       />

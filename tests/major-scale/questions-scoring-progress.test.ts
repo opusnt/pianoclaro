@@ -46,7 +46,10 @@ test("genera 20 rondas para el desafío final", () => {
   const questions = generateMajorScaleQuestions(exercise);
 
   assert.equal(questions.length, 20);
-  assert.equal(questions.every((question) => question.taskType === "final_challenge"), true);
+  assert.equal(
+    questions.every((question) => question.taskType === "final_challenge"),
+    true,
+  );
 });
 
 test("calcula puntaje de escala con ayuda y replay", () => {

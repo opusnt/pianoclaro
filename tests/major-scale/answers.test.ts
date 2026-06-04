@@ -74,7 +74,10 @@ test("resuelve respuestas de opción y MIDI esperado para escala mayor", () => {
 
   assert.equal(getExpectedScaleOption(missingNoteQuestion), "FA#");
   assert.equal(getExpectedScaleOption(audioQuestion), "Algo suena fuera");
-  assert.deepEqual(getQuestionScaleMidiNotes(missingNoteQuestion), [67, 69, 71, 72, 74, 76, 78, 79]);
+  assert.deepEqual(
+    getQuestionScaleMidiNotes(missingNoteQuestion),
+    [67, 69, 71, 72, 74, 76, 78, 79],
+  );
 
   const answer = buildMajorScaleOptionAnswer({
     question: missingNoteQuestion,

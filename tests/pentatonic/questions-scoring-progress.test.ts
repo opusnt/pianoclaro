@@ -37,10 +37,22 @@ test("genera pregunta de improvisación guiada", () => {
 });
 
 test("calcula puntaje pentatónico e improvisación", () => {
-  assert.equal(pointsForPentatonicAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }), 100);
-  assert.equal(pointsForPentatonicAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }), 60);
-  assert.equal(pointsForPentatonicAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }), 75);
-  assert.equal(pointsForImprovisation({ notesPlayed: 12, uniqueNotesUsed: 3, outsideNotes: 0 }), 600);
+  assert.equal(
+    pointsForPentatonicAnswer({ isCorrect: true, helpUsed: false, replayUsed: false }),
+    100,
+  );
+  assert.equal(
+    pointsForPentatonicAnswer({ isCorrect: true, helpUsed: true, replayUsed: false }),
+    60,
+  );
+  assert.equal(
+    pointsForPentatonicAnswer({ isCorrect: true, helpUsed: false, replayUsed: true }),
+    75,
+  );
+  assert.equal(
+    pointsForImprovisation({ notesPlayed: 12, uniqueNotesUsed: 3, outsideNotes: 0 }),
+    600,
+  );
 
   const answers: PentatonicAnswer[] = [
     answer({ questionId: "1", scaleId: "c-major-pentatonic", isCorrect: true, points: 100 }),

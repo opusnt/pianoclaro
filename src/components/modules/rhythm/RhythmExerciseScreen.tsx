@@ -2,8 +2,8 @@
 
 import { Headphones, Keyboard, Pause, Play, RotateCcw } from "lucide-react";
 import { useEffect, useRef } from "react";
-import { useRhythmEngine } from "@/components/modules/rhythm/hooks/useRhythmEngine";
 import { useMidiKeyboardInput } from "@/components/lesson/hooks/useMidiKeyboardInput";
+import { useRhythmEngine } from "@/components/modules/rhythm/hooks/useRhythmEngine";
 import { RhythmVisualizer } from "@/components/modules/rhythm/RhythmVisualizer";
 import { ScorePanel } from "@/components/modules/rhythm/ScorePanel";
 import { TimingFeedback } from "@/components/modules/rhythm/TimingFeedback";

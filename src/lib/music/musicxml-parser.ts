@@ -1,6 +1,6 @@
 import { solfegeByNote } from "@/lib/music/notes";
 import type { MeasureMock, ScoreMock } from "@/types/lesson";
-import type { MeasureEvent, NoteDuration, NoteName, NotatedNoteEvent } from "@/types/music";
+import type { MeasureEvent, NotatedNoteEvent, NoteDuration, NoteName } from "@/types/music";
 
 export function parseMusicXml(xmlText: string): ScoreMock {
   const parser = new DOMParser();
@@ -21,8 +21,21 @@ export function parseMusicXml(xmlText: string): ScoreMock {
 
   const keyFifths = Number.parseInt(xml.querySelector("key > fifths")?.textContent ?? "0", 10);
   const keyMap: Record<number, string> = {
-    "-7": "Cb", "-6": "Gb", "-5": "Db", "-4": "Ab", "-3": "Eb", "-2": "Bb", "-1": "F",
-    "0": "C", "1": "G", "2": "D", "3": "A", "4": "E", "5": "B", "6": "F#", "7": "C#",
+    "-7": "Cb",
+    "-6": "Gb",
+    "-5": "Db",
+    "-4": "Ab",
+    "-3": "Eb",
+    "-2": "Bb",
+    "-1": "F",
+    "0": "C",
+    "1": "G",
+    "2": "D",
+    "3": "A",
+    "4": "E",
+    "5": "B",
+    "6": "F#",
+    "7": "C#",
   };
   const keySignature = keyMap[keyFifths] ?? "C";
 

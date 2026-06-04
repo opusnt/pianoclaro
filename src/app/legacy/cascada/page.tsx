@@ -33,7 +33,8 @@ export default function CascadaDemoPage() {
           Modo Cascada (Synthesia)
         </h1>
         <p className="mt-3 text-muted">
-          Este es el motor de renderizado WebGL/Canvas de alto rendimiento. Presiona Reproducir y disfruta.
+          Este es el motor de renderizado WebGL/Canvas de alto rendimiento. Presiona Reproducir y
+          disfruta.
         </p>
       </div>
 

@@ -90,6 +90,24 @@ export default function MusicTheoryModulesPage() {
               compact={unit.order > 4}
             />
           ))}
+
+          <div className="col-span-1 xl:col-span-2 mt-4 rounded-2xl border-2 border-fuchsia-200 bg-fuchsia-50 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm hover:shadow-md transition-shadow">
+            <div>
+              <p className="text-sm font-bold uppercase text-fuchsia-500 mb-2">Mastery Review</p>
+              <h2 className="text-2xl font-bold text-slate-800">Centro de Entrenamiento</h2>
+              <p className="mt-2 text-slate-600 max-w-xl">
+                ¿Terminaste el módulo? Entrena libremente tus habilidades, gana experiencia y
+                consolida tus conocimientos de notas, ritmo y clave de sol.
+              </p>
+            </div>
+            <Link
+              href="/entrenamiento"
+              className="focus-ring whitespace-nowrap inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-fuchsia-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-fuchsia-500 hover:scale-105"
+            >
+              Comenzar a entrenar
+              <ArrowRight aria-hidden="true" className="h-4 w-4" />
+            </Link>
+          </div>
         </section>
 
         {pianoTrack ? (

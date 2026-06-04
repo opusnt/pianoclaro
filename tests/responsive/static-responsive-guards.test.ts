@@ -47,7 +47,10 @@ test("las superficies nuevas no usan overflow-x-auto fuera del patrón responsiv
 test("los anchos mínimos grandes viven dentro de una superficie responsive", () => {
   const offenders = files
     .filter(({ source }) => /min-w-\[(\d{3,})px\]/.test(source))
-    .filter(({ source, path }) => !source.includes("responsive-scroll") && !LARGE_MIN_WIDTH_ALLOWLIST.has(path))
+    .filter(
+      ({ source, path }) =>
+        !source.includes("responsive-scroll") && !LARGE_MIN_WIDTH_ALLOWLIST.has(path),
+    )
     .map(({ path }) => path);
 
   assert.deepEqual(
@@ -59,7 +62,10 @@ test("los anchos mínimos grandes viven dentro de una superficie responsive", ()
 
 test("no se agregan layouts sticky/fixed globales sin revisión responsive", () => {
   const stickyOffenders = files
-    .filter(({ source, path }) => source.includes("sticky top-") && path !== "src/components/SiteHeader.tsx")
+    .filter(
+      ({ source, path }) =>
+        source.includes("sticky top-") && path !== "src/components/SiteHeader.tsx",
+    )
     .map(({ path }) => path);
 
   const fixedOffenders = files
@@ -67,19 +73,35 @@ test("no se agregan layouts sticky/fixed globales sin revisión responsive", () 
     .map(({ path }) => path)
     .filter((path) => !RAW_FIXED_ALLOWLIST.has(path));
 
-  assert.deepEqual(stickyOffenders, [], `Sticky global no permitido antes de revisar mobile: ${stickyOffenders.join(", ")}`);
-  assert.deepEqual(fixedOffenders, [], `Fixed global requiere allowlist responsive: ${fixedOffenders.join(", ")}`);
+  assert.deepEqual(
+    stickyOffenders,
+    [],
+    `Sticky global no permitido antes de revisar mobile: ${stickyOffenders.join(", ")}`,
+  );
+  assert.deepEqual(
+    fixedOffenders,
+    [],
+    `Fixed global requiere allowlist responsive: ${fixedOffenders.join(", ")}`,
+  );
 });
 
 test("no se usa h-screen en experiencias educativas largas", () => {
-  const offenders = files.filter(({ source }) => source.includes("h-screen")).map(({ path }) => path);
+  const offenders = files
+    .filter(({ source }) => source.includes("h-screen"))
+    .map(({ path }) => path);
 
-  assert.deepEqual(offenders, [], `Usar min-h-screen o layout flexible en vez de h-screen: ${offenders.join(", ")}`);
+  assert.deepEqual(
+    offenders,
+    [],
+    `Usar min-h-screen o layout flexible en vez de h-screen: ${offenders.join(", ")}`,
+  );
 });
 
 test("las lecciones no pasan a layout de escritorio en iPad landscape", () => {
   const lessonLayout = files.find(({ path }) => path === "src/components/lesson/LessonLayout.tsx");
-  const lessonSidebar = files.find(({ path }) => path === "src/components/lesson/LessonSidebar.tsx");
+  const lessonSidebar = files.find(
+    ({ path }) => path === "src/components/lesson/LessonSidebar.tsx",
+  );
 
   assert.ok(lessonLayout, "No se encontró LessonLayout.tsx");
   assert.ok(lessonSidebar, "No se encontró LessonSidebar.tsx");

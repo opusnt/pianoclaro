@@ -1,8 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { learningUnits, pedagogicalMoments } from "@/data/learning-path";
 import { curriculumStages, skillBranches } from "@/data/curriculum";
+import { learningUnits, pedagogicalMoments } from "@/data/learning-path";
 import { contentRepository } from "@/lib/content";
 import { assertLearningUnitIntegrity } from "@/lib/learning-path/learning-path";
 import { playableModuleIds } from "@/lib/modules/playable-modules";
@@ -103,7 +102,10 @@ test("las unidades enlazan solo lecciones y modulos existentes", () => {
         contentRepository.getDetailedLearningModuleById(unit.playableModuleId),
         unit.playableModuleId,
       );
-      assert.equal(contentRepository.getLearningUnitByPlayableModuleId(unit.playableModuleId)?.id, unit.id);
+      assert.equal(
+        contentRepository.getLearningUnitByPlayableModuleId(unit.playableModuleId)?.id,
+        unit.id,
+      );
     }
   }
 });

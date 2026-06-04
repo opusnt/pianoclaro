@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-
-import { lessons } from "@/data/lessons";
 import { keyboardNotesLessonSlug } from "@/data/learning-slugs";
+import { lessons } from "@/data/lessons";
+import { getMeasureEvents } from "@/lib/music/notation";
 import {
   getBeatsPerMeasure,
   getPracticeEventsInScope,
@@ -10,7 +10,6 @@ import {
   lessonToPracticeSong,
   scoreToSong,
 } from "@/lib/music/song-model";
-import { getMeasureEvents } from "@/lib/music/notation";
 import type { ScoreMock } from "@/types/lesson";
 
 test("convierte una lección en canción practicable con eventos ordenados", () => {

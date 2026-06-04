@@ -82,10 +82,7 @@ export function LessonToolsPanel({
             enabled={computerKeyboardEnabled}
             onChange={onComputerKeyboardChange}
           />
-          <MicrophoneToggle
-            enabled={microphoneEnabled}
-            onChange={onMicrophoneChange}
-          />
+          <MicrophoneToggle enabled={microphoneEnabled} onChange={onMicrophoneChange} />
           <PracticeModeSelector
             modes={lesson.practiceModes}
             selectedPracticeMode={selectedPracticeMode}
