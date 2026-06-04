@@ -1,6 +1,5 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "Piano Claro - Aprende piano leyendo música";
 export const size = {
   width: 1200,
