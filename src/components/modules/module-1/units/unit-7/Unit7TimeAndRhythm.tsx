@@ -4,7 +4,6 @@ import {
   Activity,
   ArrowRight,
   BookOpen,
-  CheckCircle2,
   Clock,
   Heart,
   Layers,
@@ -17,18 +16,18 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
-import { getNoteById } from "@/lib/music/notesData";
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
 import { BeatTracker } from "@/components/shared/interactive/BeatTracker";
-import { RhythmReadingExercise } from "./components/RhythmReadingExercise";
 import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
+import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { getNoteById } from "@/lib/music/notesData";
 import type { RhythmFigureId } from "@/lib/music/rhythmFigures";
+import { RhythmReadingExercise } from "./components/RhythmReadingExercise";
 
 export function Unit7TimeAndRhythm() {
   const [stage, setStage] = useState(1);
-  const [hasCompleted, setHasCompleted] = useState(false);
+  const [_hasCompleted, setHasCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [pulseAccuracy, setPulseAccuracy] = useState<number | null>(null);
 
@@ -436,7 +435,7 @@ export function Unit7TimeAndRhythm() {
               onClick={async () => {
                 await Tone.start();
                 await engineRef.current?.prepare();
-                const current = 0;
+                const _current = 0;
                 setActiveStage9Note(0);
                 engineRef.current?.playPianoTone(getNoteById("sol").frequency, {
                   durationMs: 1000,

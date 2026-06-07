@@ -58,7 +58,7 @@ if (typeof window !== "undefined") {
 
     const b = localStorage.getItem("mastery.badges");
     if (b) globalBadges = JSON.parse(b);
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 const saveState = () => {

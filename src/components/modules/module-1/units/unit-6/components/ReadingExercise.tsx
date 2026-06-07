@@ -1,8 +1,8 @@
 import { CheckCircle2, XCircle } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
-import { getNoteById } from "@/lib/music/notesData";
 import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
+import { getNoteById } from "@/lib/music/notesData";
 
 type ReadingExerciseProps = {
   targetNoteId: string;

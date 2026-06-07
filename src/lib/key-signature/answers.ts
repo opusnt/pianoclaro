@@ -9,7 +9,7 @@ import type { KeySignatureAnswer, KeySignatureQuestion } from "@/types/key-signa
 
 export function midiToKeySignatureQuestionNote(question: KeySignatureQuestion, midi: number) {
   const key = getKeySignatureById(question.keyId);
-  const index = key?.midiNotes.findIndex((scaleMidi) => scaleMidi === midi) ?? -1;
+  const index = key?.midiNotes.indexOf(midi) ?? -1;
 
   if (key && index >= 0) {
     return `${key.scaleNotes[index]}${Math.floor(midi / 12) - 1}`;

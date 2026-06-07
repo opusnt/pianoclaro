@@ -231,7 +231,7 @@ function requireScale(scaleId: string) {
 }
 
 function scaleNoteFromMidiForScale(scale: ScaleDefinition, midi: number) {
-  const index = scale.midiNotes.findIndex((scaleMidi) => scaleMidi === midi);
+  const index = scale.midiNotes.indexOf(midi);
 
   if (index >= 0) {
     const octave = Math.floor(midi / 12) - 1;

@@ -2,7 +2,7 @@
 
 import { Music2 } from "lucide-react";
 import { useMemo } from "react";
-import { buildKeyboardNotes, getNoteLabel, noteToMidi } from "@/lib/intervals/theory";
+import { buildKeyboardNotes, getNoteLabel } from "@/lib/intervals/theory";
 import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 
 type IntervalKeyboardProps = {

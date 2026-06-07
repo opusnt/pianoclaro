@@ -1,34 +1,25 @@
 "use client";
 
-import {
-  ArrowRight,
-  CheckCircle2,
-  Navigation,
-  Play,
-  Trophy,
-  ArrowUp,
-  ArrowDown,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUp, CheckCircle2, Navigation, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { AccidentalBadge } from "@/components/shared/badges/AccidentalBadge";
+import { EnharmonicPairCard } from "@/components/shared/cards/EnharmonicPairCard";
+// Components
+import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
+import { AccidentalMovementVisualizer } from "@/components/shared/visualizers/AccidentalMovementVisualizer";
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Heading, Text } from "@/components/ui/Typography";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 
-// Components
-import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
-import { AccidentalBadge } from "@/components/shared/badges/AccidentalBadge";
-import { AccidentalMovementVisualizer } from "@/components/shared/visualizers/AccidentalMovementVisualizer";
-import { EnharmonicPairCard } from "@/components/shared/cards/EnharmonicPairCard";
-
 // Data
 import {
-  sharpExercises,
+  type AccidentalExercise,
   flatExercises,
   getRandomExercises,
-  AccidentalExercise,
+  sharpExercises,
 } from "./accidentalsExercises";
 
 // Helpers para Stage 9

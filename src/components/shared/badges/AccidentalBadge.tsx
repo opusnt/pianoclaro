@@ -1,5 +1,3 @@
-import React from "react";
-
 export interface AccidentalBadgeProps {
   type?: "sharp" | "flat" | "natural";
   size?: "sm" | "md" | "lg";

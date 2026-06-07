@@ -25,18 +25,14 @@ export function NotationViewer(props: NotationViewerProps) {
 
           <div className="flex bg-slate-100 rounded-lg p-1 self-start sm:self-auto overflow-x-auto max-w-full">
             <button
-              onClick={() => setViewMode("professional")}
-              className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "professional" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
-            >
-              OSMD
-            </button>
-            <button
+              type="button"
               onClick={() => setViewMode("didactic")}
               className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "didactic" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
             >
               Didáctica
             </button>
             <button
+              type="button"
               onClick={() => setViewMode("waterfall")}
               className={`px-3 py-1.5 text-sm font-bold rounded-md transition-colors whitespace-nowrap ${viewMode === "waterfall" ? "bg-white text-blue-deep shadow-sm" : "text-muted hover:text-blue-deep"}`}
             >

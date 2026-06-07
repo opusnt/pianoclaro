@@ -19,10 +19,10 @@ export function MeasureAccidentalTracker({
           {measureNumber}
         </span>
       </div>
-      
+
       <div className="mt-4">
         <p className="text-sm font-bold text-blue-deep mb-3">Alteraciones activas:</p>
-        
+
         {activeNotes.length === 0 ? (
           <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-3 text-sm text-slate-500 border border-slate-100">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -31,11 +31,11 @@ export function MeasureAccidentalTracker({
         ) : (
           <div className="flex flex-wrap gap-2">
             {activeNotes.map((an, i) => (
-              <div 
+              <div
                 key={i}
                 className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-bold shadow-sm ${
-                  an.accidental === "sharp" 
-                    ? "bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200" 
+                  an.accidental === "sharp"
+                    ? "bg-fuchsia-50 text-fuchsia-700 border border-fuchsia-200"
                     : "bg-blue-50 text-blue-700 border border-blue-200"
                 }`}
               >

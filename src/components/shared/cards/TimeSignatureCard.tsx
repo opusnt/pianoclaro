@@ -1,8 +1,5 @@
 "use client";
 
-import { Box } from "lucide-react";
-import React from "react";
-
 export function TimeSignatureCard() {
   return (
     <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center gap-12 w-full max-w-2xl mx-auto">

@@ -16,19 +16,19 @@ import {
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { getNoteById } from "@/lib/music/notesData";
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
-import { RhythmReadingExercise } from "../unit-7/components/RhythmReadingExercise";
-import type { RhythmFigureId } from "@/lib/music/rhythmFigures";
+import { TimeSignatureCard } from "@/components/shared/cards/TimeSignatureCard";
 import { MeasureBuilder } from "@/components/shared/interactive/MeasureBuilder";
 import { MeasureVisualizer } from "@/components/shared/visualizers/MeasureVisualizer";
-import { TimeSignatureCard } from "@/components/shared/cards/TimeSignatureCard";
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
+import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { getNoteById } from "@/lib/music/notesData";
+import type { RhythmFigureId } from "@/lib/music/rhythmFigures";
+import { RhythmReadingExercise } from "../unit-7/components/RhythmReadingExercise";
 import { measureExercises } from "./measureExercises";
 
 export function Unit8Measures() {
   const [stage, setStage] = useState(1);
-  const [hasCompleted, setHasCompleted] = useState(false);
+  const [_hasCompleted, setHasCompleted] = useState(false);
   const [score, setScore] = useState(0);
 
   const engineRef = useRef<PianoAudioEngine | null>(null);
@@ -60,9 +60,9 @@ export function Unit8Measures() {
   const [stage1View, setStage1View] = useState<"chaotic" | "organized">("chaotic");
 
   // State para etapa 2
-  const [stage2Playing, setStage2Playing] = useState(false);
-  const [stage2ActiveBeat, setStage2ActiveBeat] = useState<number | null>(null);
-  const [stage2BoxVisible, setStage2BoxVisible] = useState(false);
+  const [_stage2Playing, _setStage2Playing] = useState(false);
+  const [_stage2ActiveBeat, _setStage2ActiveBeat] = useState<number | null>(null);
+  const [_stage2BoxVisible, _setStage2BoxVisible] = useState(false);
 
   // State para etapa 6
   const [stage6State, setStage6State] = useState<number>(0);

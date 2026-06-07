@@ -3,9 +3,9 @@
 import { Play } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
+import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import { getRhythmFigureById, type RhythmFigureId } from "@/lib/music/rhythmFigures";
-import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
 
 interface RhythmReadingExerciseProps {
   sequence: RhythmFigureId[];
@@ -25,7 +25,7 @@ export function RhythmReadingExercise({
   const [feedback, setFeedback] = useState("");
 
   const engineRef = useRef<PianoAudioEngine | null>(null);
-  const sequenceEventIds = useRef<number[]>([]);
+  const _sequenceEventIds = useRef<number[]>([]);
 
   // Calcular las posiciones de las barras divisorias
   const barLineIndices = new Set<number>();
@@ -68,7 +68,7 @@ export function RhythmReadingExercise({
 
     // Contar 4 tiempos de entrada usando el piano (más suave y natural)
     for (let i = 0; i < 4; i++) {
-      Tone.Transport.schedule((time) => {
+      Tone.Transport.schedule((_time) => {
         const freq = i === 0 ? 523.25 : 440; // C5 para el acento, A4 para los demás
         engineRef.current?.playPianoTone(freq, { durationMs: 200, velocity: i === 0 ? 0.6 : 0.3 });
       }, `+${i} * 4n`);
@@ -94,7 +94,7 @@ export function RhythmReadingExercise({
 
       // Programar audio si es modo guiado
       if (mode === "guided") {
-        Tone.Transport.schedule((time) => {
+        Tone.Transport.schedule((_time) => {
           // Usamos el motor de piano para que no suene a "midi", usando un SOL de referencia
           engineRef.current?.playPianoTone(392.0, { durationMs: figure.durationUnits * 1000 });
         }, `+${currentTimeInBeats} * 4n`);

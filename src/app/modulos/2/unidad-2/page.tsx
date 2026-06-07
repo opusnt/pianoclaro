@@ -1,5 +1,5 @@
-import { Unit2MusicalDistances } from "@/components/modules/module-2/units/unit-2/Unit2MusicalDistances";
 import type { Metadata } from "next";
+import { Unit2MusicalDistances } from "@/components/modules/module-2/units/unit-2/Unit2MusicalDistances";
 
 export const metadata: Metadata = {
   title: "Unidad 2: Las distancias musicales | Piano Claro",

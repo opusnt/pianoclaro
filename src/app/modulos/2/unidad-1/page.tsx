@@ -1,5 +1,4 @@
 import { Unit1KeyboardMap } from "@/components/modules/module-2/units/unit-1/Unit1KeyboardMap";
-import { SiteHeader } from "@/components/SiteHeader";
 
 export default function Module2Unit1Page() {
   return (

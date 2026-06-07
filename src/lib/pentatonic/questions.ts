@@ -101,7 +101,7 @@ function buildScaleSequenceQuestion(
   const scale = requirePentatonicScale(scaleId);
   const midiNotes = omitOctave ? scale.midiNotes.slice(0, -1) : scale.midiNotes;
   const expectedNotes = midiNotes.map((midi) => {
-    const index = scale.midiNotes.findIndex((note) => note === midi);
+    const index = scale.midiNotes.indexOf(midi);
     const pitchClass = scale.notes[index];
     const octave = Math.floor(midi / 12) - 1;
     return `${pitchClass}${octave}`;

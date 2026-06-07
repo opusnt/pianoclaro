@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import type { NotationRendererProps } from "@/components/lesson/notation/types";
-import { solfegeByNote } from "@/lib/music/notes";
 
 export function WaterfallRenderer({
   practiceSong,

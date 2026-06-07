@@ -3,7 +3,6 @@
 import {
   ArrowRight,
   BookOpen,
-  CheckCircle2,
   Compass,
   Eye,
   Music,
@@ -14,11 +13,11 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
 import { getNoteById, notesData } from "@/lib/music/notesData";
 import { ReadingExercise } from "./components/ReadingExercise";
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
 import {
   activeReadingSequence,
   guidedReadingSequences,

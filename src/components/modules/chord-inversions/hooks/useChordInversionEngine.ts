@@ -27,7 +27,6 @@ import {
   countCorrectInversionNotes,
   getDisplayNoteName,
   getInversionById,
-  getInversionLabel,
   getPlayedBassPitchClass,
   normalizePitchClasses,
   stripOctave,
@@ -212,8 +211,7 @@ export function useChordInversionEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
-      return;
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") return;
     const inversion = getInversionById(currentQuestion.inversionId);
     if (!inversion) return;
     const expectedAnswer = getExpectedOptionForQuestion(currentQuestion);

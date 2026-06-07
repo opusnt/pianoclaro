@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 

@@ -1,7 +1,6 @@
 import { ArrowLeft, BookOpen, GraduationCap, Music, PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { module2Config } from "@/components/modules/module-2/moduleConfig";
-import { SiteHeader } from "@/components/SiteHeader";
 
 export default function Modulo2Index() {
   const { title, description, units } = module2Config;

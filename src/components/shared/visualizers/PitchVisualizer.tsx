@@ -1,7 +1,7 @@
 "use client";
 
 import { Music } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import type { RhythmFigureId } from "@/lib/music/rhythmFigures";
 
 export type PitchNote = {
@@ -179,7 +179,7 @@ export function PitchVisualizer({
                   transform: "translateY(-50%)",
                   fontSize: "1.75rem", // Ligeramente más pequeño para pantallas apretadas
                   lineHeight: 1,
-                  filter: "drop-shadow(0px 1px 2px rgba(255,255,255,0.8))" // Para asegurar contraste sobre las líneas
+                  filter: "drop-shadow(0px 1px 2px rgba(255,255,255,0.8))", // Para asegurar contraste sobre las líneas
                 }}
               >
                 {note.accidental === "sharp" ? "♯" : note.accidental === "flat" ? "♭" : "♮"}

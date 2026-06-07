@@ -27,7 +27,6 @@ import type {
   MajorScaleExercise,
   MajorScaleExerciseProgress,
   ScaleAnswer,
-  ScaleQuestion,
 } from "@/types/major-scale";
 
 type MajorScaleExerciseState = "intro" | "active" | "completed" | "failed";
@@ -225,7 +224,7 @@ export function useMajorScaleEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active") {
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") {
       return;
     }
 

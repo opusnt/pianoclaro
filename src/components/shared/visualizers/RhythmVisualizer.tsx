@@ -1,7 +1,7 @@
 "use client";
 
 import { Play } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getRhythmFigureById, type RhythmFigureId } from "@/lib/music/rhythmFigures";
 
 interface RhythmVisualizerProps {

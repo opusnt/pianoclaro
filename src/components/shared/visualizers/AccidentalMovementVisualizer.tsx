@@ -1,5 +1,4 @@
 import { ArrowRight } from "lucide-react";
-import React from "react";
 import { AccidentalBadge } from "@/components/shared/badges/AccidentalBadge";
 
 interface AccidentalMovementVisualizerProps {

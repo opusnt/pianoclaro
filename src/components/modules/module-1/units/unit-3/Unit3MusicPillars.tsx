@@ -13,11 +13,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAudioSequencer } from "@/components/shared/audio/useAudioSequencer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Heading, Text } from "@/components/ui/Typography";
-import { useAudioSequencer } from "@/components/shared/audio/useAudioSequencer";
 import { musicPillarsLayers } from "./musicLayers";
 import { recognitionExercises } from "./recognitionExercises";
 

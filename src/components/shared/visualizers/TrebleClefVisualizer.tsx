@@ -1,4 +1,3 @@
-import React from "react";
 import { type PitchNote, PitchVisualizer } from "@/components/shared/visualizers/PitchVisualizer";
 
 type TrebleClefVisualizerProps = {
@@ -60,10 +59,7 @@ export function TrebleClefVisualizer({
               zIndex: 5,
             }}
           >
-            <svg
-              viewBox="0 0 100 150"
-              className="h-full w-auto drop-shadow-md overflow-visible"
-            >
+            <svg viewBox="0 0 100 150" className="h-full w-auto drop-shadow-md overflow-visible">
               <text
                 x="50"
                 y="100"

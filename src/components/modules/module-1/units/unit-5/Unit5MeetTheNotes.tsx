@@ -4,7 +4,6 @@ import {
   ArrowRight,
   BookOpen,
   Brain,
-  CheckCircle2,
   ListOrdered,
   Music,
   Play,
@@ -12,14 +11,13 @@ import {
   Speaker,
   Trophy,
   Users,
-  XCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
-import { PitchVisualizer } from "@/components/shared/visualizers/PitchVisualizer";
 import { NoteCard } from "@/components/shared/cards/NoteCard";
-import { getNoteById, type NoteData, notesData } from "@/lib/music/notesData";
+import { PitchVisualizer } from "@/components/shared/visualizers/PitchVisualizer";
+import { getNoteById, notesData } from "@/lib/music/notesData";
 
 // Ejercicios pre-generados para facilitar lectura
 const STAGE3_EXERCISES = ["do", "sol", "mi", "fa", "si"];

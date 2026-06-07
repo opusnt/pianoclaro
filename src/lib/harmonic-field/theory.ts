@@ -136,7 +136,10 @@ export function buildDiatonicTriad(scaleNotes: string[], degreeIndex: number): s
   return [root, third, fifth];
 }
 
-export function buildMajorHarmonicField(scaleNotes: string[], keyId: string): HarmonicFieldChord[] {
+export function buildMajorHarmonicField(
+  scaleNotes: string[],
+  _keyId: string,
+): HarmonicFieldChord[] {
   return scaleNotes.slice(0, 7).map((root, index) => {
     const degree = MAJOR_FIELD_DEGREES[index];
     const quality = MAJOR_FIELD_QUALITIES[index];

@@ -2,14 +2,13 @@
 
 import { ArrowRight, BookOpen, Maximize, Play, Star, Trophy, Volume2 } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
-import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
-import { getDuration } from "@/lib/music/rhythmFigures";
+import { useEffect, useRef, useState } from "react";
 import { MeasureBuilder } from "@/components/shared/interactive/MeasureBuilder";
 import { DottedNoteVisualizer } from "@/components/shared/visualizers/DottedNoteVisualizer";
-import { FinalReadingChallenge } from "./components/FinalReadingChallenge";
 import { TieVisualizer } from "@/components/shared/visualizers/TieVisualizer";
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
+import { PianoAudioEngine } from "@/lib/audio/piano-engine";
+import { FinalReadingChallenge } from "./components/FinalReadingChallenge";
 import { activeReadingExercises } from "./exercises";
 
 export function Unit9ExtendedNotes() {
@@ -67,7 +66,7 @@ export function Unit9ExtendedNotes() {
       localStorage.setItem("module1.unit9.score", finalScore.toString());
       localStorage.setItem("module1.completed", "true");
       localStorage.setItem("module2.unlocked", "true");
-    } catch (e) {
+    } catch (_e) {
       console.warn("No se pudo guardar el progreso");
     }
   };

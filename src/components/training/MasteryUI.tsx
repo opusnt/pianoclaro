@@ -1,7 +1,6 @@
 "use client";
 
-import { Clock, Flame, Lock, Medal, Play, Star, Target, Trophy } from "lucide-react";
-import React from "react";
+import { Clock, Flame, Lock, Medal, Play, Star, Target } from "lucide-react";
 import type { UserStats } from "@/lib/masteryStore";
 
 export function SkillProgressBar({

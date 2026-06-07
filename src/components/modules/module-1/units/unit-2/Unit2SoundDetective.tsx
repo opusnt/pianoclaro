@@ -1,13 +1,13 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, Ear, Play, Trophy, XCircle } from "lucide-react";
+import { ArrowRight, CheckCircle2, Ear, Play, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Heading, Text } from "@/components/ui/Typography";
-import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
 import { soundDetectiveChallenges } from "./soundDetectiveChallenges";
 
 export function Unit2SoundDetective() {

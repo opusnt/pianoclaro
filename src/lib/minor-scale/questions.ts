@@ -2,7 +2,6 @@ import {
   getDisplayPitchName,
   getMajorMinorDifferenceIndexes,
   getMinorScaleById,
-  getMinorScaleNoteNamesWithOctaves,
   getNaturalHarmonicDifferenceIndexes,
   getNaturalMelodicDifferenceIndexes,
 } from "@/lib/minor-scale/theory";
@@ -393,7 +392,7 @@ function requireScale(scaleId: string) {
 }
 
 function scaleNoteFromMidiForScale(scale: MinorScaleDefinition, midi: number) {
-  const index = scale.midiNotes.findIndex((scaleMidi) => scaleMidi === midi);
+  const index = scale.midiNotes.indexOf(midi);
 
   if (index >= 0) {
     const octave = Math.floor(midi / 12) - 1;

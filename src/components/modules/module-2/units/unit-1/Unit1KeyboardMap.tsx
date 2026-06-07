@@ -3,11 +3,11 @@
 import { ArrowRight, CheckCircle2, Map, Play, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Heading, Text } from "@/components/ui/Typography";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
 
 // Constantes para las etapas
 const STAGE_4_NOTES = ["C", "D", "E", "F", "G", "A", "B"];
@@ -19,7 +19,7 @@ const STAGE_8_MELODY = ["C4", "D4", "E4"];
 
 export function Unit1KeyboardMap() {
   const [stage, setStage] = useState(0);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [_correctAnswers, setCorrectAnswers] = useState(0);
 
   // States compartidos
   const [playedNotes, setPlayedNotes] = useState<string[]>([]);
@@ -392,7 +392,7 @@ export function Unit1KeyboardMap() {
   // --------------------------------------------------------
   if (stage === 7) {
     const handleKey = (note: string) => {
-      const targetBase = targetNote!.replace(/[0-9]/g, ""); // "C4" -> "C"
+      const targetBase = targetNote?.replace(/[0-9]/g, ""); // "C4" -> "C"
       const noteBase = note.replace(/[0-9]/g, "");
 
       if (noteBase === targetBase) {
@@ -491,7 +491,7 @@ export function Unit1KeyboardMap() {
         </Button>
 
         <div className="flex justify-center gap-2 mb-6">
-          {STAGE_8_MELODY.map((n, i) => (
+          {STAGE_8_MELODY.map((_n, i) => (
             <div
               key={i}
               className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-colors ${

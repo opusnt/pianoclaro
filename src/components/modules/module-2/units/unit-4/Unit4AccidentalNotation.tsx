@@ -1,22 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Button } from "@/components/ui/Button";
+import { AlertCircle, ArrowRight, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { useGlobalStore } from "@/lib/store/useGlobalStore";
+import {
+  type AccidentalExerciseNote,
+  accidentalNotationExercises,
+  generateRandomNotationExercises,
+} from "./accidentalNotationExercises";
 import { AccidentalScopeVisualizer } from "./components/AccidentalScopeVisualizer";
-import { NotationToKeyboardExercise } from "./components/NotationToKeyboardExercise";
-import { accidentalNotationExercises, generateRandomNotationExercises, type AccidentalExerciseNote } from "./accidentalNotationExercises";
 import { MeasureAccidentalTracker } from "./components/MeasureAccidentalTracker";
-import { ArrowRight, Sparkles, AlertCircle } from "lucide-react";
-import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
+import { NotationToKeyboardExercise } from "./components/NotationToKeyboardExercise";
 
 const TOTAL_STAGES = 10;
 
 export function Unit4AccidentalNotation() {
   const router = useRouter();
   const [stage, setStage] = useState(1);
-  const [score, setScore] = useState(0);
+  const score = useGlobalStore((state) => state.score);
 
   const handleNext = () => {
     if (stage < TOTAL_STAGES) {
@@ -24,12 +28,9 @@ export function Unit4AccidentalNotation() {
     } else {
       localStorage.setItem("module2.unit4.completed", "true");
       localStorage.setItem("module2.unit4.score", Math.max(score, 100).toString());
+      useGlobalStore.getState().resetSession();
       router.push("/modulos/2");
     }
-  };
-
-  const handleScore = (points: number) => {
-    setScore((prev) => prev + points);
   };
 
   return (
@@ -53,11 +54,11 @@ export function Unit4AccidentalNotation() {
         {stage === 3 && <Stage3Scope onNext={handleNext} />}
         {stage === 4 && <Stage4Barline onNext={handleNext} />}
         {stage === 5 && <Stage5Natural onNext={handleNext} />}
-        {stage === 6 && <Stage6InteractiveGame onNext={handleNext} onScore={handleScore} />}
+        {stage === 6 && <Stage6InteractiveGame onNext={handleNext} />}
         {stage === 7 && <Stage7Keyboard onNext={handleNext} />}
-        {stage === 8 && <Stage8Detective onNext={handleNext} onScore={handleScore} />}
+        {stage === 8 && <Stage8Detective onNext={handleNext} />}
         {stage === 9 && <Stage9GuidedReading onNext={handleNext} />}
-        {stage === 10 && <Stage10FinalChallenge onNext={handleNext} score={score} />}
+        {stage === 10 && <Stage10FinalChallenge onNext={handleNext} />}
       </div>
     </div>
   );
@@ -69,10 +70,39 @@ export function Unit4AccidentalNotation() {
 
 function Stage1Mystery({ onNext }: { onNext: () => void }) {
   const notes: AccidentalExerciseNote[] = [
-    { id: "1", note: "DO", yPos: 5, measure: 1, expectedMidiBase: "C", expectedAccidentalMod: "natural" },
-    { id: "2", note: "RE", yPos: 12.5, measure: 1, expectedMidiBase: "D", expectedAccidentalMod: "natural" },
-    { id: "3", note: "FA", yPos: 27.5, accidental: "sharp", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
-    { id: "4", note: "SOL", yPos: 35, measure: 1, expectedMidiBase: "G", expectedAccidentalMod: "natural" },
+    {
+      id: "1",
+      note: "DO",
+      yPos: 5,
+      measure: 1,
+      expectedMidiBase: "C",
+      expectedAccidentalMod: "natural",
+    },
+    {
+      id: "2",
+      note: "RE",
+      yPos: 12.5,
+      measure: 1,
+      expectedMidiBase: "D",
+      expectedAccidentalMod: "natural",
+    },
+    {
+      id: "3",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "sharp",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
+    {
+      id: "4",
+      note: "SOL",
+      yPos: 35,
+      measure: 1,
+      expectedMidiBase: "G",
+      expectedAccidentalMod: "natural",
+    },
   ];
 
   return (
@@ -88,8 +118,12 @@ function Stage1Mystery({ onNext }: { onNext: () => void }) {
 
       <div className="rounded-xl bg-blue-50 p-6 text-center border border-blue-100">
         <AlertCircle className="mx-auto h-8 w-8 text-blue-deep mb-3" />
-        <h3 className="text-lg font-bold text-blue-900">¿Por qué esa nota tiene un símbolo especial?</h3>
-        <p className="mt-2 text-blue-700">Hay un pequeño "michi" o numeral (♯) al lado de una nota. ¿Qué crees que significa?</p>
+        <h3 className="text-lg font-bold text-blue-900">
+          ¿Por qué esa nota tiene un símbolo especial?
+        </h3>
+        <p className="mt-2 text-blue-700">
+          Hay un pequeño "michi" o numeral (♯) al lado de una nota. ¿Qué crees que significa?
+        </p>
       </div>
 
       <div className="flex justify-end pt-4">
@@ -103,8 +137,23 @@ function Stage1Mystery({ onNext }: { onNext: () => void }) {
 
 function Stage2Change({ onNext }: { onNext: () => void }) {
   const notes: AccidentalExerciseNote[] = [
-    { id: "1", note: "FA", yPos: 27.5, measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "natural" },
-    { id: "2", note: "FA", yPos: 27.5, accidental: "sharp", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
+    {
+      id: "1",
+      note: "FA",
+      yPos: 27.5,
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "natural",
+    },
+    {
+      id: "2",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "sharp",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
   ];
 
   return (
@@ -115,7 +164,10 @@ function Stage2Change({ onNext }: { onNext: () => void }) {
       </div>
 
       <div className="py-8">
-        <NotationToKeyboardExercise exercise={{ id: "e1", title: "", description: "", notes }} onSuccess={onNext} />
+        <NotationToKeyboardExercise
+          exercise={{ id: "e1", title: "", description: "", notes }}
+          onSuccess={onNext}
+        />
       </div>
 
       <div className="rounded-xl bg-emerald-50 p-6 border border-emerald-100">
@@ -123,7 +175,8 @@ function Stage2Change({ onNext }: { onNext: () => void }) {
           ¡El símbolo modifica esta nota específica!
         </p>
         <p className="text-emerald-700 text-center text-sm mt-2">
-          Ese símbolo se llama <strong>Sostenido</strong>. Al aparecer junto a la nota, te indica que debes tocar la tecla negra inmediatamente a la derecha.
+          Ese símbolo se llama <strong>Sostenido</strong>. Al aparecer junto a la nota, te indica
+          que debes tocar la tecla negra inmediatamente a la derecha.
         </p>
       </div>
     </div>
@@ -132,9 +185,31 @@ function Stage2Change({ onNext }: { onNext: () => void }) {
 
 function Stage3Scope({ onNext }: { onNext: () => void }) {
   const notes: AccidentalExerciseNote[] = [
-    { id: "1", note: "FA", yPos: 27.5, accidental: "sharp", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
-    { id: "2", note: "SOL", yPos: 35, measure: 1, expectedMidiBase: "G", expectedAccidentalMod: "natural" },
-    { id: "3", note: "FA", yPos: 27.5, measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
+    {
+      id: "1",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "sharp",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
+    {
+      id: "2",
+      note: "SOL",
+      yPos: 35,
+      measure: 1,
+      expectedMidiBase: "G",
+      expectedAccidentalMod: "natural",
+    },
+    {
+      id: "3",
+      note: "FA",
+      yPos: 27.5,
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
   ];
 
   const [revealed, setRevealed] = useState(false);
@@ -154,17 +229,21 @@ function Stage3Scope({ onNext }: { onNext: () => void }) {
         <div className="text-center space-y-4">
           <p className="text-lg font-bold text-slate-700">¿Cómo crees que se toca el último FA?</p>
           <div className="flex justify-center gap-4">
-             <Button variant="outline" onClick={() => setRevealed(true)}>Se toca FA normal (tecla blanca)</Button>
-             <Button variant="outline" onClick={() => setRevealed(true)}>Se toca FA# (tecla negra)</Button>
+            <Button variant="outline" onClick={() => setRevealed(true)}>
+              Se toca FA normal (tecla blanca)
+            </Button>
+            <Button variant="outline" onClick={() => setRevealed(true)}>
+              Se toca FA# (tecla negra)
+            </Button>
           </div>
         </div>
       ) : (
         <div className="rounded-xl bg-fuchsia-50 p-6 border border-fuchsia-100 animate-in zoom-in">
-          <p className="font-bold text-fuchsia-900 text-center text-xl">
-            ¡Sigue siendo FA#!
-          </p>
+          <p className="font-bold text-fuchsia-900 text-center text-xl">¡Sigue siendo FA#!</p>
           <p className="text-fuchsia-800 text-center mt-2">
-            Una alteración accidental sigue activa <strong>durante todo el compás</strong> para esa misma nota. Piensa que deja un "rastro de magia" que afecta a todas las notas iguales que vengan después.
+            Una alteración accidental sigue activa <strong>durante todo el compás</strong> para esa
+            misma nota. Piensa que deja un "rastro de magia" que afecta a todas las notas iguales
+            que vengan después.
           </p>
           <div className="flex justify-center mt-6">
             <Button onClick={onNext}>Entendido</Button>
@@ -177,10 +256,39 @@ function Stage3Scope({ onNext }: { onNext: () => void }) {
 
 function Stage4Barline({ onNext }: { onNext: () => void }) {
   const notes: AccidentalExerciseNote[] = [
-    { id: "1", note: "FA", yPos: 27.5, accidental: "sharp", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
-    { id: "2", note: "SOL", yPos: 35, measure: 1, expectedMidiBase: "G", expectedAccidentalMod: "natural" },
-    { id: "3", note: "FA", yPos: 27.5, measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
-    { id: "4", note: "FA", yPos: 27.5, measure: 2, expectedMidiBase: "F", expectedAccidentalMod: "natural" },
+    {
+      id: "1",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "sharp",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
+    {
+      id: "2",
+      note: "SOL",
+      yPos: 35,
+      measure: 1,
+      expectedMidiBase: "G",
+      expectedAccidentalMod: "natural",
+    },
+    {
+      id: "3",
+      note: "FA",
+      yPos: 27.5,
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
+    {
+      id: "4",
+      note: "FA",
+      yPos: 27.5,
+      measure: 2,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "natural",
+    },
   ];
 
   return (
@@ -199,7 +307,8 @@ function Stage4Barline({ onNext }: { onNext: () => void }) {
           La barra divisoria cancela automáticamente la alteración.
         </p>
         <p className="text-blue-700 mt-2">
-          Cuando pasamos a un nuevo compás, todas las notas vuelven a la normalidad. El último FA del ejemplo ya no tiene el rastro mágico.
+          Cuando pasamos a un nuevo compás, todas las notas vuelven a la normalidad. El último FA
+          del ejemplo ya no tiene el rastro mágico.
         </p>
       </div>
 
@@ -214,15 +323,33 @@ function Stage4Barline({ onNext }: { onNext: () => void }) {
 
 function Stage5Natural({ onNext }: { onNext: () => void }) {
   const notes: AccidentalExerciseNote[] = [
-    { id: "1", note: "FA", yPos: 27.5, accidental: "sharp", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "sharp" },
-    { id: "2", note: "FA", yPos: 27.5, accidental: "natural", measure: 1, expectedMidiBase: "F", expectedAccidentalMod: "natural" },
+    {
+      id: "1",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "sharp",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "sharp",
+    },
+    {
+      id: "2",
+      note: "FA",
+      yPos: 27.5,
+      accidental: "natural",
+      measure: 1,
+      expectedMidiBase: "F",
+      expectedAccidentalMod: "natural",
+    },
   ];
 
   return (
     <div className="space-y-6 rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
       <div className="text-center">
         <h2 className="text-2xl font-black text-blue-deep">El Becuadro</h2>
-        <p className="mt-2 text-slate-500">¿Y si queremos cancelar la alteración antes de que termine el compás?</p>
+        <p className="mt-2 text-slate-500">
+          ¿Y si queremos cancelar la alteración antes de que termine el compás?
+        </p>
       </div>
 
       <div className="py-8 pointer-events-none">
@@ -234,7 +361,8 @@ function Stage5Natural({ onNext }: { onNext: () => void }) {
           El becuadro (♮) cancela la alteración inmediatamente.
         </p>
         <p className="text-amber-800 mt-2">
-          Actúa como una "goma de borrar" mágica. Si ves un becuadro, la nota vuelve a ser una tecla blanca normal, incluso dentro del mismo compás.
+          Actúa como una "goma de borrar" mágica. Si ves un becuadro, la nota vuelve a ser una tecla
+          blanca normal, incluso dentro del mismo compás.
         </p>
       </div>
 
@@ -247,20 +375,21 @@ function Stage5Natural({ onNext }: { onNext: () => void }) {
   );
 }
 
-function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScore: (pts: number) => void }) {
+function Stage6InteractiveGame({ onNext }: { onNext: () => void }) {
   const [exercises] = useState(() => generateRandomNotationExercises(5));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [feedback, setFeedback] = useState<"correct" | "incorrect" | null>(null);
+  const addScore = useGlobalStore((state) => state.addScore);
 
   const currentExercise = exercises[currentIndex];
   const lastNote = currentExercise.notes[currentExercise.notes.length - 1];
 
   const handleGuess = (guess: "sharp" | "flat" | "natural") => {
     if (feedback !== null) return;
-    
+
     if (guess === lastNote.expectedAccidentalMod) {
       setFeedback("correct");
-      onScore(10);
+      addScore(10);
     } else {
       setFeedback("incorrect");
     }
@@ -268,7 +397,7 @@ function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScor
     setTimeout(() => {
       setFeedback(null);
       if (currentIndex < exercises.length - 1) {
-        setCurrentIndex(c => c + 1);
+        setCurrentIndex((c) => c + 1);
       } else {
         onNext();
       }
@@ -279,7 +408,9 @@ function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScor
     <div className="space-y-6 rounded-2xl bg-white p-6 shadow-sm border border-slate-100">
       <div className="text-center">
         <h2 className="text-2xl font-black text-blue-deep">¿Sigue alterada?</h2>
-        <p className="mt-2 text-slate-500">Ronda {currentIndex + 1} de {exercises.length}</p>
+        <p className="mt-2 text-slate-500">
+          Ronda {currentIndex + 1} de {exercises.length}
+        </p>
       </div>
 
       <div className="py-8 pointer-events-none">
@@ -289,13 +420,31 @@ function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScor
       <div className="text-center space-y-6">
         <p className="text-lg font-bold text-slate-700">¿Cómo se toca la ÚLTIMA nota?</p>
         <div className="flex justify-center gap-4">
-          <Button onClick={() => handleGuess("natural")} variant="outline" className="text-lg py-6 px-8">Natural</Button>
-          <Button onClick={() => handleGuess("sharp")} variant="outline" className="text-lg py-6 px-8">Alterada</Button>
+          <Button
+            onClick={() => handleGuess("natural")}
+            variant="outline"
+            className="text-lg py-6 px-8"
+          >
+            Natural
+          </Button>
+          <Button
+            onClick={() => handleGuess("sharp")}
+            variant="outline"
+            className="text-lg py-6 px-8"
+          >
+            Alterada
+          </Button>
         </div>
-        
+
         <div className="h-8">
-          {feedback === "correct" && <p className="text-emerald-500 font-bold text-lg animate-bounce">¡Correcto!</p>}
-          {feedback === "incorrect" && <p className="text-red-500 font-bold text-lg animate-bounce">Ups, fíjate en el compás o el símbolo.</p>}
+          {feedback === "correct" && (
+            <p className="text-emerald-500 font-bold text-lg animate-bounce">¡Correcto!</p>
+          )}
+          {feedback === "incorrect" && (
+            <p className="text-red-500 font-bold text-lg animate-bounce">
+              Ups, fíjate en el compás o el símbolo.
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -304,7 +453,7 @@ function Stage6InteractiveGame({ onNext, onScore }: { onNext: () => void, onScor
 
 function Stage7Keyboard({ onNext }: { onNext: () => void }) {
   const exercise = accidentalNotationExercises[0]; // "El efecto del compás"
-  
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -317,15 +466,16 @@ function Stage7Keyboard({ onNext }: { onNext: () => void }) {
   );
 }
 
-function Stage8Detective({ onNext, onScore }: { onNext: () => void, onScore: (pts: number) => void }) {
+function Stage8Detective({ onNext }: { onNext: () => void }) {
   const exercise = accidentalNotationExercises[3]; // Desafío final de datos
   const [activeNoteIndex, setActiveNoteIndex] = useState(0);
+  const addScore = useGlobalStore((state) => state.addScore);
 
   const handleNextNote = () => {
     if (activeNoteIndex < exercise.notes.length - 1) {
-      setActiveNoteIndex(a => a + 1);
+      setActiveNoteIndex((a) => a + 1);
     } else {
-      onScore(20);
+      addScore(20);
       onNext();
     }
   };
@@ -333,13 +483,13 @@ function Stage8Detective({ onNext, onScore }: { onNext: () => void, onScore: (pt
   // Determinar si en este índice hay alteraciones activas
   const currentNote = exercise.notes[activeNoteIndex];
   const activeNotesList: { note: string; accidental: "sharp" | "flat" }[] = [];
-  
+
   // Buscar hacia atrás en el mismo compás
-  const measureNotes = exercise.notes.filter(n => n.measure === currentNote.measure);
+  const measureNotes = exercise.notes.filter((n) => n.measure === currentNote.measure);
   const indexOfCurrentInMeasure = measureNotes.indexOf(currentNote);
-  
+
   // Rastrear el último estado de cada nota en este compás hasta el punto actual
-  const noteStates = new Map<string, "sharp"|"flat"|"natural">();
+  const noteStates = new Map<string, "sharp" | "flat" | "natural">();
   for (let i = 0; i <= indexOfCurrentInMeasure; i++) {
     const n = measureNotes[i];
     if (n.accidental) {
@@ -362,10 +512,17 @@ function Stage8Detective({ onNext, onScore }: { onNext: () => void, onScore: (pt
 
       <div className="space-y-8">
         <div className="pointer-events-none">
-          <AccidentalScopeVisualizer exerciseNotes={exercise.notes} activeStepIndex={activeNoteIndex} showAura={true} />
+          <AccidentalScopeVisualizer
+            exerciseNotes={exercise.notes}
+            activeStepIndex={activeNoteIndex}
+            showAura={true}
+          />
         </div>
         <div className="max-w-md mx-auto">
-          <MeasureAccidentalTracker activeNotes={activeNotesList} measureNumber={currentNote.measure} />
+          <MeasureAccidentalTracker
+            activeNotes={activeNotesList}
+            measureNumber={currentNote.measure}
+          />
         </div>
       </div>
 
@@ -380,7 +537,7 @@ function Stage8Detective({ onNext, onScore }: { onNext: () => void, onScore: (pt
 
 function Stage9GuidedReading({ onNext }: { onNext: () => void }) {
   const exercise = accidentalNotationExercises[1]; // El poder del becuadro
-  
+
   return (
     <div className="space-y-6">
       <div className="text-center">
@@ -393,33 +550,41 @@ function Stage9GuidedReading({ onNext }: { onNext: () => void }) {
   );
 }
 
-function Stage10FinalChallenge({ onNext, score }: { onNext: () => void, score: number }) {
+function Stage10FinalChallenge({ onNext }: { onNext: () => void }) {
+  const score = useGlobalStore((state) => state.score);
+
   return (
     <div className="space-y-8 rounded-2xl bg-white p-10 shadow-sm border border-slate-100 text-center">
       <div className="mx-auto w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6">
         <Sparkles className="h-10 w-10" />
       </div>
-      
-      <h2 className="text-4xl font-black text-blue-deep">¡Ahora entiendes las alteraciones en partituras!</h2>
+
+      <h2 className="text-4xl font-black text-blue-deep">
+        ¡Ahora entiendes las alteraciones en partituras!
+      </h2>
       <p className="mt-4 text-lg text-slate-600 max-w-2xl mx-auto">
-        Las alteraciones accidentales son instrucciones temporales que modifican notas dentro de un compás. Y desaparecen cuando llega la barra divisoria.
+        Las alteraciones accidentales son instrucciones temporales que modifican notas dentro de un
+        compás. Y desaparecen cuando llega la barra divisoria.
       </p>
 
       <div className="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto mt-8">
-         <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-           <p className="text-sm font-bold uppercase text-muted">Puntuación</p>
-           <p className="text-3xl font-black text-blue-deep mt-1">{score + 50} XP</p>
-         </div>
-         <div className="bg-fuchsia-50 p-4 rounded-xl border border-fuchsia-100">
-           <p className="text-sm font-bold uppercase text-fuchsia-600">Logro Desbloqueado</p>
-           <p className="text-lg font-black text-fuchsia-900 mt-1 flex items-center justify-center gap-2">
-             🏆 Detective
-           </p>
-         </div>
+        <div className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+          <p className="text-sm font-bold uppercase text-muted">Puntuación</p>
+          <p className="text-3xl font-black text-blue-deep mt-1">{score + 50} XP</p>
+        </div>
+        <div className="bg-fuchsia-50 p-4 rounded-xl border border-fuchsia-100">
+          <p className="text-sm font-bold uppercase text-fuchsia-600">Logro Desbloqueado</p>
+          <p className="text-lg font-black text-fuchsia-900 mt-1 flex items-center justify-center gap-2">
+            🏆 Detective
+          </p>
+        </div>
       </div>
 
       <div className="pt-8">
-        <Button onClick={onNext} className="px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all">
+        <Button
+          onClick={onNext}
+          className="px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all"
+        >
           Continuar
         </Button>
       </div>

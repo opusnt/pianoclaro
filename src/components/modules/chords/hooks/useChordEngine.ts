@@ -159,8 +159,7 @@ export function useChordEngine({ exercise, progress, onAttemptComplete }: UseCho
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
-      return;
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") return;
     const answer = buildChordOptionAnswer({
       question: currentQuestion,
       option,

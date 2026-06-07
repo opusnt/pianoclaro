@@ -17,7 +17,7 @@ const PITCHES = ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"];
 
 export function generateNotesQuestion(): TrainingQuestion {
   const noteIndex = Math.floor(Math.random() * NOTES.length);
-  const correctNote = NOTES[noteIndex];
+  const _correctNote = NOTES[noteIndex];
 
   // Audio recognition
   return {

@@ -1,31 +1,21 @@
 "use client";
 
-import {
-  ArrowRight,
-  CheckCircle2,
-  Ear,
-  Eye,
-  Layers,
-  Music,
-  Navigation,
-  Play,
-  Trophy,
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Ear, Eye, Layers, Navigation, Play, Trophy } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
+import { IntervalStepper } from "@/components/shared/interactive/IntervalStepper";
+import { DistanceVisualizer } from "@/components/shared/visualizers/DistanceVisualizer";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Heading, Text } from "@/components/ui/Typography";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
-import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
-import { DistanceVisualizer } from "@/components/shared/visualizers/DistanceVisualizer";
-import { IntervalStepper } from "@/components/shared/interactive/IntervalStepper";
 import {
-  semitoneExercises,
-  toneExercises,
-  DistanceExercise,
+  type DistanceExercise,
   isSemitone,
   isTone,
+  semitoneExercises,
+  toneExercises,
 } from "./distanceExercises";
 
 // Helpers

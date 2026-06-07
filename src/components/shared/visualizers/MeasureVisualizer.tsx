@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
 import { getRhythmFigureById, type RhythmFigureId } from "@/lib/music/rhythmFigures";
 

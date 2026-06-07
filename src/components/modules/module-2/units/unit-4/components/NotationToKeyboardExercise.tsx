@@ -1,10 +1,10 @@
 "use client";
 
+import { CheckCircle2, XCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
-import { AccidentalScopeVisualizer } from "./AccidentalScopeVisualizer";
 import type { AccidentalNotationExercise } from "../accidentalNotationExercises";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { AccidentalScopeVisualizer } from "./AccidentalScopeVisualizer";
 
 type NotationToKeyboardExerciseProps = {
   exercise: AccidentalNotationExercise;
@@ -35,7 +35,7 @@ export function NotationToKeyboardExercise({
     const playedBase = notePlayed.replace(/[0-9#b]/g, "");
     const isSharp = notePlayed.includes("#");
     const isFlat = notePlayed.includes("b"); // Tone.js usually outputs sharp for black keys, but let's be safe
-    
+
     const playedAccidental = isSharp ? "sharp" : isFlat ? "flat" : "natural";
 
     if (
@@ -47,7 +47,7 @@ export function NotationToKeyboardExercise({
       setErrorMsg("");
       setTimeout(() => {
         if (activeNoteIndex < exercise.notes.length - 1) {
-          setActiveNoteIndex(prev => prev + 1);
+          setActiveNoteIndex((prev) => prev + 1);
           setFeedback("idle");
         } else {
           onSuccess();
@@ -66,7 +66,7 @@ export function NotationToKeyboardExercise({
       } else {
         setErrorMsg("Nota incorrecta.");
       }
-      
+
       setTimeout(() => {
         setFeedback("idle");
       }, 2000);
@@ -81,19 +81,19 @@ export function NotationToKeyboardExercise({
             Toca las notas en orden: {activeNoteIndex + 1} / {exercise.notes.length}
           </p>
           <div className="h-2 flex-1 mx-4 rounded-full bg-slate-100 overflow-hidden">
-             <div 
-               className="h-full bg-gold-soft transition-all duration-300"
-               style={{ width: `${(activeNoteIndex / exercise.notes.length) * 100}%` }}
-             />
+            <div
+              className="h-full bg-gold-soft transition-all duration-300"
+              style={{ width: `${(activeNoteIndex / exercise.notes.length) * 100}%` }}
+            />
           </div>
         </div>
 
-        <AccidentalScopeVisualizer 
+        <AccidentalScopeVisualizer
           exerciseNotes={exercise.notes}
           activeStepIndex={activeNoteIndex}
           showAura={true}
         />
-        
+
         <div className="mt-4 h-12 flex items-center justify-center">
           {feedback === "success" && (
             <div className="flex items-center gap-2 text-emerald-600 animate-in fade-in zoom-in">
@@ -111,9 +111,9 @@ export function NotationToKeyboardExercise({
       </div>
 
       <div className="rounded-2xl border border-blue-deep/10 bg-slate-900 p-2 shadow-xl">
-        <InteractiveKeyboard 
-          startOctave={4} 
-          endOctave={4} 
+        <InteractiveKeyboard
+          startOctave={4}
+          endOctave={4}
           showLabels={true}
           onKeyPress={handleKeyPress}
           interactive={feedback !== "success"} // Disable briefly on success

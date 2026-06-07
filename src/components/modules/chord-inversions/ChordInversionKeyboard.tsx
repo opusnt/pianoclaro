@@ -2,12 +2,7 @@
 
 import { CircleDot } from "lucide-react";
 import { useMemo } from "react";
-import {
-  buildKeyboardNotes,
-  getDisplayNoteName,
-  getInversionById,
-  noteToMidi,
-} from "@/lib/chord-inversions/theory";
+import { buildKeyboardNotes, getInversionById, noteToMidi } from "@/lib/chord-inversions/theory";
 import { getBlackKeyLeftPercent } from "@/lib/music/keyboard-layout";
 
 type ChordInversionKeyboardProps = {

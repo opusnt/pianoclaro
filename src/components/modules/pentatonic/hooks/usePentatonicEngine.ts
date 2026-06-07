@@ -15,7 +15,6 @@ import {
   playPentatonicError,
   playPentatonicNote,
   playPentatonicScaleById,
-  playPentatonicSequence,
   playPentatonicSuccess,
 } from "@/lib/pentatonic/audio";
 import { generatePentatonicQuestions, getExerciseUnitCount } from "@/lib/pentatonic/questions";
@@ -199,8 +198,7 @@ export function usePentatonicEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
-      return;
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") return;
 
     const answer = buildPentatonicOptionAnswer({
       question: currentQuestion,
@@ -219,7 +217,7 @@ export function usePentatonicEngine({
   }
 
   function completeImprovisation() {
-    if (!currentQuestion || currentQuestion.mode !== "improvisation" || currentAnswer) return;
+    if (currentQuestion?.mode !== "improvisation" || currentAnswer) return;
     const answer = buildPentatonicImprovisationAnswer({
       question: currentQuestion,
       playedNotes: improvisedNotes,

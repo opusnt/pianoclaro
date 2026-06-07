@@ -1,20 +1,10 @@
 "use client";
 
-import {
-  ArrowRight,
-  CheckCircle2,
-  Map,
-  MoveVertical,
-  Navigation,
-  Play,
-  Speaker,
-  Trophy,
-  XCircle,
-} from "lucide-react";
+import { ArrowRight, Map, MoveVertical, Speaker, Trophy } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
-import { type PitchNote, PitchVisualizer } from "@/components/shared/visualizers/PitchVisualizer";
+import { PitchVisualizer } from "@/components/shared/visualizers/PitchVisualizer";
 import { linesAndSpacesExercises, soundHuntExercises } from "./pitchMappingExercises";
 
 export function Unit4MusicMap() {
@@ -246,7 +236,7 @@ export function Unit4MusicMap() {
               <p
                 className={`font-bold text-lg mb-4 ${isCorrect ? "text-green-600" : "text-rose-600"}`}
               >
-                {isCorrect ? "¡Correcto!" : "Ups, era " + exercise.correctZone + "."}
+                {isCorrect ? "¡Correcto!" : `Ups, era ${exercise.correctZone}.`}
               </p>
 
               <div className="w-full max-w-[200px] mb-6">

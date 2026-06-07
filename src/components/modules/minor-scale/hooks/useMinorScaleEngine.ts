@@ -229,8 +229,7 @@ export function useMinorScaleEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
-      return;
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") return;
 
     const answer = buildMinorScaleOptionAnswer({
       question: currentQuestion,

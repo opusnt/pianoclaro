@@ -19,7 +19,7 @@ export default function CascadaDemoPage() {
         const parsed = parseMusicXml(text);
         setScore(parsed);
       } catch (err) {
-        setError("Error cargando la demo: " + err);
+        setError(`Error cargando la demo: ${err}`);
       }
     }
     void loadDemo();

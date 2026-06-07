@@ -177,10 +177,10 @@ export function useHarmonicFieldEngine({
     const correctNotesCount = countCorrectChordNotes(chord.notes, selectedNotes);
     const expectedPitchSet = new Set(normalizePitchClasses(chord.notes));
     const selectedPitchSet = new Set(normalizePitchClasses(selectedNotes));
-    const missingNotes = chord.notes.filter(
+    const _missingNotes = chord.notes.filter(
       (note) => !selectedPitchSet.has(normalizePitchClasses([note])[0]),
     );
-    const extraNotes = selectedNotes.filter(
+    const _extraNotes = selectedNotes.filter(
       (note) => !expectedPitchSet.has(normalizePitchClasses([note])[0]),
     );
     const answer: HarmonicFieldAnswer = {
@@ -215,8 +215,7 @@ export function useHarmonicFieldEngine({
   }
 
   function answerWithOption(option: string) {
-    if (!currentQuestion || !currentQuestion.answerOptions || currentAnswer || state !== "active")
-      return;
+    if (!currentQuestion?.answerOptions || currentAnswer || state !== "active") return;
     const field = requireField(currentQuestion.fieldId);
     const chord = currentQuestion.degree
       ? getChordByDegree(field, currentQuestion.degree)

@@ -91,7 +91,7 @@ export function useAudioSequencer() {
     activeOscillators.current.forEach((osc) => {
       try {
         osc.stop();
-      } catch (e) {
+      } catch (_e) {
         /* Ya se detuvo */
       }
     });

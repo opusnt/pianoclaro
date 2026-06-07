@@ -7,9 +7,12 @@ type OsmdRendererProps = {
   xmlData: string;
   activeNotePosition?: { measureNumber: number; noteIndex: number } | null;
   onNoteSelect?: (selection: ScoreNoteSelection) => void;
+  onReady?: (osmd: any) => void;
+  disableCursorSync?: boolean;
+  zoom?: number;
 };
 
-export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: OsmdRendererProps) {
+export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect, onReady, disableCursorSync, zoom = 1.0 }: OsmdRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const osmdRef = useRef<any>(null);
 
@@ -41,8 +44,12 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
       try {
         await osmd.load(xmlData);
         if (isMounted) {
+          osmd.zoom = zoom;
           osmd.render();
           osmd.cursor.show(); // Mostrar el cursor por defecto
+          if (onReady) {
+            onReady(osmd);
+          }
         }
       } catch (error) {
         console.error("OSMD Error loading XML:", error);
@@ -53,14 +60,23 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
 
     return () => {
       isMounted = false;
+      if (osmdRef.current) {
+        try {
+          osmdRef.current.clear();
+        } catch (e) {
+          console.warn("OSMD clear error:", e);
+        }
+      }
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
       }
     };
-  }, [xmlData]);
+  }, [xmlData, onReady, zoom]);
 
   // Efecto para sincronizar el cursor
   useEffect(() => {
+    if (disableCursorSync) return;
+
     if (!osmdRef.current || !activeNotePosition) {
       if (osmdRef.current) {
         osmdRef.current.cursor.hide();
@@ -117,7 +133,7 @@ export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect }: Osmd
       // Buscar la nota más cercana en un radio de 5 unidades OSMD
       const nearestNote = osmd.GraphicSheet.GetNearestNote(clickPoint, { x: 5, y: 5 });
 
-      if (nearestNote && nearestNote.sourceNote) {
+      if (nearestNote?.sourceNote) {
         const sourceNote = nearestNote.sourceNote;
         const measureNumber =
           sourceNote.SourceMeasure?.MeasureNumber ||

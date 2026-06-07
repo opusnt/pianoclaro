@@ -1,10 +1,10 @@
 "use client";
 
 import { Undo2 } from "lucide-react";
-import React, { useState } from "react";
+import { useState } from "react";
+import { MeasureVisualizer } from "@/components/shared/visualizers/MeasureVisualizer";
 import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
 import { getRhythmFigureById, type RhythmFigureId } from "@/lib/music/rhythmFigures";
-import { MeasureVisualizer } from "@/components/shared/visualizers/MeasureVisualizer";
 
 interface MeasureBuilderProps {
   initialFigures?: RhythmFigureId[];

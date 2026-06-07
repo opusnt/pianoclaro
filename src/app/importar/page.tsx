@@ -25,7 +25,7 @@ export default function ImportXmlPage() {
         const text = e.target?.result as string;
         const parsed = parseMusicXml(text);
         setScore(parsed);
-      } catch (err) {
+      } catch (_err) {
         setError("Ocurrió un error al leer la partitura. Asegúrate de que es un MusicXML válido.");
       }
     };

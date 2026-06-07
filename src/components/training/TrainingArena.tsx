@@ -1,7 +1,11 @@
 "use client";
 
-import { CheckCircle2, Clock, RotateCcw, Target, X, XCircle, Zap } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { CheckCircle2, Clock, Target, X, Zap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { MeasureBuilder } from "@/components/shared/interactive/MeasureBuilder";
+import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
+// Visualizadores reutilizados
+import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
 import { PianoAudioEngine } from "@/lib/audio/piano-engine";
 import {
   generateClefQuestion,
@@ -15,11 +19,6 @@ import {
   type TrainingQuestion,
 } from "@/lib/exercises/exerciseGenerators";
 import { useMastery } from "@/lib/masteryStore";
-
-// Visualizadores reutilizados
-import { TrebleClefVisualizer } from "@/components/shared/visualizers/TrebleClefVisualizer";
-import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
-import { MeasureBuilder } from "@/components/shared/interactive/MeasureBuilder";
 
 export type TrainingMode = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
@@ -97,8 +96,6 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
       case 6:
         q = generateDottedNotesQuestion();
         break;
-      case 7:
-      case 8:
       default:
         q = generateRandomQuestion(weakestSkill);
         break;
@@ -299,8 +296,8 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
         {currentQuestion.options.length > 0 && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {currentQuestion.options.map((opt, idx) => {
-              const isSelected = feedback !== null && currentQuestion.correctIndex === idx;
-              const isWrong = feedback === "error" && currentQuestion.correctIndex !== idx; // Solo resalta el correcto, pero podemos mejorar
+              const _isSelected = feedback !== null && currentQuestion.correctIndex === idx;
+              const _isWrong = feedback === "error" && currentQuestion.correctIndex !== idx; // Solo resalta el correcto, pero podemos mejorar
 
               return (
                 <button

@@ -15,7 +15,7 @@ export function getMinorQuestionScaleMidiNotes(question: MinorScaleQuestion) {
 
 export function midiToMinorScaleNote(question: MinorScaleQuestion, midi: number) {
   const scale = getMinorScaleById(question.scaleId);
-  const index = scale?.midiNotes.findIndex((scaleMidi) => scaleMidi === midi) ?? -1;
+  const index = scale?.midiNotes.indexOf(midi) ?? -1;
 
   if (scale && index >= 0) {
     return `${scale.notes[index]}${Math.floor(midi / 12) - 1}`;

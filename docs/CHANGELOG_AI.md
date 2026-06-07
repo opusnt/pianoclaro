@@ -3,6 +3,24 @@
 Este archivo registra los cambios mayores y refactorizaciones arquitectónicas realizadas por los agentes de IA en el proyecto Piano Claro. 
 *Importante:* Cualquier agente que finalice una tarea de impacto debe añadir una entrada en este archivo.
 
+## [2026-06-07] - Profesionalización del Motor Arcade (V7)
+- Feature: **Alteraciones Visuales**. El motor ahora dibuja los símbolos de Sostenido (♯) y Bemol (♭) junto a las notas extraídas de la etiqueta `<alter>` del MusicXML en la vista de pentagrama.
+- Feature: **Cuenta Regresiva (Count-In)**. Se implementó un estado de espera de 3 segundos al presionar "Iniciar", mostrando una animación de números flotantes (3..2..1) antes de que las notas empiecen a desplazarse.
+- UI/UX: **Sistema de Partículas Físicas**. Se integró un pequeño motor 2D en el Canvas que dispara múltiples partículas brillantes en dispersión radial con fade-out al obtener una nota "Perfect!".
+
+## [2026-06-07] - Gamificación del Motor Arcade y Cancionero (V6)
+- Feature: **Sistema Estelar y Precisión** (Fase 14). El motor `ArcadeEngine` ahora calcula matemáticamente la precisión (accuracy) en base al número de notas jugables (excluyendo manos muteadas) y devuelve `{ score, accuracy, stars }`.
+- UI/UX: Pantalla inmersiva de Nivel Completado con animaciones de estrellas y resumen de puntuación en `arcade-demo`.
+- Feature: **Integración Curricular** (Fase 15). Se reemplazó el antiguo quiz estático en `FinalReadingChallenge.tsx` por una evaluación interactiva utilizando el Motor Arcade en *Wait Mode*. El usuario ahora debe tocar el "Himno a la Alegría" para aprobar el módulo.
+- Feature: **Módulo de Repertorio Interactivo** (Fase 16). Se actualizó `src/app/repertorio/[id]/page.tsx` para integrar el Motor Arcade. Los usuarios ahora pueden elegir entre visualizar la partitura estática o "Jugarla" de manera interactiva con soporte para XMLs personalizados.
+- Feature: **Soporte para Letras (Lyrics)**. El motor ahora parsea `<lyric><text>` del MusicXML y las dibuja junto a las notas en el canvas.
+
+## [2026-06-07] - Motor Arcade V5: Polifonía, Modo Cascada y Digitación
+- Feature: Motor bimodal (`viewMode: "staff" | "waterfall"`) para renderizado tradicional horizontal o de lluvia 3D tipo Synthesia.
+- Logic: Extracción de metadatos de `<staff>` y `<fingering>` de archivos MusicXML.
+- Feature: Función de **Silenciado de Manos** (`mutedStaffs`). El motor auto-reproduce el audio de las manos silenciadas en el tiempo correcto, permitiendo auto-acompañamiento para el alumno.
+- UX: Renderizado de números de dedos encima o debajo de las notas para corregir postura. Renderizado de estelas rotadas según duración (`durationMs`) de cada nota.
+
 ## [2026-06-03] - Ajustes UI de Componentes Musicales y Unidad 4
 - Feature: Implementación/refinamiento de la Unidad 4 (Alteraciones en el pentagrama) y ejercicios asociados (`AccidentalScopeVisualizer`, etc.).
 - UI/UX: Refactorización profunda de `TrebleClefVisualizer` utilizando porcentajes en vez de valores fijos para asegurar diseño responsive sin importar el tamaño de la pantalla.

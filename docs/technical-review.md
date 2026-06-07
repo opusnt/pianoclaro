@@ -55,23 +55,11 @@ grande difícil de probar y modificar.
 La pantalla ahora delega progreso, teclado físico y práctica a hooks dedicados,
 y su composición visual se separó en componentes de sección.
 
-### En curso - La notación sigue siendo mock, pero ya tiene frontera reemplazable
+### Resuelto/Pausado - Motor de Partituras In-House vs Librerías Externas
 
-`ScoreViewer` mejoró, pero aún implementa layout musical a mano. Esto será caro
-de sostener cuando entren:
-
-- silencios
-- corcheas
-- alteraciones
-- ligaduras
-- dos manos
-- compases reales
-
-`NotationViewer`, `NotationRendererProps` y el registro de renderers ya aíslan
-la implementación SVG actual. Además, el dominio ya puede expresar eventos de
-notación con notas o silencios, `notation-layout.ts` calcula su posición por
-duración y el renderer ya distingue `NoteGlyph` de `RestGlyph`. El próximo salto
-sigue siendo integrar VexFlow detrás de esa frontera.
+Inicialmente se consideró urgente integrar VexFlow u OpenSheetMusicDisplay (`opensheetmusicdisplay` está en `package.json`). Sin embargo, el desarrollo del renderer propio (`TrebleClefVisualizer` y `PitchVisualizer`) usando **porcentajes fluidos y Tailwind CSS** demostró ser inmensamente superior para un entorno educativo responsivo.
+Las librerías externas (VexFlow/OSMD) generan lienzos rígidos (SVG o Canvas de ancho estático) difíciles de adaptar a móviles y de estilizar dinámicamente con las interacciones del usuario.
+*Oportunidad de mejora:* Mantener y expandir el motor SVG in-house para las lecciones interactivas. Posiblemente remover `opensheetmusicdisplay` si su uso queda solo relegado a partituras completas externas.
 
 ### Resuelto - La práctica ya no pierde los silencios
 
@@ -123,11 +111,11 @@ Cada lección define ahora su `tempoBpm`, evitando reglas por `slug`.
 
 | Riesgo | Estado |
 | --- | --- |
-| Imports ambiguos entre tipos legacy/nuevos | Medio |
+| Imports ambiguos entre tipos legacy/nuevos | Bajo (Solucionado en V2) |
 | Lógica de sesión difícil de testear | Medio |
-| Renderer mock frágil ante más notación | Alto |
+| Deuda técnica de Linting (Biome) | Alto (176 errores heredados en código legacy/global) |
 | Progreso local sin sincronización | Bajo hoy, alto al sumar cuentas |
-| Audio simple no representativo de piano real | Bajo para MVP conceptual |
+| Gestión de Estado Global (Props drilling) | Medio (Recomendable introducir Zustand) |
 
 ## Revisión de seguridad
 

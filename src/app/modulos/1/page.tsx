@@ -1,4 +1,4 @@
-import { ArrowLeft, BookOpen, CheckCircle2, GraduationCap, Music, PlayCircle } from "lucide-react";
+import { ArrowLeft, BookOpen, GraduationCap, Music, PlayCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function Modulo1Index() {

@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Box, CircleDot, Clock, Dices, Link2, Music, Target, Zap } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BadgeGallery,
   PracticeStats,

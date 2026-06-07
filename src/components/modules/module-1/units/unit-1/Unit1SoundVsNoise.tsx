@@ -3,11 +3,11 @@
 import { ArrowRight, CheckCircle2, Music, Play, Trophy, Volume2, XCircle } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Heading, Text } from "@/components/ui/Typography";
-import { useAudioSimulator } from "@/components/shared/audio/useAudioSimulator";
 import { type SoundType, soundExamples } from "./soundExamples";
 
 export function Unit1SoundVsNoise() {
@@ -23,7 +23,7 @@ export function Unit1SoundVsNoise() {
   const isLast = currentIndex === soundExamples.length - 1;
 
   useEffect(() => {
-    const isCompleted = localStorage.getItem("module1.unit1.completed");
+    const _isCompleted = localStorage.getItem("module1.unit1.completed");
   }, []);
 
   const handlePlay = () => {
