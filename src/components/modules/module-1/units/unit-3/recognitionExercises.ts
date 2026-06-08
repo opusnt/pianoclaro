@@ -18,16 +18,20 @@ export const recognitionExercises: RecognitionExercise[] = [
     type: "melody",
     instruction: "¿Qué elemento estás escuchando?",
     events: [
-      { time: 0, duration: BEAT_DURATION, params: { type: "sine", frequency: 329.63, gain: 0.5 } }, // E4
+      {
+        time: 0,
+        duration: BEAT_DURATION,
+        params: { type: "sine", frequency: 329.63, gain: 0.8, instrument: "piano" },
+      }, // E4
       {
         time: BEAT_DURATION,
         duration: BEAT_DURATION,
-        params: { type: "sine", frequency: 293.66, gain: 0.5 },
+        params: { type: "sine", frequency: 293.66, gain: 0.8, instrument: "piano" },
       }, // D4
       {
         time: BEAT_DURATION * 2,
         duration: BEAT_DURATION * 2,
-        params: { type: "sine", frequency: 261.63, gain: 0.5 },
+        params: { type: "sine", frequency: 261.63, gain: 0.8, instrument: "piano" },
       }, // C4
     ],
     explanation: "Esa es la melodía. Es una línea simple de notas sucesivas que podrías cantar.",
@@ -37,23 +41,28 @@ export const recognitionExercises: RecognitionExercise[] = [
     type: "rhythm",
     instruction: "¿Qué elemento estás escuchando?",
     events: [
-      { time: 0, duration: 0.1, params: { type: "noise", gain: 0.6 }, filterFrequency: 200 },
+      {
+        time: 0,
+        duration: 0.1,
+        params: { type: "noise", gain: 0.8, instrument: "drums" },
+        filterFrequency: 200,
+      },
       {
         time: BEAT_DURATION,
         duration: 0.1,
-        params: { type: "noise", gain: 0.3 },
+        params: { type: "noise", gain: 0.6, instrument: "drums" },
         filterFrequency: 3000,
       },
       {
         time: BEAT_DURATION * 2,
         duration: 0.1,
-        params: { type: "noise", gain: 0.6 },
+        params: { type: "noise", gain: 0.8, instrument: "drums" },
         filterFrequency: 200,
       },
       {
         time: BEAT_DURATION * 3,
         duration: 0.1,
-        params: { type: "noise", gain: 0.3 },
+        params: { type: "noise", gain: 0.6, instrument: "drums" },
         filterFrequency: 3000,
       },
     ],
@@ -67,32 +76,32 @@ export const recognitionExercises: RecognitionExercise[] = [
       {
         time: 0,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 130.81, gain: 0.3 },
+        params: { type: "triangle", frequency: 130.81, gain: 0.6, instrument: "piano" },
       },
       {
         time: 0,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 164.81, gain: 0.3 },
+        params: { type: "triangle", frequency: 164.81, gain: 0.6, instrument: "piano" },
       },
       {
         time: 0,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 196.0, gain: 0.3 },
+        params: { type: "triangle", frequency: 196.0, gain: 0.6, instrument: "piano" },
       },
       {
         time: BEAT_DURATION * 2,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 146.83, gain: 0.3 },
+        params: { type: "triangle", frequency: 146.83, gain: 0.6, instrument: "piano" },
       },
       {
         time: BEAT_DURATION * 2,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 174.61, gain: 0.3 },
+        params: { type: "triangle", frequency: 174.61, gain: 0.6, instrument: "piano" },
       },
       {
         time: BEAT_DURATION * 2,
         duration: BEAT_DURATION * 2,
-        params: { type: "triangle", frequency: 220.0, gain: 0.3 },
+        params: { type: "triangle", frequency: 220.0, gain: 0.6, instrument: "piano" },
       },
     ],
     explanation:
@@ -103,17 +112,22 @@ export const recognitionExercises: RecognitionExercise[] = [
     type: "rhythm",
     instruction: "Escucha con atención. ¿Qué pilar es este?",
     events: [
-      { time: 0, duration: 0.05, params: { type: "noise", gain: 0.4 }, filterFrequency: 4000 },
+      {
+        time: 0,
+        duration: 0.05,
+        params: { type: "noise", gain: 0.6, instrument: "drums" },
+        filterFrequency: 4000,
+      },
       {
         time: BEAT_DURATION / 2,
         duration: 0.05,
-        params: { type: "noise", gain: 0.4 },
+        params: { type: "noise", gain: 0.6, instrument: "drums" },
         filterFrequency: 4000,
       },
       {
         time: BEAT_DURATION,
         duration: 0.1,
-        params: { type: "noise", gain: 0.7 },
+        params: { type: "noise", gain: 0.9, instrument: "drums" },
         filterFrequency: 300,
       },
     ],
@@ -127,17 +141,17 @@ export const recognitionExercises: RecognitionExercise[] = [
       {
         time: 0,
         duration: BEAT_DURATION / 2,
-        params: { type: "square", frequency: 440, gain: 0.1 },
+        params: { type: "square", frequency: 440, gain: 0.8, instrument: "piano" },
       },
       {
         time: BEAT_DURATION / 2,
         duration: BEAT_DURATION / 2,
-        params: { type: "square", frequency: 493.88, gain: 0.1 },
+        params: { type: "square", frequency: 493.88, gain: 0.8, instrument: "piano" },
       },
       {
         time: BEAT_DURATION,
         duration: BEAT_DURATION,
-        params: { type: "square", frequency: 523.25, gain: 0.1 },
+        params: { type: "square", frequency: 523.25, gain: 0.8, instrument: "piano" },
       },
     ],
     explanation: "Una línea sucesiva con altura definida. Esa es la melodía.",
@@ -150,17 +164,17 @@ export const recognitionExercises: RecognitionExercise[] = [
       {
         time: 0,
         duration: BEAT_DURATION * 3,
-        params: { type: "sine", frequency: 110.0, gain: 0.3 },
+        params: { type: "sine", frequency: 110.0, gain: 0.6, instrument: "piano" },
       },
       {
         time: 0,
         duration: BEAT_DURATION * 3,
-        params: { type: "sine", frequency: 138.59, gain: 0.3 },
+        params: { type: "sine", frequency: 138.59, gain: 0.6, instrument: "piano" },
       },
       {
         time: 0,
         duration: BEAT_DURATION * 3,
-        params: { type: "sine", frequency: 164.81, gain: 0.3 },
+        params: { type: "sine", frequency: 164.81, gain: 0.6, instrument: "piano" },
       },
     ],
     explanation:

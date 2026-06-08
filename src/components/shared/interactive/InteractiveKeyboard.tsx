@@ -12,6 +12,7 @@ export interface InteractiveKeyboardProps {
   highlightColor?: string; // Color para resaltados. Ej "bg-sky-400"
   showLabels?: boolean;
   className?: string;
+  fingeringMap?: Record<string, number>;
 }
 
 const WHITE_NOTES = ["C", "D", "E", "F", "G", "A", "B"];
@@ -26,9 +27,12 @@ export function InteractiveKeyboard({
   highlightColor = "bg-sky-400",
   showLabels = false,
   className = "",
+  fingeringMap = {},
 }: InteractiveKeyboardProps) {
   const engineRef = useRef<PianoAudioEngine | null>(null);
   const [activeNote, setActiveNote] = useState<string | null>(null);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     engineRef.current = new PianoAudioEngine();
@@ -36,6 +40,25 @@ export function InteractiveKeyboard({
       engineRef.current?.close();
     };
   }, []);
+
+  // Scroll inicial para centrar el Do Central (C4)
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      // Buscamos la tecla C4
+      const c4Key = container.querySelector('[data-note="C4"]') as HTMLElement;
+      if (c4Key) {
+        // Calculamos el scroll para que quede en el centro de la vista
+        const containerWidth = container.clientWidth;
+        const keyLeft = c4Key.offsetLeft;
+        const keyWidth = c4Key.offsetWidth;
+        container.scrollTo({
+          left: keyLeft - containerWidth / 2 + keyWidth / 2,
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [startOctave, endOctave]);
 
   const handlePlayNote = async (note: string) => {
     if (!interactive) return;
@@ -79,6 +102,7 @@ export function InteractiveKeyboard({
             >
               {/* Tecla Blanca */}
               <button
+                data-note={fullNote}
                 disabled={!interactive}
                 onMouseDown={() => handlePlayNote(fullNote)}
                 onTouchStart={(e) => {
@@ -93,11 +117,17 @@ export function InteractiveKeyboard({
               >
                 {isHighlighted && (
                   <div
-                    className={`absolute bottom-4 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full ${highlightColor} animate-pulse shadow-md`}
-                  />
+                    className={`absolute bottom-6 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full ${highlightColor} animate-pulse shadow-md flex items-center justify-center`}
+                  >
+                    {fingeringMap[fullNote] && (
+                      <span className="text-[10px] font-black text-white">
+                        {fingeringMap[fullNote]}
+                      </span>
+                    )}
+                  </div>
                 )}
                 {showLabels && (
-                  <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-400 select-none">
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-xs font-bold text-slate-400 select-none">
                     {
                       { C: "DO", D: "RE", E: "MI", F: "FA", G: "SOL", A: "LA", B: "SI" }[
                         noteName as "C" | "D" | "E" | "F" | "G" | "A" | "B"
@@ -128,8 +158,14 @@ export function InteractiveKeyboard({
                 >
                   {isBlackHighlighted && (
                     <div
-                      className={`absolute ${showLabels ? "bottom-6" : "bottom-2"} left-1/2 -translate-x-1/2 w-2 h-2 rounded-full ${highlightColor} animate-pulse`}
-                    />
+                      className={`absolute bottom-4 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full ${highlightColor} animate-pulse shadow-md flex items-center justify-center`}
+                    >
+                      {fingeringMap[fullBlackNote!] && (
+                        <span className="text-[9px] font-black text-white">
+                          {fingeringMap[fullBlackNote!]}
+                        </span>
+                      )}
+                    </div>
                   )}
                   {showLabels && (
                     <span className="absolute bottom-1 left-1/2 -translate-x-1/2 text-[9px] font-bold text-slate-400 select-none whitespace-nowrap">
@@ -155,8 +191,11 @@ export function InteractiveKeyboard({
   }
 
   return (
-    <div className={`w-full overflow-x-auto pb-4 custom-scrollbar ${className}`}>
-      <div className="flex h-40 sm:h-48 md:h-56 min-w-max mx-auto justify-center bg-slate-900 p-2 rounded-t-xl border-b-8 border-slate-800">
+    <div
+      ref={scrollContainerRef}
+      className={`w-full overflow-x-auto pb-4 custom-scrollbar scroll-smooth ${className}`}
+    >
+      <div className="flex h-40 sm:h-48 md:h-56 w-max mx-auto bg-slate-900 p-2 rounded-t-xl border-b-8 border-slate-800">
         {octaves}
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { Play, Pause, Square, Minus, Plus } from "lucide-react";
+import { Minus, Pause, Play, Plus, Square } from "lucide-react";
 
 type OsmdPlayerControlProps = {
   isPlaying: boolean;
@@ -28,7 +28,11 @@ export function OsmdPlayerControl({
           className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-600 text-white hover:bg-sky-500 transition-colors shadow-md active:scale-95"
           aria-label={isPlaying ? "Pausar" : "Reproducir"}
         >
-          {isPlaying ? <Pause className="h-5 w-5 fill-current" /> : <Play className="h-5 w-5 fill-current ml-1" />}
+          {isPlaying ? (
+            <Pause className="h-5 w-5 fill-current" />
+          ) : (
+            <Play className="h-5 w-5 fill-current ml-1" />
+          )}
         </button>
         <button
           onClick={onStop}

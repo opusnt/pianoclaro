@@ -12,7 +12,14 @@ type OsmdRendererProps = {
   zoom?: number;
 };
 
-export function OsmdRenderer({ xmlData, activeNotePosition, onNoteSelect, onReady, disableCursorSync, zoom = 1.0 }: OsmdRendererProps) {
+export function OsmdRenderer({
+  xmlData,
+  activeNotePosition,
+  onNoteSelect,
+  onReady,
+  disableCursorSync,
+  zoom = 1.0,
+}: OsmdRendererProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const osmdRef = useRef<any>(null);
 

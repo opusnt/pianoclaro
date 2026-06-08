@@ -50,7 +50,7 @@ export default function Modulo1Index() {
               Módulo 1
             </span>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Fundamentos del Piano
+              Fundamentos de la Música
             </h1>
             <p className="text-lg text-slate-400 max-w-2xl mb-8">
               Tu viaje musical comienza aquí. Desde entender la diferencia entre ruido y sonido,

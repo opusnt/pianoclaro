@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Library, Music, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
-import { builtInRepertoire, type RepertoireSong } from "@/data/repertoire/songs";
-import { getAllUserScores, saveUserScore, deleteUserScore } from "@/lib/storage/userScores";
-import { PageHeader } from "@/components/ui/PageHeader";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Upload, Music, Trash2, Library } from "lucide-react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { builtInRepertoire, type RepertoireSong } from "@/data/repertoire/songs";
+import { deleteUserScore, getAllUserScores, saveUserScore } from "@/lib/storage/userScores";
 
 export default function RepertoirePage() {
   const [userSongs, setUserSongs] = useState<RepertoireSong[]>([]);
@@ -42,9 +42,9 @@ export default function RepertoirePage() {
 
     await saveUserScore(newSong);
     await loadUserScores();
-    
+
     // Clear input
-    event.target.value = '';
+    event.target.value = "";
   };
 
   const handleDelete = async (id: string, event: React.MouseEvent) => {
@@ -89,10 +89,10 @@ export default function RepertoirePage() {
             <label className="cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-transform active:scale-95 bg-blue-deep text-white shadow hover:bg-blue-deep/90 h-11 px-6">
               <Upload className="w-4 h-4" />
               Subir MusicXML
-              <input 
-                type="file" 
-                accept=".xml,.musicxml,.mxl" 
-                className="hidden" 
+              <input
+                type="file"
+                accept=".xml,.musicxml,.mxl"
+                className="hidden"
                 onChange={handleFileUpload}
               />
             </label>
@@ -108,7 +108,8 @@ export default function RepertoirePage() {
             </div>
             <h3 className="text-xl font-bold text-slate-800 mb-2">Aún no tienes partituras</h3>
             <p className="text-slate-500 max-w-md mx-auto">
-              Sube archivos .xml o .mxl exportados desde MuseScore, Finale o Sibelius para practicarlos aquí.
+              Sube archivos .xml o .mxl exportados desde MuseScore, Finale o Sibelius para
+              practicarlos aquí.
             </p>
           </div>
         ) : (
@@ -123,12 +124,18 @@ export default function RepertoirePage() {
   );
 }
 
-function SongCard({ song, onDelete }: { song: RepertoireSong, onDelete?: (id: string, e: React.MouseEvent) => void }) {
+function SongCard({
+  song,
+  onDelete,
+}: {
+  song: RepertoireSong;
+  onDelete?: (id: string, e: React.MouseEvent) => void;
+}) {
   return (
     <Link href={`/repertorio/${song.id}`}>
       <div className="group relative bg-white p-6 rounded-3xl border border-slate-200 shadow-sm hover:shadow-md hover:border-blue-deep/20 transition-all cursor-pointer h-full flex flex-col">
         {onDelete && (
-          <button 
+          <button
             type="button"
             onClick={(e) => onDelete(song.id, e)}
             className="absolute top-4 right-4 p-2 text-slate-300 hover:text-red-500 hover:bg-red-50 rounded-full opacity-0 group-hover:opacity-100 transition-all"
@@ -142,13 +149,22 @@ function SongCard({ song, onDelete }: { song: RepertoireSong, onDelete?: (id: st
         <h3 className="font-bold text-xl text-slate-800 line-clamp-1 mb-1">{song.title}</h3>
         <p className="text-slate-500 text-sm">{song.composer}</p>
         <div className="mt-auto pt-6 flex justify-between items-center">
-          <span className={`text-xs font-bold px-3 py-1.5 rounded-lg uppercase
-            ${song.difficulty === 'beginner' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 
-              song.difficulty === 'intermediate' ? 'bg-amber-50 text-amber-700 border border-amber-200' : 
-              'bg-red-50 text-red-700 border border-red-200'}
-          `}>
-            {song.difficulty === 'beginner' ? 'Básico' : 
-             song.difficulty === 'intermediate' ? 'Intermedio' : 'Avanzado'}
+          <span
+            className={`text-xs font-bold px-3 py-1.5 rounded-lg uppercase
+            ${
+              song.difficulty === "beginner"
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                : song.difficulty === "intermediate"
+                  ? "bg-amber-50 text-amber-700 border border-amber-200"
+                  : "bg-red-50 text-red-700 border border-red-200"
+            }
+          `}
+          >
+            {song.difficulty === "beginner"
+              ? "Básico"
+              : song.difficulty === "intermediate"
+                ? "Intermedio"
+                : "Avanzado"}
           </span>
           <span className="text-blue-deep text-sm font-bold group-hover:underline">Estudiar →</span>
         </div>

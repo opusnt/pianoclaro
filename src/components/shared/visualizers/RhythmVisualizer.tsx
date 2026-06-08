@@ -60,7 +60,7 @@ export function RhythmVisualizer({
       case "whole": // Redonda
         return (
           <div className="relative flex items-center justify-center">
-            <div className="w-16 h-12 rounded-[50%] border-4 border-slate-100 rotate-[-15deg] bg-transparent" />
+            <div className="w-16 h-12 rounded-[50%] border-4 border-slate-800 rotate-[-15deg] bg-transparent" />
             {isDotted && (
               <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-2 h-2 bg-slate-800 rounded-full" />
             )}
@@ -75,7 +75,7 @@ export function RhythmVisualizer({
             {/* Plica (Palo) */}
             <div className="absolute right-0 bottom-3 w-1 h-20 bg-slate-800" />
             {/* Cabeza */}
-            <div className="w-12 h-10 rounded-[50%] border-4 border-slate-100 rotate-[-15deg] bg-slate-50" />
+            <div className="w-12 h-10 rounded-[50%] border-4 border-slate-800 rotate-[-15deg] bg-slate-50" />
             {showDotHalf && (
               <div className="absolute -right-4 bottom-4 w-2 h-2 bg-slate-800 rounded-full" />
             )}

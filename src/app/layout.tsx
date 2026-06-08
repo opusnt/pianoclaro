@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-
+import { BottomNav } from "@/components/BottomNav";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -30,6 +30,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body suppressHydrationWarning>
         <SiteHeader />
         {children}
+        <BottomNav />
       </body>
     </html>
   );

@@ -64,15 +64,17 @@ export function useMicrophonePitchDetection({
 
     async function initAudio() {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
+        const stream = await navigator.mediaDevices.getUserMedia({
           audio: {
             echoCancellation: false,
             autoGainControl: false,
-            noiseSuppression: false
-          } 
+            noiseSuppression: false,
+          },
         });
         if (!isMounted) {
-          stream.getTracks().forEach((t) => { t.stop(); });
+          stream.getTracks().forEach((t) => {
+            t.stop();
+          });
           return;
         }
 
@@ -85,19 +87,19 @@ export function useMicrophonePitchDetection({
         audioCtxRef.current = audioCtx;
 
         const source = audioCtx.createMediaStreamSource(stream);
-        
+
         // Preamplificador digital: Multiplicamos el volumen x10
         const gainNode = audioCtx.createGain();
         gainNode.gain.value = 10.0;
-        
+
         // Añadir filtro pasa-bajos para eliminar ruido de alta frecuencia (como estática a 17kHz)
         const filter = audioCtx.createBiquadFilter();
         filter.type = "lowpass";
         filter.frequency.value = 1500; // Suficiente para captar hasta C6 (1046 Hz), elimina siseos
-        
+
         const analyser = audioCtx.createAnalyser();
         analyser.fftSize = 2048;
-        
+
         source.connect(gainNode);
         gainNode.connect(filter);
         filter.connect(analyser);
@@ -144,7 +146,7 @@ export function useMicrophonePitchDetection({
                   } else {
                     onNaturalKeyPressRef.current(note as NoteName);
                   }
-                  
+
                   if (onMidiNoteRef.current) {
                     onMidiNoteRef.current(midiNum);
                   }

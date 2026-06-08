@@ -46,68 +46,83 @@ export default function HomePage() {
               Tu Ruta Actual
             </h2>
           </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Módulo Principal (Módulo 1) */}
-            <div className="lg:col-span-2">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Camino 1: Teoría Musical */}
+            <div className="flex flex-col">
               <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl p-8 transition-all hover:bg-white/10 group relative overflow-hidden h-full flex flex-col justify-between">
                 {/* Glow Effect */}
-                <div className="absolute -top-32 -right-32 w-96 h-96 bg-fuchsia-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
-                <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-cyan-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+                <div className="absolute -top-32 -right-32 w-96 h-96 bg-blue-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+                <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-sky-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
 
                 <div className="relative z-10 flex flex-col h-full">
-                  <div className="flex flex-col sm:flex-row gap-8 items-start mb-8">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-6">
-                        <span className="px-4 py-1.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 font-bold text-sm border border-fuchsia-500/30">
-                          Módulo 1
-                        </span>
-                        <span className="text-slate-400 font-semibold text-sm">9 Unidades</span>
-                      </div>
-
-                      <h3 className="text-4xl font-black text-white mb-4 tracking-tight">
-                        Fundamentos del Piano
-                      </h3>
-
-                      <p className="text-slate-400 text-lg max-w-xl">
-                        Descubre cómo funciona el sonido, aprende a leer el pentagrama de forma
-                        intuitiva y toca tus primeras notas conectando ritmo y altura.
-                      </p>
-                    </div>
-
-                    {/* 3D Icon Piano */}
-                    <div className="shrink-0 w-32 h-32 md:w-48 md:h-48 relative drop-shadow-[0_0_30px_rgba(236,72,153,0.3)] group-hover:scale-105 transition-transform duration-500 ease-out">
-                      <Image
-                        src="/icon_piano.png"
-                        alt="Piano Keys"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 font-bold text-sm border border-blue-500/30">
+                      Ruta Teórica
+                    </span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+                  <h3 className="text-3xl font-black text-white mb-4 tracking-tight">
+                    Comprende el Lenguaje
+                  </h3>
+
+                  <p className="text-slate-400 text-lg mb-8">
+                    Aprende cómo funciona el sonido, lee partituras y entiende la armonía detrás de
+                    la música.
+                  </p>
+
+                  <div className="mt-auto">
                     <Link
-                      href="/modulos/1/unidad-1"
-                      className="inline-flex flex-1 items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-2xl font-black hover:from-cyan-400 hover:to-blue-500 transition-all active:scale-95 shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.6)] text-lg"
+                      href="/teoria"
+                      className="inline-flex w-full items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-2xl font-black hover:from-blue-400 hover:to-indigo-500 transition-all active:scale-95 shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] text-lg"
                     >
-                      <span>Comenzar Módulo</span>
+                      <span>Ir a los Módulos</span>
                       <ArrowRight className="w-5 h-5" />
-                    </Link>
-                    <Link
-                      href="/modulos/1/unidad-9"
-                      className="inline-flex items-center justify-center gap-2 px-8 py-5 bg-white/10 text-white border border-white/20 rounded-2xl font-bold hover:bg-white/20 transition-all active:scale-95"
-                    >
-                      <GraduationCap className="w-5 h-5 text-fuchsia-400" />
-                      Entrenamiento Final
                     </Link>
                   </div>
                 </div>
               </div>
             </div>
 
+            {/* Camino 2: Entrenamiento de Piano */}
+            <div className="flex flex-col">
+              <div className="bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl p-8 transition-all hover:bg-white/10 group relative overflow-hidden h-full flex flex-col justify-between">
+                {/* Glow Effect */}
+                <div className="absolute -top-32 -right-32 w-96 h-96 bg-fuchsia-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+                <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-rose-600/30 rounded-full blur-[100px] transition-opacity group-hover:opacity-100 opacity-60" />
+
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="flex items-center gap-3 mb-6">
+                    <span className="px-4 py-1.5 rounded-full bg-fuchsia-500/20 text-fuchsia-300 font-bold text-sm border border-fuchsia-500/30">
+                      Ruta Práctica
+                    </span>
+                  </div>
+
+                  <h3 className="text-3xl font-black text-white mb-4 tracking-tight">
+                    Desarrolla Memoria Muscular
+                  </h3>
+
+                  <p className="text-slate-400 text-lg mb-8">
+                    Ejercicios interactivos con el Motor Arcade para entrenar tus manos,
+                    coordinación y velocidad.
+                  </p>
+
+                  <div className="mt-auto">
+                    <Link
+                      href="/cursos"
+                      className="inline-flex w-full items-center justify-center gap-2 px-8 py-5 bg-gradient-to-r from-fuchsia-500 to-rose-600 text-white rounded-2xl font-black hover:from-fuchsia-400 hover:to-rose-500 transition-all active:scale-95 shadow-[0_0_20px_rgba(217,70,239,0.4)] hover:shadow-[0_0_30px_rgba(217,70,239,0.6)] text-lg"
+                    >
+                      <span>Entrar al Arcade</span>
+                      <ArrowRight className="w-5 h-5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Sidebar / Próximos pasos */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 lg:col-span-3">
               <div className="bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 relative overflow-hidden group hover:bg-white/10 transition-colors">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/20 blur-[50px] -mr-10 -mt-10" />
                 <div className="flex items-start gap-4 mb-4">

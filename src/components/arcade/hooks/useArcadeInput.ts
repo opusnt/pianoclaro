@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export type ArcadeInputEvent = {
   type: "noteon" | "noteoff";
@@ -45,7 +45,7 @@ export function useArcadeInput({ enabled = true, onEvent }: UseArcadeInputProps 
       if (e.repeat) return; // Evitar disparos múltiples si se mantiene presionada
       const key = e.key.toLowerCase();
       const midiNote = KEYBOARD_TO_MIDI[key];
-      
+
       if (midiNote !== undefined) {
         setActiveNotes((prev) => new Set(prev).add(midiNote));
         onEvent?.({ type: "noteon", midiNote, velocity: 100, source: "keyboard" });
@@ -55,7 +55,7 @@ export function useArcadeInput({ enabled = true, onEvent }: UseArcadeInputProps 
     const handleKeyUp = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       const midiNote = KEYBOARD_TO_MIDI[key];
-      
+
       if (midiNote !== undefined) {
         setActiveNotes((prev) => {
           const next = new Set(prev);
@@ -110,7 +110,7 @@ export function useArcadeInput({ enabled = true, onEvent }: UseArcadeInputProps 
       try {
         const access = await navigator.requestMIDIAccess();
         if (!isMounted) return;
-        
+
         midiAccessObj = access;
         const inputsArray = Array.from(access.inputs.values());
         setMidiInputs(inputsArray);

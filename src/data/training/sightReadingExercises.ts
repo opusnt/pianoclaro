@@ -32,7 +32,7 @@ function buildSimpleXML(notes: string[]): string {
     const note = notes[i];
     const step = note.charAt(0);
     const octave = note.length > 1 ? note.charAt(1) : "4";
-    
+
     // Add new measure if needed (except for the first one which is already open)
     if (beatCount > 0 && beatCount % 4 === 0) {
       measureNumber++;
@@ -47,7 +47,7 @@ function buildSimpleXML(notes: string[]): string {
         <duration>1</duration>
         <type>quarter</type>
       </note>\n`;
-      
+
     beatCount++;
   }
 
@@ -74,5 +74,5 @@ export const sightReadingExercises: SightReadingExercise[] = [
     title: "Notas Aleatorias",
     description: "Lectura rápida de notas sin patrón aparente.",
     xmlData: buildSimpleXML(["G4", "C4", "F4", "D4", "E4", "G4", "D4", "C4"]),
-  }
+  },
 ];
