@@ -2,8 +2,9 @@ export interface RepertoireSong {
   id: string;
   title: string;
   composer: string;
-  difficulty: "beginner" | "intermediate" | "advanced";
+  difficulty: "beginner" | "intermediate" | "advanced" | string;
   xmlData: string;
+  xpCost?: number;
 }
 
 const simpleOdeToJoyXML = `<?xml version="1.0" encoding="UTF-8"?>

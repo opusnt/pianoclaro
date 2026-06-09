@@ -99,7 +99,7 @@ export function Unit2SoundDetective() {
           </div>
         </div>
 
-        <Link href="/modulos/1/unidad-3">
+        <Link href="/teoria/1/unidad-3">
           <Button variant="secondary" size="lg">
             Continuar a la Unidad 3
           </Button>

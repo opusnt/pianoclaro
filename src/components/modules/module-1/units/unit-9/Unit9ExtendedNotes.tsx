@@ -505,7 +505,7 @@ export function Unit9ExtendedNotes() {
               </ul>
             </div>
 
-            <Link href="/modulos/1/unidad-9">
+            <Link href="/teoria/1/unidad-9">
               <button
                 type="button"
                 className="flex items-center justify-center gap-3 w-full px-10 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-2xl transition-all shadow-lg hover:scale-105"

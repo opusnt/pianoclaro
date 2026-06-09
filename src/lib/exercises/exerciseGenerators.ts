@@ -1,4 +1,5 @@
 import type { ModuleMastery } from "../masteryStore";
+import type { PitchNote } from "@/components/shared/visualizers/PitchVisualizer";
 
 export type ModuleMasterySkill = keyof ModuleMastery;
 
@@ -6,7 +7,7 @@ export interface TrainingQuestion {
   id: string;
   skill: ModuleMasterySkill;
   question: string;
-  type: "text" | "clef" | "rhythm_visual" | "builder" | "audio_compare";
+  type: "text" | "clef" | "rhythm_visual" | "builder" | "audio_compare" | "audio_identify";
   payload: any;
   options: string[];
   correctIndex: number;
@@ -129,6 +130,177 @@ export function generateDottedNotesQuestion(): TrainingQuestion {
   };
 }
 
+const CHORDS = [
+  { name: "Do Mayor", notes: ["C4", "E4", "G4"] },
+  { name: "Do Menor", notes: ["C4", "Eb4", "G4"] },
+  { name: "Re Menor", notes: ["D4", "F4", "A4"] },
+  { name: "Sol Mayor", notes: ["G4", "B4", "D5"] },
+  { name: "Fa Mayor", notes: ["F4", "A4", "C5"] },
+  { name: "La Menor", notes: ["A4", "C5", "E5"] },
+];
+
+const noteToIndex: Record<string, number> = {
+  "C": 0, "D": 1, "E": 2, "F": 3, "G": 4, "A": 5, "B": 6
+};
+
+function pitchToPitchNote(pitch: string, xPos: number = 50) {
+  const match = pitch.match(/^([A-G])([b#]?)([0-9])$/);
+  if (!match) return null;
+  const [_, note, accidental, octaveStr] = match;
+  const octave = parseInt(octaveStr);
+  
+  const baseIndex = noteToIndex[note];
+  const totalIndex = baseIndex + (octave - 4) * 7;
+  const yPos = 5 + totalIndex * 7.5;
+  
+  let acc: "sharp" | "flat" | undefined;
+  if (accidental === "b") acc = "flat";
+  if (accidental === "#") acc = "sharp";
+  
+  return {
+    id: pitch,
+    yPos,
+    xPos,
+    rhythm: "whole",
+    accidental: acc
+  };
+}
+
+export function generateChordsQuestion(): TrainingQuestion {
+  const isVisual = Math.random() > 0.5;
+  const correctChord = CHORDS[Math.floor(Math.random() * CHORDS.length)];
+  
+  const optionsSet = new Set<string>();
+  optionsSet.add(correctChord.name);
+  while(optionsSet.size < 3) {
+    optionsSet.add(CHORDS[Math.floor(Math.random() * CHORDS.length)].name);
+  }
+  const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+  const correctIndex = options.indexOf(correctChord.name);
+
+  const pitchNotes = correctChord.notes.map(pitch => pitchToPitchNote(pitch)).filter(Boolean);
+
+  return {
+    id: `chords-${Date.now()}`,
+    skill: "chords",
+    question: isVisual ? "¿Qué acorde ves en el pentagrama?" : `¿Qué acorde forman las notas: ${correctChord.notes.join(" - ")}?`,
+    type: isVisual ? "clef" : "text",
+    payload: isVisual 
+      ? { notes: pitchNotes } 
+      : { notes: correctChord.notes },
+    options,
+    correctIndex
+  };
+}
+
+export function generateEarTrainingQuestion(): TrainingQuestion {
+  const isChord = Math.random() > 0.5;
+
+  if (isChord) {
+    // Escuchar un acorde y decir si es Mayor o Menor
+    const isMajor = Math.random() > 0.5;
+    const basePitch = PITCHES[Math.floor(Math.random() * (PITCHES.length - 2))]; // Evitar tonos muy agudos
+    
+    // Convertir nota base a índice cromático simplificado para sacar 3ras
+    const match = basePitch.match(/^([A-G])([b#]?)([0-9])$/);
+    let chordNotes = [basePitch];
+    let chordName = "";
+
+    // Mapeo crudo para Ear Training (Do Mayor, Do Menor, etc)
+    const baseChords = [
+      { name: "Do Mayor", notes: ["C4", "E4", "G4"], type: "Mayor" },
+      { name: "Do Menor", notes: ["C4", "Eb4", "G4"], type: "Menor" },
+      { name: "Re Menor", notes: ["D4", "F4", "A4"], type: "Menor" },
+      { name: "Sol Mayor", notes: ["G4", "B4", "D5"], type: "Mayor" },
+      { name: "Fa Mayor", notes: ["F4", "A4", "C5"], type: "Mayor" },
+      { name: "La Menor", notes: ["A4", "C5", "E5"], type: "Menor" },
+    ];
+
+    const filtered = baseChords.filter(c => c.type === (isMajor ? "Mayor" : "Menor"));
+    const selected = filtered[Math.floor(Math.random() * filtered.length)];
+
+    return {
+      id: `ear-${Date.now()}`,
+      skill: "earTraining",
+      question: "Escucha el acorde. ¿Es Mayor o Menor?",
+      type: "audio_identify",
+      payload: {
+        audioPitches: selected.notes,
+        durationMs: 2000
+      },
+      options: ["Mayor", "Menor"],
+      correctIndex: isMajor ? 0 : 1
+    };
+  } else {
+    // Intervalos
+    const intervals = [
+      { name: "Tercera Mayor", notes: ["C4", "E4"] },
+      { name: "Quinta Justa", notes: ["C4", "G4"] },
+      { name: "Octava", notes: ["C4", "C5"] }
+    ];
+    const selected = intervals[Math.floor(Math.random() * intervals.length)];
+
+    const optionsSet = new Set<string>();
+    optionsSet.add(selected.name);
+    while(optionsSet.size < 3) {
+      optionsSet.add(intervals[Math.floor(Math.random() * intervals.length)].name);
+    }
+    const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+
+    return {
+      id: `ear-${Date.now()}`,
+      skill: "earTraining",
+      question: "Escucha las notas simultáneas. ¿Qué intervalo forman?",
+      type: "audio_identify",
+      payload: {
+        audioPitches: selected.notes,
+        durationMs: 1500
+      },
+      options,
+      correctIndex: options.indexOf(selected.name)
+    };
+  }
+}
+
+export function generateScaleQuestion(): TrainingQuestion {
+  // Escalas simples para Módulo 4: C, G, F
+  const scales = [
+    { name: "Do Mayor", root: "C4", notes: ["C4", "D4", "E4", "F4", "G4", "A4", "B4", "C5"] },
+    { name: "Sol Mayor", root: "G4", notes: ["G4", "A4", "B4", "C5", "D5", "E5", "F#5", "G5"] },
+    { name: "Fa Mayor", root: "F4", notes: ["F4", "G4", "A4", "Bb4", "C5", "D5", "E5", "F5"] }
+  ];
+
+  const targetScale = scales[Math.floor(Math.random() * scales.length)];
+  
+  // Create Visual notes with xPos spaced evenly
+  const visualNotes = targetScale.notes.map((pitch, i) => {
+    const p = pitchToPitchNote(pitch) as PitchNote | null;
+    if (p) {
+      p.xPos = 15 + (i * 10);
+    }
+    return p;
+  }).filter((p): p is PitchNote => p !== null);
+
+  const optionsSet = new Set<string>();
+  optionsSet.add(targetScale.name);
+  while(optionsSet.size < 3) {
+    optionsSet.add(scales[Math.floor(Math.random() * scales.length)].name);
+  }
+  const options = Array.from(optionsSet).sort(() => Math.random() - 0.5);
+
+  return {
+    id: `scale-${Date.now()}`,
+    skill: "scales",
+    question: "¿Qué escala musical está escrita en el pentagrama?",
+    type: "clef",
+    payload: {
+      notes: visualNotes,
+    },
+    options,
+    correctIndex: options.indexOf(targetScale.name)
+  };
+}
+
 export function generateRandomQuestion(weakestSkill?: ModuleMasterySkill): TrainingQuestion {
   const generators: Record<ModuleMasterySkill, () => TrainingQuestion> = {
     notes: generateNotesQuestion,
@@ -137,6 +309,9 @@ export function generateRandomQuestion(weakestSkill?: ModuleMasterySkill): Train
     measures: generateMeasuresQuestion,
     ties: generateTiesQuestion,
     dottedNotes: generateDottedNotesQuestion,
+    chords: generateChordsQuestion,
+    earTraining: generateEarTrainingQuestion,
+    scales: generateScaleQuestion,
   };
 
   if (weakestSkill && Math.random() > 0.4) {

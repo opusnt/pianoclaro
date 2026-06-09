@@ -87,7 +87,7 @@ export function Unit1SoundVsNoise() {
           </div>
         </div>
 
-        <Link href="/modulos/1/unidad-2">
+        <Link href="/teoria/1/unidad-2">
           <Button variant="secondary" size="lg">
             Continuar a la Unidad 2
           </Button>

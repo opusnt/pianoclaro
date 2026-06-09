@@ -12,6 +12,7 @@ import { builtInRepertoire, type RepertoireSong } from "@/data/repertoire/songs"
 import { useOsmdPlayer } from "@/hooks/useOsmdPlayer";
 import { parseMusicXMLToArcadeNotes } from "@/lib/music/xmlParser";
 import { getUserScore } from "@/lib/storage/userScores";
+import { createClient } from "@/lib/supabase/client";
 
 export default function RepertoireViewerPage() {
   const params = useParams();
@@ -52,12 +53,32 @@ export default function RepertoireViewerPage() {
           setArcadeNotes(parsed.notes);
           setArcadeBarlines(parsed.barlines);
           setArcadeBeats(parsed.beats || []);
+          setIsLoading(false);
+          return;
+        }
+
+        // Finally, check Supabase
+        const supabase = createClient();
+        const { data, error } = await supabase.from("repertoire_songs").select("*").eq("id", id).single();
+        if (!error && data) {
+          const supabaseSong: RepertoireSong = {
+            id: data.id,
+            title: data.title,
+            composer: data.composer,
+            difficulty: data.difficulty,
+            xmlData: data.xml_data,
+            xpCost: data.xp_cost,
+          };
+          setSong(supabaseSong);
+          const parsed = parseMusicXMLToArcadeNotes(supabaseSong.xmlData, 100);
+          setArcadeNotes(parsed.notes);
+          setArcadeBarlines(parsed.barlines);
+          setArcadeBeats(parsed.beats || []);
         } else {
-          // No song found
-          console.error("Song not found");
+          console.error("Song not found in Supabase either", error);
         }
       } catch (error) {
-        console.error("Error loading user score:", error);
+        console.error("Error loading song:", error);
       } finally {
         setIsLoading(false);
       }

@@ -565,7 +565,7 @@ export function Unit8Measures() {
             </div>
 
             <Link
-              href="/modulos/1/unidad-9"
+              href="/teoria/1/unidad-9"
               className="flex items-center gap-3 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-2xl transition-all hover:scale-105 shadow-lg"
             >
               <span>Siguiente Unidad</span>
@@ -583,7 +583,7 @@ export function Unit8Measures() {
         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1">
             <Link
-              href="/modulos/1"
+              href="/teoria/1"
               className="text-slate-500 hover:text-slate-500 transition-colors"
             >
               <ArrowRight className="w-6 h-6 rotate-180" />

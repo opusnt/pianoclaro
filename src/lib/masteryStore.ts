@@ -1,24 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { SupabaseProgressProvider } from "./progress/SupabaseProgressProvider";
+import { ModuleMastery, UserStats, ProgressState } from "./progress/types";
 
-export type ModuleMastery = {
-  notes: number;
-  trebleClef: number;
-  rhythm: number;
-  measures: number;
-  ties: number;
-  dottedNotes: number;
-};
-
-export type UserStats = {
-  totalXP: number;
-  practiceTimeSecs: number;
-  sessionsCompleted: number;
-  currentStreak: number;
-  bestStreak: number;
-  lastPracticeDate: string | null;
-};
+export type { ModuleMastery, UserStats };
 
 const DEFAULT_MASTERY: ModuleMastery = {
   notes: 0,
@@ -27,6 +13,9 @@ const DEFAULT_MASTERY: ModuleMastery = {
   measures: 0,
   ties: 0,
   dottedNotes: 0,
+  chords: 0,
+  earTraining: 0,
+  scales: 0,
 };
 
 const DEFAULT_STATS: UserStats = {
@@ -36,117 +25,164 @@ const DEFAULT_STATS: UserStats = {
   currentStreak: 0,
   bestStreak: 0,
   lastPracticeDate: null,
+  practiceHistory: [],
+  unlockedSongs: [],
 };
 
-// Singleton para sincronización entre componentes si fuera necesario
-let globalMastery = { ...DEFAULT_MASTERY };
-let globalStats = { ...DEFAULT_STATS };
-let globalBadges: string[] = [];
+const DEFAULT_STATE: ProgressState = {
+  mastery: DEFAULT_MASTERY,
+  stats: DEFAULT_STATS,
+  badges: [],
+  completedLessons: [],
+};
 
-// Eventos para actualizar componentes suscritos
+// Instancia del proveedor
+const provider = new SupabaseProgressProvider();
+
+// Singleton local
+let globalState: ProgressState = { ...DEFAULT_STATE };
+let isLoaded = false;
+
+// Sistema de suscripción
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach((l) => l());
 
-// Cargar estado inicial
+// Inicialización asíncrona
 if (typeof window !== "undefined") {
-  try {
-    const m = localStorage.getItem("mastery.module1");
-    if (m) globalMastery = JSON.parse(m);
-
-    const s = localStorage.getItem("mastery.stats");
-    if (s) globalStats = JSON.parse(s);
-
-    const b = localStorage.getItem("mastery.badges");
-    if (b) globalBadges = JSON.parse(b);
-  } catch (_e) {}
+  provider.loadState().then((saved) => {
+    if (saved) {
+      globalState = saved;
+      // Asegurar que existan todos los campos (migración)
+      if (!globalState.mastery) globalState.mastery = { ...DEFAULT_MASTERY };
+      if (!globalState.stats) globalState.stats = { ...DEFAULT_STATS };
+      if (!globalState.badges) globalState.badges = [];
+      if (!globalState.completedLessons) globalState.completedLessons = [];
+    }
+    isLoaded = true;
+    emit();
+  });
 }
 
 const saveState = () => {
   if (typeof window !== "undefined") {
-    localStorage.setItem("mastery.module1", JSON.stringify(globalMastery));
-    localStorage.setItem("mastery.stats", JSON.stringify(globalStats));
-    localStorage.setItem("mastery.badges", JSON.stringify(globalBadges));
+    provider.saveState(globalState);
     emit();
   }
 };
 
 export function useMastery() {
-  const [mastery, setMastery] = useState<ModuleMastery>(globalMastery);
-  const [stats, setStats] = useState<UserStats>(globalStats);
-  const [badges, setBadges] = useState<string[]>(globalBadges);
+  const [state, setState] = useState<ProgressState>(globalState);
+  const [loaded, setLoaded] = useState(isLoaded);
 
   useEffect(() => {
     const update = () => {
-      setMastery({ ...globalMastery });
-      setStats({ ...globalStats });
-      setBadges([...globalBadges]);
+      setState({ ...globalState });
+      setLoaded(isLoaded);
     };
     listeners.add(update);
+    // Para forzar el renderizado inicial en caso de que isLoaded cambiara justo antes de montar
+    update();
     return () => {
       listeners.delete(update);
     };
   }, []);
 
   const updateMastery = (skill: keyof ModuleMastery, amount: number) => {
-    globalMastery[skill] = Math.max(0, Math.min(100, globalMastery[skill] + amount));
+    globalState.mastery[skill] = Math.max(0, Math.min(100, globalState.mastery[skill] + amount));
     saveState();
   };
 
   const addXP = (amount: number) => {
-    globalStats.totalXP += amount;
+    globalState.stats.totalXP += amount;
     saveState();
   };
 
   const completeSession = (durationSecs: number) => {
-    globalStats.sessionsCompleted += 1;
-    globalStats.practiceTimeSecs += durationSecs;
+    globalState.stats.sessionsCompleted += 1;
+    globalState.stats.practiceTimeSecs += durationSecs;
 
     const today = new Date().toISOString().split("T")[0];
-    if (globalStats.lastPracticeDate !== today) {
-      if (globalStats.lastPracticeDate) {
-        const last = new Date(globalStats.lastPracticeDate);
+    if (globalState.stats.lastPracticeDate !== today) {
+      if (globalState.stats.lastPracticeDate) {
+        const last = new Date(globalState.stats.lastPracticeDate);
         const curr = new Date(today);
         const diffDays = Math.floor((curr.getTime() - last.getTime()) / (1000 * 3600 * 24));
 
         if (diffDays === 1) {
-          globalStats.currentStreak += 1;
+          globalState.stats.currentStreak += 1;
         } else if (diffDays > 1) {
-          globalStats.currentStreak = 1;
+          globalState.stats.currentStreak = 1;
         }
       } else {
-        globalStats.currentStreak = 1;
+        globalState.stats.currentStreak = 1;
       }
-      globalStats.lastPracticeDate = today;
-      globalStats.bestStreak = Math.max(globalStats.bestStreak, globalStats.currentStreak);
+      globalState.stats.lastPracticeDate = today;
+      globalState.stats.bestStreak = Math.max(globalState.stats.bestStreak, globalState.stats.currentStreak);
+      
+      if (!globalState.stats.practiceHistory) {
+        globalState.stats.practiceHistory = [];
+      }
+      if (!globalState.stats.practiceHistory.includes(today)) {
+        globalState.stats.practiceHistory.push(today);
+      }
     }
 
-    // Check badges
     checkBadges();
-
     saveState();
   };
 
   const checkBadges = () => {
     const addBadge = (id: string) => {
-      if (!globalBadges.includes(id)) {
-        globalBadges.push(id);
+      if (!globalState.badges.includes(id)) {
+        globalState.badges.push(id);
       }
     };
 
-    if (globalStats.currentStreak >= 7) addBadge("streak-7");
-    if (globalStats.sessionsCompleted >= 10) addBadge("sessions-10");
-    if (globalStats.totalXP >= 1000) addBadge("xp-1000");
+    if (globalState.stats.currentStreak >= 7) addBadge("streak-7");
+    if (globalState.stats.sessionsCompleted >= 10) addBadge("sessions-10");
+    if (globalState.stats.totalXP >= 1000) addBadge("xp-1000");
 
-    const allMastered = Object.values(globalMastery).every((v) => v >= 90);
+    const allMastered = Object.values(globalState.mastery).every((v) => v >= 90);
     if (allMastered) addBadge("mastery-all");
   };
 
+  const markLessonCompleted = (lessonId: string) => {
+    if (!globalState.completedLessons.includes(lessonId)) {
+      globalState.completedLessons.push(lessonId);
+      saveState();
+    }
+  };
+
+  const isLessonCompleted = (lessonId: string) => {
+    return globalState.completedLessons.includes(lessonId);
+  };
+
+  const unlockSong = (songId: string, cost: number) => {
+    if (globalState.stats.totalXP >= cost) {
+      if (!globalState.stats.unlockedSongs) {
+        globalState.stats.unlockedSongs = [];
+      }
+      if (!globalState.stats.unlockedSongs.includes(songId)) {
+        globalState.stats.unlockedSongs.push(songId);
+        globalState.stats.totalXP -= cost; // Restar el costo de XP
+        saveState();
+        return true;
+      }
+    }
+    return false;
+  };
+
   return {
-    mastery,
-    stats,
-    badges,
+    mastery: state.mastery,
+    stats: state.stats,
+    badges: state.badges,
+    completedLessons: state.completedLessons,
+    isLoaded: loaded,
     updateMastery,
     addXP,
     completeSession,
+    markLessonCompleted,
+    isLessonCompleted,
+    unlockSong,
   };
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, Clock, Target, X, Zap } from "lucide-react";
+import { CheckCircle2, Clock, Target, X, Zap, PlayCircle, Heart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { MeasureBuilder } from "@/components/shared/interactive/MeasureBuilder";
 import { RhythmVisualizer } from "@/components/shared/visualizers/RhythmVisualizer";
@@ -23,17 +23,21 @@ import { useMastery } from "@/lib/masteryStore";
 export type TrainingMode = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
 
 interface TrainingArenaProps {
-  mode: TrainingMode;
+  mode: number;
+  survival?: boolean;
   onExit: () => void;
 }
 
-export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
+export function TrainingArena({ mode, survival = false, onExit }: TrainingArenaProps) {
   const { mastery, updateMastery, addXP, completeSession } = useMastery();
   const engineRef = useRef<PianoAudioEngine | null>(null);
 
   const [currentQuestion, setCurrentQuestion] = useState<TrainingQuestion | null>(null);
   const [questionNumber, setQuestionNumber] = useState(1);
   const [correctCount, setCorrectCount] = useState(0);
+
+  // Modo Supervivencia
+  const [lives, setLives] = useState(survival ? 3 : Infinity);
 
   // Modo 8 (Rápido)
   const [timeLeft, setTimeLeft] = useState(60);
@@ -42,7 +46,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
   const [feedback, setFeedback] = useState<"success" | "error" | null>(null);
   const [isFinished, setIsFinished] = useState(false);
 
-  const totalQuestions = mode === 8 ? Infinity : 10;
+  const totalQuestions = (mode === 8 || survival) ? Infinity : 10;
 
   useEffect(() => {
     engineRef.current = new PianoAudioEngine();
@@ -116,18 +120,32 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
     setFeedback(isCorrect ? "success" : "error");
 
     if (isCorrect) {
-      setCorrectCount((prev) => prev + 1);
+      setFeedback("success");
+      setCorrectCount((c) => c + 1);
+      engineRef.current?.playNote("C5", 200);
+
+      const expGain = mode === 8 ? 5 : survival ? 15 : 10;
+      addXP(expGain);
       if (currentQuestion) {
-        updateMastery(currentQuestion.skill, 5); // +5% mastery on success
+        updateMastery(currentQuestion.skill, 5);
       }
     } else {
-      if (currentQuestion) {
-        updateMastery(currentQuestion.skill, -2); // -2% mastery on error
-      }
-    }
+      setFeedback("error");
+      engineRef.current?.playNote("C2", 300);
 
+      if (survival) {
+        setLives((l) => {
+          const newLives = l - 1;
+          if (newLives <= 0) {
+            finishSession();
+          }
+          return newLives;
+        });
+      }
+    } 
+    
     setTimeout(() => {
-      if (questionNumber >= totalQuestions && mode !== 8) {
+      if ((questionNumber >= totalQuestions && mode !== 8) || (survival && lives <= 1 && !isCorrect)) {
         finishSession();
       } else {
         setQuestionNumber((prev) => prev + 1);
@@ -205,6 +223,17 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
             <CheckCircle2 className="w-5 h-5" />
             <span>{correctCount}</span>
           </div>
+
+          {survival && (
+            <div className="flex items-center gap-1 px-4 py-2 bg-rose-50 rounded-full shadow-sm">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <Heart 
+                  key={i} 
+                  className={`w-5 h-5 transition-all ${i < lives ? "text-rose-500 fill-rose-500" : "text-slate-300"}`} 
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -258,6 +287,27 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
                 availableOptions={currentQuestion.payload.options}
                 onSuccess={() => handleAnswer(true)}
               />
+            </div>
+          )}
+
+          {currentQuestion.type === "audio_identify" && (
+            <div className="flex justify-center w-full py-8">
+              <button
+                type="button"
+                onClick={async () => {
+                  const Tone = await import("tone");
+                  await Tone.start();
+                  await engineRef.current?.prepare();
+                  engineRef.current?.playNote(
+                    currentQuestion.payload.audioPitches,
+                    currentQuestion.payload.durationMs || 1500
+                  );
+                }}
+                className="w-32 h-32 bg-fuchsia-50 rounded-full flex flex-col items-center justify-center hover:bg-fuchsia-100 hover:scale-110 transition-all text-fuchsia-500 shadow-md border-4 border-fuchsia-100"
+              >
+                <PlayCircle className="w-16 h-16 mb-1" fill="currentColor" />
+                <span className="text-xs font-bold uppercase tracking-wider">Reproducir</span>
+              </button>
             </div>
           )}
 

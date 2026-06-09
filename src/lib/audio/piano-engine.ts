@@ -98,14 +98,17 @@ export class PianoAudioEngine {
     }
   }
 
-  async playNote(note: PianoNoteName | string, durationMs = 420) {
+  async playNote(note: PianoNoteName | string | string[], durationMs = 420) {
     const isReady = await this.prepare();
     if (!this.sampler || !isReady) return;
 
-    // In this app, PianoNoteName implies octave 4 if not provided
-    const hasOctave = /\d$/.test(note);
-    const toneNote = hasOctave ? note : `${note}4`;
-    this.sampler.triggerAttackRelease(toneNote, durationMs / 1000);
+    if (Array.isArray(note)) {
+      this.sampler.triggerAttackRelease(note, durationMs / 1000);
+    } else {
+      const hasOctave = /\d$/.test(note as string);
+      const toneNote = hasOctave ? note : `${note}4`;
+      this.sampler.triggerAttackRelease(toneNote, durationMs / 1000);
+    }
   }
 
   async playSustainedNote(note: PianoNoteName | string, durationMs = 420) {

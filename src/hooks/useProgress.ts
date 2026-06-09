@@ -1,36 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMastery } from "@/lib/masteryStore";
 
+/**
+ * Hook mantenido por retrocompatibilidad.
+ * Ahora envuelve al store centralizado para compartir el mismo ProgressProvider.
+ */
 export function useProgress() {
-  const [completedLessons, setCompletedLessons] = useState<string[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // Cargar progreso desde localStorage al montar
-    const saved = localStorage.getItem("piano_claro_progress");
-    if (saved) {
-      try {
-        setCompletedLessons(JSON.parse(saved));
-      } catch (e) {
-        console.error("Error parsing progress", e);
-      }
-    }
-    setIsLoaded(true);
-  }, []);
-
-  const markLessonCompleted = (lessonId: string) => {
-    setCompletedLessons((prev) => {
-      if (prev.includes(lessonId)) return prev;
-      const next = [...prev, lessonId];
-      localStorage.setItem("piano_claro_progress", JSON.stringify(next));
-      return next;
-    });
-  };
-
-  const isLessonCompleted = (lessonId: string) => {
-    return completedLessons.includes(lessonId);
-  };
+  const { completedLessons, isLoaded, markLessonCompleted, isLessonCompleted } = useMastery();
 
   return {
     completedLessons,

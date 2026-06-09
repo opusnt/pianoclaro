@@ -26,7 +26,7 @@ export default function TeoriaIndexPage() {
         <div className="mx-auto max-w-4xl space-y-8">
           {/* Módulo 1 */}
           <Link
-            href="/modulos/1"
+            href="/teoria/1"
             className="block group relative overflow-hidden bg-white/5 backdrop-blur-xl hover:bg-white/10 border border-white/10 rounded-[2.5rem] p-8 md:p-10 transition-all shadow-2xl hover:-translate-y-1"
           >
             {/* Glow Effects */}
@@ -68,7 +68,7 @@ export default function TeoriaIndexPage() {
 
           {/* Módulo 2 */}
           <Link
-            href="/modulos/2"
+            href="/teoria/2"
             className="block group relative overflow-hidden bg-white/5 backdrop-blur-xl hover:bg-white/10 border border-white/10 rounded-[2.5rem] p-8 md:p-10 transition-all shadow-2xl hover:-translate-y-1"
           >
             {/* Glow Effects */}

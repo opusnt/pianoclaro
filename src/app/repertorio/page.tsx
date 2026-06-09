@@ -3,27 +3,51 @@
 import { Library, Music, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { builtInRepertoire, type RepertoireSong } from "@/data/repertoire/songs";
-import { deleteUserScore, getAllUserScores, saveUserScore } from "@/lib/storage/userScores";
+import { useRouter } from "next/navigation";
+import { useMastery } from "@/lib/masteryStore";
+import { createClient } from "@/lib/supabase/client";
+import { deleteUserScore, getAllUserScores as getUserScores, saveUserScore } from "@/lib/storage/userScores";
+import type { RepertoireSong } from "@/data/repertoire/songs";
 
 export default function RepertoirePage() {
-  const [userSongs, setUserSongs] = useState<RepertoireSong[]>([]);
+  const [userScores, setUserScores] = useState<RepertoireSong[]>([]);
+  const [communityScores, setCommunityScores] = useState<RepertoireSong[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  
+  const { stats, unlockSong } = useMastery();
+  const supabase = createClient();
 
-  useEffect(() => {
-    loadUserScores();
-  }, []);
-
-  const loadUserScores = async () => {
+  const loadAllScores = async () => {
+    setIsLoading(true);
     try {
-      const scores = await getAllUserScores();
-      setUserSongs(scores);
-    } catch (error) {
-      console.error("Failed to load user scores", error);
+      // 1. Cargar locales
+      const local = await getUserScores();
+      setUserScores(local);
+
+      // 2. Cargar de Supabase (Catálogo Comunitario)
+      const { data, error } = await supabase.from("repertoire_songs").select("*");
+      if (!error && data) {
+        const community: RepertoireSong[] = data.map((row: any) => ({
+          id: row.id,
+          title: row.title,
+          composer: row.composer,
+          difficulty: row.difficulty,
+          xmlData: row.xml_data,
+          xpCost: row.xp_cost,
+        }));
+        setCommunityScores(community);
+      }
+    } catch (e) {
+      console.error(e);
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    loadAllScores();
+  }, []);
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -36,10 +60,11 @@ export default function RepertoirePage() {
       composer: "Usuario",
       difficulty: "intermediate",
       xmlData: text,
+      xpCost: 0,
     };
 
     await saveUserScore(newSong);
-    await loadUserScores();
+    await loadAllScores();
 
     // Clear input
     event.target.value = "";
@@ -48,9 +73,30 @@ export default function RepertoirePage() {
   const handleDelete = async (id: string, event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    if (confirm("¿Estás seguro de eliminar esta partitura?")) {
+    if (confirm("¿Estás seguro de eliminar esta partitura local?")) {
       await deleteUserScore(id);
-      await loadUserScores();
+      await loadAllScores();
+    }
+  };
+
+  const handleUnlock = (song: RepertoireSong) => {
+    if (song.xpCost && song.xpCost > 0) {
+      const isUnlocked = stats.unlockedSongs?.includes(song.id);
+      if (isUnlocked) {
+        router.push(`/repertorio/${song.id}`);
+        return;
+      }
+      
+      if (stats.totalXP >= song.xpCost) {
+        if (confirm(`¿Quieres desbloquear "${song.title}" por ${song.xpCost} XP?`)) {
+          unlockSong(song.id, song.xpCost);
+          alert("¡Canción desbloqueada!");
+        }
+      } else {
+        alert(`No tienes suficiente XP. Necesitas ${song.xpCost} XP.`);
+      }
+    } else {
+      router.push(`/repertorio/${song.id}`);
     }
   };
 
@@ -71,9 +117,48 @@ export default function RepertoirePage() {
           </h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {builtInRepertoire.map((song) => (
-            <SongCard key={song.id} song={song} />
-          ))}
+          {communityScores.length > 0 ? communityScores.map((song) => {
+            const isUnlocked = song.xpCost === 0 || stats.unlockedSongs?.includes(song.id);
+            return (
+              <div key={song.id} className="relative group bg-white rounded-2xl border-2 border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:border-blue-deep/30 transition-all cursor-pointer" onClick={() => handleUnlock(song)}>
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center text-blue-deep group-hover:scale-110 transition-transform">
+                      <Music className="w-6 h-6" />
+                    </div>
+                    {song.xpCost ? (
+                       <span className={`px-3 py-1 rounded-full text-xs font-bold ${isUnlocked ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                         {isUnlocked ? "Desbloqueado" : `${song.xpCost} XP`}
+                       </span>
+                    ) : (
+                       <span className="px-3 py-1 bg-slate-100 text-slate-600 rounded-full text-xs font-bold">
+                         Gratis
+                       </span>
+                    )}
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-1">{song.title}</h3>
+                  <p className="text-sm font-medium text-slate-500 mb-4">{song.composer}</p>
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400 bg-slate-50 px-2 py-1 rounded">
+                      {song.difficulty}
+                    </span>
+                    {!isUnlocked ? (
+                      <span className="text-blue-deep font-bold text-sm flex items-center gap-1">
+                        Desbloquear
+                      </span>
+                    ) : (
+                      <span className="text-blue-deep font-bold text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        Tocar ahora →
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          }) : (
+            <p className="text-slate-500 italic">Cargando biblioteca desde la nube...</p>
+          )}
         </div>
       </section>
 
@@ -99,7 +184,7 @@ export default function RepertoirePage() {
 
         {isLoading ? (
           <div className="p-8 text-center text-slate-500">Cargando tus partituras...</div>
-        ) : userSongs.length === 0 ? (
+        ) : userScores.length === 0 ? (
           <div className="rounded-2xl border-2 border-dashed border-slate-200 bg-white p-12 text-center shadow-sm">
             <div className="mx-auto w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-6">
               <Upload className="w-8 h-8" />
@@ -112,7 +197,7 @@ export default function RepertoirePage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {userSongs.map((song) => (
+            {userScores.map((song) => (
               <SongCard key={song.id} song={song} onDelete={handleDelete} />
             ))}
           </div>

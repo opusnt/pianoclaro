@@ -797,12 +797,12 @@ export function Unit2MusicalDistances() {
           </div>
 
           <div className="flex justify-center gap-4 mt-8">
-            <Link href="/modulos/2">
+            <Link href="/teoria/2">
               <Button size="lg" variant="outline" className="px-10">
                 Volver al Módulo 2
               </Button>
             </Link>
-            <Link href="/modulos/2/unidad-3">
+            <Link href="/teoria/2/unidad-3">
               <Button size="lg" className="px-10">
                 Siguiente Lección <ArrowRight className="w-5 h-5 ml-2" />
               </Button>

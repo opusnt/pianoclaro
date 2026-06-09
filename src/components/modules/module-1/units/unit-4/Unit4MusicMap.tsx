@@ -584,7 +584,7 @@ export function Unit4MusicMap() {
       </div>
 
       <Link
-        href="/modulos/1/unidad-5"
+        href="/teoria/1/unidad-5"
         className="px-8 py-4 bg-emerald-600 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-700 transition transform hover:scale-105 active:scale-95"
       >
         Continuar

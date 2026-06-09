@@ -795,7 +795,7 @@ export function Unit5MeetTheNotes() {
       </div>
 
       <Link
-        href="/modulos/1/unidad-6"
+        href="/teoria/1/unidad-6"
         className="px-8 py-4 bg-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:bg-fuchsia-700 transition transform hover:scale-105 active:scale-95"
       >
         Continuar

@@ -3,7 +3,9 @@
 import { BarChart3, BookOpen, Keyboard, Layers3, Library, Music2, Route } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { LogOut } from "lucide-react";
 
 const navItems = [
   { href: "/teoria", label: "Teoría", icon: BookOpen },
@@ -12,106 +14,28 @@ const navItems = [
   { href: "/progreso", label: "Progreso", icon: BarChart3 },
 ];
 
-const _learningMenuSections = [
-  {
-    title: "Módulos de Aprendizaje",
-    icon: Layers3,
-    items: [
-      {
-        href: "/modulos/1",
-        label: "Módulo 1: Fundamentos",
-        description: "Sonido, ritmo, pentagrama y notas",
-      },
-      {
-        href: "#",
-        label: "Módulo 2: Acordes (Próximamente)",
-        description: "Armonía y acompañamiento",
-      },
-      {
-        href: "/legacy/modulos",
-        label: "Catálogo Legacy",
-        description: "Prototipos y conceptos sueltos",
-      },
-    ],
-  },
-  {
-    title: "Rutas Guiadas",
-    icon: Route,
-    items: [
-      {
-        href: "/legacy/rutas",
-        label: "Explorar rutas",
-        description: "Mapas de aprendizaje sugeridos",
-      },
-      {
-        href: "/legacy/rutas/piano-desde-cero",
-        label: "Piano desde cero",
-        description: "La ruta ideal para principiantes",
-      },
-      {
-        href: "/legacy/rutas/acompanamiento-con-acordes",
-        label: "Acompañamiento",
-        description: "Camino para tocar canciones",
-      },
-    ],
-  },
-  {
-    title: "Práctica y Repertorio",
-    icon: Keyboard,
-    items: [
-      {
-        href: "/modulos/1/unidad-9",
-        label: "Entrenamiento (Módulo 1)",
-        description: "Practica lectura y ritmo",
-      },
-      {
-        href: "/repertorio",
-        label: "Repertorio OSMD",
-        description: "Partituras y XML",
-      },
-      {
-        href: "/legacy/lecciones",
-        label: "Lecciones sueltas (Legacy)",
-        description: "Minijuegos antiguos",
-      },
-    ],
-  },
-];
-
-const placeholderUserInitials = "PC";
-
 export function SiteHeader() {
   const pathname = usePathname();
-  const [_isLearningMenuOpen, setIsLearningMenuOpen] = useState(false);
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const _isLearningActive =
-    pathname.startsWith("/rutas") ||
-    pathname.startsWith("/modulos") ||
-    pathname.startsWith("/lecciones");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  function _openLearningMenu() {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
+  useEffect(() => {
+    try {
+      const supabase = createClient();
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setUserEmail(session?.user?.email ?? null);
+      });
+
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setUserEmail(session?.user?.email ?? null);
+      });
+
+      return () => subscription.unsubscribe();
+    } catch (e) {
+      console.warn("Supabase auth listener disabled: Invalid configuration.");
     }
-    setIsLearningMenuOpen(true);
-  }
-
-  function _scheduleLearningMenuClose() {
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    closeTimerRef.current = setTimeout(() => {
-      setIsLearningMenuOpen(false);
-      closeTimerRef.current = null;
-    }, 180);
-  }
-
-  function _closeLearningMenu() {
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-      closeTimerRef.current = null;
-    }
-    setIsLearningMenuOpen(false);
-  }
+  }, []);
 
   return (
     <header className="hidden md:block sticky top-0 z-40 border-b backdrop-blur-xl transition-colors duration-300 bg-[#070b14]/70 border-white/10">
@@ -164,13 +88,35 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <button
-          type="button"
-          aria-label="Perfil de usuario"
-          className="focus-ring grid h-10 w-10 shrink-0 place-items-center rounded-full border text-xs font-black uppercase text-white shadow-[0_10px_24px_rgba(18,52,91,0.16)] transition bg-fuchsia-600 border-fuchsia-500/30 hover:bg-fuchsia-500 shadow-[0_0_15px_rgba(236,72,153,0.3)]"
-        >
-          {placeholderUserInitials}
-        </button>
+        {userEmail ? (
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-bold text-slate-300 hidden lg:inline-block">
+              {userEmail}
+            </span>
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  const supabase = createClient();
+                  await supabase.auth.signOut();
+                } catch(e) {
+                  console.error(e);
+                }
+              }}
+              aria-label="Cerrar sesión"
+              className="focus-ring flex h-10 w-10 shrink-0 items-center justify-center rounded-full border text-white transition bg-slate-800 border-white/10 hover:bg-slate-700"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <Link
+            href="/auth"
+            className="focus-ring flex h-10 items-center justify-center rounded-xl border text-sm font-bold text-white transition px-4 bg-fuchsia-600 border-fuchsia-500/30 hover:bg-fuchsia-500 shadow-[0_0_15px_rgba(236,72,153,0.3)]"
+          >
+            Ingresar
+          </Link>
+        )}
       </div>
     </header>
   );
