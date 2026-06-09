@@ -195,7 +195,7 @@ export function InteractiveKeyboard({
   return (
     <div
       ref={scrollContainerRef}
-      className={`w-full overflow-x-auto pb-4 custom-scrollbar scroll-smooth ${className}`}
+      className={`w-full responsive-scroll pb-4 custom-scrollbar scroll-smooth ${className}`}
     >
       <div className="flex h-40 sm:h-48 md:h-56 w-max mx-auto bg-slate-900 p-2 rounded-t-xl border-b-8 border-slate-800">
         {octaves}

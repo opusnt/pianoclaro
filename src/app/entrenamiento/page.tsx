@@ -124,7 +124,7 @@ export default function EntrenamientoPage() {
         </div>
 
         {/* Notación Visual */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-4 min-h-[300px] overflow-hidden overflow-x-auto">
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-4 min-h-[300px] overflow-hidden responsive-scroll">
           <div className="transform scale-[1.3] origin-top-left mt-4 mb-4 min-w-[800px]">
             <OsmdRenderer
               xmlData={selectedExercise.xmlData}

@@ -23,7 +23,7 @@ export function NotationViewer(props: NotationViewerProps) {
             <h2 className="text-xl font-bold text-blue-deep sm:text-2xl">{props.score.title}</h2>
           </div>
 
-          <div className="flex bg-slate-100 rounded-lg p-1 self-start sm:self-auto overflow-x-auto max-w-full">
+          <div className="flex bg-slate-100 rounded-lg p-1 self-start sm:self-auto responsive-scroll max-w-full">
             <button
               type="button"
               onClick={() => setViewMode("didactic")}
