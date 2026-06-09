@@ -4,7 +4,16 @@
     "rules": {
       "recommended": true,
       "suspicious": {
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "useIterableCallbackReturn": "warn",
+        "noShadowRestrictedNames": "warn",
+        "noImplicitAnyLet": "warn"
+      },
+      "a11y": {
+        "useSemanticElements": "warn",
+        "noStaticElementInteractions": "warn",
+        "useKeyWithClickEvents": "warn",
+        "noSvgWithoutTitle": "warn"
       },
       "correctness": {
         "useExhaustiveDependencies": "off"
