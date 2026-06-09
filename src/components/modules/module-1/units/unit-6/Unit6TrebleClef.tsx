@@ -71,6 +71,7 @@ export function Unit6TrebleClef() {
             usan los músicos para saber dónde vive cada uno de ellos sin memorizar a ciegas.
           </p>
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-4 bg-fuchsia-500 text-white font-bold rounded-xl shadow-lg hover:bg-fuchsia-400 transition flex items-center gap-2"
           >
@@ -98,6 +99,7 @@ export function Unit6TrebleClef() {
             <TrebleClefVisualizer />
           </div>
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
           >
@@ -140,6 +142,7 @@ export function Unit6TrebleClef() {
 
           {!spiralRevealed ? (
             <button
+              type="button"
               onClick={() => {
                 setSpiralRevealed(true);
                 playNote("sol", 0.8);
@@ -157,6 +160,7 @@ export function Unit6TrebleClef() {
                 "Aquí vive SOL"
               </p>
               <button
+                type="button"
                 onClick={handleNextStage}
                 className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl"
               >
@@ -260,6 +264,7 @@ export function Unit6TrebleClef() {
 
           {!isComplete ? (
             <button
+              type="button"
               onClick={handleRevealNext}
               className="px-8 py-3 bg-fuchsia-500 text-white font-bold rounded-xl transition-all hover:scale-105"
             >
@@ -267,6 +272,7 @@ export function Unit6TrebleClef() {
             </button>
           ) : (
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl animate-in fade-in"
             >
@@ -436,6 +442,7 @@ export function Unit6TrebleClef() {
           </div>
 
           <button
+            type="button"
             disabled={hasPlayedAudio}
             onClick={playSequence}
             className="w-20 h-20 mx-auto rounded-full flex items-center justify-center bg-fuchsia-500 hover:bg-fuchsia-400 text-white shadow-lg disabled:opacity-50"
@@ -485,6 +492,7 @@ export function Unit6TrebleClef() {
             ))}
             {userSeq.length > 0 && !isComplete && (
               <button
+                type="button"
                 onClick={() => setUserSeq([])}
                 className="text-slate-500 text-sm ml-2 underline"
               >
@@ -497,6 +505,7 @@ export function Unit6TrebleClef() {
             <div className="flex justify-center gap-2 flex-wrap max-w-md mx-auto">
               {notesData.map((n) => (
                 <button
+                  type="button"
                   key={`kbd-${n.id}`}
                   onClick={() => {
                     setUserSeq([...userSeq, n.id]);
@@ -518,6 +527,7 @@ export function Unit6TrebleClef() {
                   : "Revisa las posiciones y usa SOL como guía."}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   if (isCorrect) setCorrectAnswers((c) => c + 1);
                   if (isCorrect) handleNextStage();
@@ -582,6 +592,7 @@ export function Unit6TrebleClef() {
 
           <div className="flex flex-col items-center gap-6">
             <button
+              type="button"
               onClick={playMiniSong}
               className="w-20 h-20 rounded-full flex items-center justify-center bg-fuchsia-500 hover:bg-fuchsia-400 text-white shadow-[0_0_20px_rgba(217,70,239,0.5)] transition-all hover:scale-105"
             >
@@ -590,6 +601,7 @@ export function Unit6TrebleClef() {
 
             {hasPlayedAudio && (
               <button
+                type="button"
                 onClick={() => {
                   localStorage.setItem("module1.unit6.completed", "true");
                   localStorage.setItem(

@@ -22,8 +22,8 @@ export function PracticeModeSelector({
 
           return (
             <button
-              key={mode.id}
               type="button"
+              key={mode.id}
               onClick={() => onChange(mode)}
               className={`focus-ring rounded-xl border px-4 py-3 text-left transition ${
                 isActive

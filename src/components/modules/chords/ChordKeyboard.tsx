@@ -52,6 +52,7 @@ export function ChordKeyboard({
           >
             {whiteKeys.map((keyNote) => (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}
@@ -93,6 +94,7 @@ export function ChordKeyboard({
 
             return (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}

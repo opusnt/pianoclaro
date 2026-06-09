@@ -104,6 +104,7 @@ export function Unit5MeetTheNotes() {
           </div>
 
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-4 bg-fuchsia-500 text-white font-bold rounded-xl shadow-lg hover:bg-fuchsia-400 transition flex items-center gap-2"
           >
@@ -159,6 +160,7 @@ export function Unit5MeetTheNotes() {
           </div>
 
           <button
+            type="button"
             onClick={() => {
               if (isLast) handleNextStage();
               else {
@@ -245,6 +247,7 @@ export function Unit5MeetTheNotes() {
                 {isCorrect ? "¡Correcto!" : `Ups, tocaste ${getNoteById(selection).name}.`}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   if (isLast) handleNextStage();
                   else {
@@ -299,6 +302,7 @@ export function Unit5MeetTheNotes() {
           <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-8">
             {options.map((opt) => (
               <button
+                type="button"
                 key={opt.id}
                 disabled={selection !== null}
                 onClick={() => {
@@ -323,6 +327,7 @@ export function Unit5MeetTheNotes() {
 
           {selection && (
             <button
+              type="button"
               onClick={() => {
                 if (isLast) handleNextStage();
                 else {
@@ -377,6 +382,7 @@ export function Unit5MeetTheNotes() {
               <div className="flex justify-center gap-4 flex-wrap">
                 {notesData.map((n) => (
                   <button
+                    type="button"
                     key={n.id}
                     onClick={() => {
                       setSelection(n.id);
@@ -399,6 +405,7 @@ export function Unit5MeetTheNotes() {
                 {isCorrect ? "¡Memoria perfecta!" : `Casi. Era ${targetNote.name}.`}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   if (isLast) handleNextStage();
                   else {
@@ -437,6 +444,7 @@ export function Unit5MeetTheNotes() {
           </div>
 
           <button
+            type="button"
             onClick={() => playNote(targetNote.id)}
             className="mx-auto w-24 h-24 rounded-full flex items-center justify-center bg-sky-500 text-white shadow-xl hover:scale-105 mb-8"
           >
@@ -451,6 +459,7 @@ export function Unit5MeetTheNotes() {
           <div className="flex justify-center gap-3 flex-wrap max-w-lg mx-auto mb-8">
             {notesData.map((n) => (
               <button
+                type="button"
                 key={n.id}
                 disabled={selection !== null}
                 onClick={() => {
@@ -472,6 +481,7 @@ export function Unit5MeetTheNotes() {
 
           {selection && (
             <button
+              type="button"
               onClick={() => {
                 if (isLast) handleNextStage();
                 else {
@@ -549,6 +559,7 @@ export function Unit5MeetTheNotes() {
 
           {isComplete && (
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl animate-in fade-in"
             >
@@ -614,6 +625,7 @@ export function Unit5MeetTheNotes() {
             ))}
             {userSeq.length > 0 && !isComplete && (
               <button
+                type="button"
                 onClick={() => setUserSeq([])}
                 className="text-slate-500 text-sm ml-2 underline"
               >
@@ -626,6 +638,7 @@ export function Unit5MeetTheNotes() {
             <div className="flex justify-center gap-2 flex-wrap max-w-sm mx-auto">
               {notesData.slice(0, 5).map((n) => (
                 <button
+                  type="button"
                   key={`kbd-${n.id}`}
                   onClick={() => handleSelect(n.id)}
                   className="px-4 py-2 border-2 rounded-lg hover:bg-slate-50 font-bold"
@@ -644,6 +657,7 @@ export function Unit5MeetTheNotes() {
                   : "Hay un error, revisa las alturas."}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   if (isCorrect) setCorrectAnswers((c) => c + 1);
                   if (isLast) handleNextStage();
@@ -726,6 +740,7 @@ export function Unit5MeetTheNotes() {
 
           <div className="flex flex-col items-center gap-6">
             <button
+              type="button"
               onClick={playMiniSong}
               className="w-20 h-20 rounded-full flex items-center justify-center bg-fuchsia-500 hover:bg-fuchsia-400 text-white shadow-[0_0_20px_rgba(217,70,239,0.5)] transition-all hover:scale-105"
             >
@@ -734,6 +749,7 @@ export function Unit5MeetTheNotes() {
 
             {hasPlayedAudio && (
               <button
+                type="button"
                 onClick={() => {
                   localStorage.setItem("module1.unit5.completed", "true");
                   localStorage.setItem(

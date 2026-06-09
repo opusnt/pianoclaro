@@ -166,6 +166,7 @@ export function Unit2SoundDetective() {
             return (
               <div key={sound.id} className="flex flex-col items-center">
                 <button
+                  type="button"
                   onClick={() => handlePlaySound(sound.id)}
                   className={`relative flex items-center justify-center w-24 h-24 sm:w-28 sm:h-28 rounded-full transition-all duration-300 ${
                     hasPlayed
@@ -196,6 +197,7 @@ export function Unit2SoundDetective() {
 
             return (
               <button
+                type="button"
                 key={option}
                 onClick={() => handleSelect(option)}
                 disabled={selectedOption !== null}

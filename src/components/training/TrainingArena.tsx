@@ -160,6 +160,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
         </div>
 
         <button
+          type="button"
           onClick={onExit}
           className="px-10 py-4 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-2xl shadow-lg transition-all hover:scale-105"
         >
@@ -176,6 +177,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <button
+          type="button"
           onClick={onExit}
           className="p-3 bg-white rounded-full hover:bg-slate-100 transition-colors shadow-sm"
         >
@@ -224,6 +226,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
         <div className="mb-12 flex justify-center w-full">
           {currentQuestion.type === "text" && currentQuestion.payload.audioPitch && (
             <button
+              type="button"
               onClick={async () => {
                 const Tone = await import("tone");
                 await Tone.start();
@@ -261,6 +264,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
           {currentQuestion.type === "audio_compare" && (
             <div className="flex gap-8">
               <button
+                type="button"
                 onClick={async () => {
                   const Tone = await import("tone");
                   await Tone.start();
@@ -275,6 +279,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
                 Sonido A
               </button>
               <button
+                type="button"
                 onClick={async () => {
                   const Tone = await import("tone");
                   await Tone.start();
@@ -301,6 +306,7 @@ export function TrainingArena({ mode, onExit }: TrainingArenaProps) {
 
               return (
                 <button
+                  type="button"
                   key={idx}
                   onClick={() => handleAnswer(idx)}
                   disabled={feedback !== null}

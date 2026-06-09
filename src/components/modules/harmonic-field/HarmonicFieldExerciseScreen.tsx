@@ -280,6 +280,7 @@ function OptionGrid({
           const isExpected = Boolean(selectedOption) && option === expected;
           return (
             <button
+              type="button"
               key={option}
               type="button"
               disabled={disabled}

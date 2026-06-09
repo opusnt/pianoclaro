@@ -58,6 +58,7 @@ export function Unit4MusicMap() {
             espacio.
           </p>
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-4 bg-emerald-500 text-white font-bold rounded-xl shadow-lg hover:bg-emerald-400 transition flex items-center gap-2"
           >
@@ -116,6 +117,7 @@ export function Unit4MusicMap() {
           </div>
 
           <button
+            type="button"
             onClick={handleNextStage}
             disabled={!hasPlayedCurrentAudio}
             className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl disabled:opacity-50"
@@ -152,6 +154,7 @@ export function Unit4MusicMap() {
           </div>
 
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl"
           >
@@ -198,6 +201,7 @@ export function Unit4MusicMap() {
           <h2 className="text-2xl font-bold mb-6">Escucha y ubica</h2>
 
           <button
+            type="button"
             onClick={playAudio}
             className="mx-auto w-24 h-24 rounded-full flex items-center justify-center transition-all mb-8 bg-sky-500 text-white shadow-xl hover:scale-105"
           >
@@ -211,6 +215,7 @@ export function Unit4MusicMap() {
               const isSelected = huntSelection === opt.zone;
               return (
                 <button
+                  type="button"
                   key={opt.zone}
                   disabled={huntSelection !== null || !hasPlayedCurrentAudio}
                   onClick={() => {
@@ -258,6 +263,7 @@ export function Unit4MusicMap() {
               </div>
 
               <button
+                type="button"
                 onClick={handleNextQuiz}
                 className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl"
               >
@@ -309,6 +315,7 @@ export function Unit4MusicMap() {
               { id: "space", label: "En un Espacio" },
             ].map((opt) => (
               <button
+                type="button"
                 key={opt.id}
                 disabled={lsSelection !== null}
                 onClick={() => {
@@ -331,6 +338,7 @@ export function Unit4MusicMap() {
 
           {lsSelection && (
             <button
+              type="button"
               onClick={handleNextQuiz}
               className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl animate-in fade-in"
             >
@@ -395,6 +403,7 @@ export function Unit4MusicMap() {
                 ¡Perfecto! Has construido una escala ascendente.
               </p>
               <button
+                type="button"
                 onClick={handleNextStage}
                 className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl"
               >
@@ -448,6 +457,7 @@ export function Unit4MusicMap() {
           </div>
 
           <button
+            type="button"
             onClick={handleNextStage}
             className="px-8 py-3 bg-white text-slate-900 font-bold rounded-xl"
           >
@@ -478,6 +488,7 @@ export function Unit4MusicMap() {
           <h2 className="text-2xl font-bold mb-6">Elige la Trayectoria</h2>
 
           <button
+            type="button"
             onClick={playSequence}
             className="mx-auto w-24 h-24 rounded-full flex items-center justify-center transition-all mb-8 bg-sky-500 text-white shadow-xl hover:scale-105"
           >
@@ -496,6 +507,7 @@ export function Unit4MusicMap() {
               { id: "baja-sube", label: "Baja y Sube ↘↗" },
             ].map((opt) => (
               <button
+                type="button"
                 key={opt.id}
                 disabled={appSelection !== null || !hasPlayedCurrentAudio}
                 onClick={() => {
@@ -523,6 +535,7 @@ export function Unit4MusicMap() {
                   : "En realidad, cada sonido era más agudo que el anterior, por lo que la trayectoria visual debe SUBIR."}
               </p>
               <button
+                type="button"
                 onClick={() => {
                   const totalExercises =
                     soundHuntExercises.length + linesAndSpacesExercises.length + 2; // +1 build map, +1 app

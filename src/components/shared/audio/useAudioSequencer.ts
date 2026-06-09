@@ -159,7 +159,7 @@ export function useAudioSequencer() {
       let maxEndTime = 0;
 
       layers.forEach((layer) => {
-        const layerVol = getOrCreateLayerVolume(layer.id);
+        const _layerVol = getOrCreateLayerVolume(layer.id);
 
         const events = layer.events.map((event) => {
           const absoluteEndTime = event.time + event.duration;

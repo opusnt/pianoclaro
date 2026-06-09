@@ -4,7 +4,6 @@ import { Mic, MicOff, Music2, Play, RefreshCw, Trophy } from "lucide-react";
 import { useCallback, useState } from "react";
 import { OsmdRenderer } from "@/components/lesson/notation/renderers/OsmdRenderer";
 import { Button } from "@/components/ui/Button";
-import { PageHeader } from "@/components/ui/PageHeader";
 import {
   type SightReadingExercise,
   sightReadingExercises,
@@ -57,6 +56,7 @@ export default function EntrenamientoPage() {
             </div>
 
             <button
+              type="button"
               onClick={resetGame}
               className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors"
             >
@@ -64,6 +64,7 @@ export default function EntrenamientoPage() {
             </button>
 
             <button
+              type="button"
               onClick={stopGame}
               className="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-colors"
             >
@@ -146,6 +147,7 @@ export default function EntrenamientoPage() {
 
               <div className="flex justify-center gap-4">
                 <button
+                  type="button"
                   onClick={() => {
                     resetGame();
                     setGameEnabled(true);
@@ -155,6 +157,7 @@ export default function EntrenamientoPage() {
                   <RefreshCw className="w-5 h-5" /> Repetir
                 </button>
                 <button
+                  type="button"
                   onClick={stopGame}
                   className="bg-blue-800 text-white px-6 py-3 rounded-xl font-bold hover:bg-blue-700 transition-colors"
                 >
@@ -178,6 +181,7 @@ export default function EntrenamientoPage() {
         </p>
 
         <button
+          type="button"
           onClick={async () => {
             try {
               const stream = await navigator.mediaDevices.getUserMedia({
@@ -187,10 +191,11 @@ export default function EntrenamientoPage() {
                   noiseSuppression: false,
                 },
               });
-              alert("¡Éxito! El navegador te ha dado permiso.");
-              stream.getTracks().forEach((t) => t.stop());
+              stream.getTracks().forEach((t) => {
+                t.stop();
+              });
             } catch (err: any) {
-              alert("Falló: " + err.message + " (" + err.name + ")");
+              alert(`Falló: ${err.message} (${err.name})`);
             }
           }}
           className="mt-4 bg-slate-800 text-white px-4 py-2 rounded-lg font-bold"
@@ -203,6 +208,14 @@ export default function EntrenamientoPage() {
         {sightReadingExercises.map((exercise) => (
           <div
             key={exercise.id}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                startGame(exercise);
+              }
+            }}
             className="bg-white rounded-3xl border border-slate-200 p-6 flex flex-col hover:border-blue-deep/30 hover:shadow-md transition-all cursor-pointer group"
             onClick={() => startGame(exercise)}
           >

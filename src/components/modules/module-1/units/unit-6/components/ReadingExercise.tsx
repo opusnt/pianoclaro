@@ -97,6 +97,7 @@ export function ReadingExercise({
 
           return (
             <button
+              type="button"
               key={optId}
               disabled={selection !== null}
               onClick={() => handleSelect(optId)}
@@ -119,6 +120,7 @@ export function ReadingExercise({
 
           {onNext && (
             <button
+              type="button"
               onClick={onNext}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl shadow-md transition-colors"
             >

@@ -430,6 +430,7 @@ export function ModuleFirstFiveNotesScreen({
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {selectedExercise.options.map((option) => (
                   <button
+                    type="button"
                     key={option}
                     type="button"
                     onClick={() => answerExercise(option)}

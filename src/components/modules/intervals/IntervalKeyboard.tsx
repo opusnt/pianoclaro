@@ -73,6 +73,7 @@ export function IntervalKeyboard({
           <div className="grid h-full grid-cols-8">
             {whiteKeys.map((key) => (
               <button
+                type="button"
                 key={key.id}
                 type="button"
                 disabled={disabled}
@@ -110,6 +111,7 @@ export function IntervalKeyboard({
 
             return (
               <button
+                type="button"
                 key={key.id}
                 type="button"
                 disabled={disabled}

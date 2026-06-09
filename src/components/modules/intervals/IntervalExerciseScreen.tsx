@@ -156,6 +156,7 @@ export function IntervalExerciseScreen({
 
                       return (
                         <button
+                          type="button"
                           key={option}
                           type="button"
                           disabled={engine.state !== "active" || Boolean(engine.currentAnswer)}

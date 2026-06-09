@@ -130,6 +130,7 @@ export function BeatTracker({ onAccuracyUpdate, targetBeats = 8 }: BeatTrackerPr
       </div>
 
       <button
+        type="button"
         onClick={isPlaying ? handleTap : handleStart}
         className={`relative flex items-center justify-center w-32 h-32 rounded-full transition-all duration-75 ${
           isPlaying

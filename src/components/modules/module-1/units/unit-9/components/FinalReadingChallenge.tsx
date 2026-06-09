@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2, Play, RotateCcw, Star } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ArcadeEngineResult, ArcadeNote } from "@/components/arcade/ArcadeEngine";
 import { ArcadePlayer } from "@/components/arcade/ArcadePlayer";
 import { parseMusicXMLToArcadeNotes } from "@/lib/music/xmlParser";
@@ -25,7 +25,7 @@ export function FinalReadingChallenge({ onComplete }: FinalReadingChallengeProps
         setArcadeNotes(parsed.notes);
         setArcadeBarlines(parsed.barlines);
         setArcadeBeats(parsed.beats || []);
-      } catch (e) {}
+      } catch (_e) {}
     }
   }, [gameState, arcadeNotes.length]);
 
@@ -45,6 +45,7 @@ export function FinalReadingChallenge({ onComplete }: FinalReadingChallengeProps
             (Wait Mode activado). ¡No hay prisa!
           </p>
           <button
+            type="button"
             onClick={() => setGameState("playing")}
             className="flex items-center gap-3 px-8 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-full shadow-xl shadow-fuchsia-200 transition-all hover:scale-105"
           >
@@ -116,6 +117,7 @@ export function FinalReadingChallenge({ onComplete }: FinalReadingChallengeProps
 
           <div className="flex gap-4 w-full">
             <button
+              type="button"
               onClick={() => {
                 setArcadeNotes([]);
                 setGameState("playing");
@@ -126,6 +128,7 @@ export function FinalReadingChallenge({ onComplete }: FinalReadingChallengeProps
               Reintentar
             </button>
             <button
+              type="button"
               onClick={() => onComplete(finalResult.accuracy)}
               className="flex-1 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold py-4 px-6 rounded-2xl transition-colors shadow-lg shadow-fuchsia-500/30 flex items-center justify-center gap-2"
             >

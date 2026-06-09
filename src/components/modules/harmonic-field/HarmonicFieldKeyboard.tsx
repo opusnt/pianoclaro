@@ -64,6 +64,7 @@ export function HarmonicFieldKeyboard({
               const isTonic = stripOctave(note.internalName) === field.scaleNotes[0];
               return (
                 <button
+                  type="button"
                   key={note.internalName}
                   type="button"
                   disabled={disabled}
@@ -108,6 +109,7 @@ export function HarmonicFieldKeyboard({
               const inChord = chordPitches.has(pitch);
               return (
                 <button
+                  type="button"
                   key={blackNote.internalName}
                   type="button"
                   disabled={disabled}

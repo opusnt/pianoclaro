@@ -32,8 +32,8 @@ export function LessonStepPanel({
 
           return (
             <button
-              key={step.id}
               type="button"
+              key={step.id}
               onClick={() => onStepChange(index)}
               className={`focus-ring rounded-xl px-3 py-3 text-left transition ${
                 isActive ? "bg-blue-deep text-white" : "text-blue-deep hover:bg-blue-soft/45"

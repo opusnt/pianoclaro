@@ -57,8 +57,8 @@ export function PianoKeyboard({
 
             return (
               <button
-                key={key.note}
                 type="button"
+                key={key.note}
                 onClick={() => onKeyPress?.(key.note)}
                 aria-label={`Tocar ${key.solfege}`}
                 aria-pressed={isActive}
@@ -89,8 +89,8 @@ export function PianoKeyboard({
 
           return (
             <button
-              key={key.note}
               type="button"
+              key={key.note}
               onClick={() => onBlackKeyPress?.(key.note)}
               aria-label={`Tocar ${key.spokenLabel}`}
               aria-pressed={isActive}

@@ -539,9 +539,18 @@ export function Unit1KeyboardMap() {
           </div>
         </div>
 
-        <Link href="/modulos">
-          <Button size="lg">Volver a Módulos</Button>
-        </Link>
+        <div className="flex gap-4">
+          <Link href="/modulos/2">
+            <Button size="lg" variant="outline">
+              Volver al Módulo 2
+            </Button>
+          </Link>
+          <Link href="/modulos/2/unidad-2">
+            <Button size="lg">
+              Siguiente Lección <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </Link>
+        </div>
       </Card>
     );
   }

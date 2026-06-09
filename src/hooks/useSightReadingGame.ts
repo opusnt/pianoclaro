@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useMicrophonePitchDetection } from "@/components/lesson/hooks/useMicrophonePitchDetection";
-import type { NoteName } from "@/types/lesson";
 
 type UseSightReadingGameOptions = {
   osmd: any | null; // The OSMD instance
@@ -31,7 +30,7 @@ export function useSightReadingGame({ osmd, enabled, onFinish }: UseSightReading
 
       // Delay cursor show slightly to ensure SVG is ready
       setTimeout(() => {
-        if (osmd && osmd.cursor) {
+        if (osmd?.cursor) {
           osmd.cursor.show();
           osmd.cursor.update(); // Force visual update
         }
@@ -60,7 +59,7 @@ export function useSightReadingGame({ osmd, enabled, onFinish }: UseSightReading
 
           setExpectedNote(name);
         }
-      } catch (e) {}
+      } catch (_e) {}
     }
   }, [enabled, osmd]);
 
@@ -128,7 +127,7 @@ export function useSightReadingGame({ osmd, enabled, onFinish }: UseSightReading
             if (typeof targetNote.NoteheadColor !== "undefined") {
               targetNote.NoteheadColor = "#22c55e"; // Tailwind green-500
             }
-          } catch (e) {
+          } catch (_e) {
             // Ignore color errors
           }
 
@@ -158,7 +157,7 @@ export function useSightReadingGame({ osmd, enabled, onFinish }: UseSightReading
               else if (nextNotes[0].Pitch.accidentalHalfTones === -1) nextName += "b";
               setExpectedNote(nextName);
             }
-          } catch (e) {}
+          } catch (_e) {}
 
           // Check if finished
           if (osmd.cursor.Iterator.EndReached) {

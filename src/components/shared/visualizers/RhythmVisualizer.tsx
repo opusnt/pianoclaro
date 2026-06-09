@@ -104,6 +104,7 @@ export function RhythmVisualizer({
 
         {showPlayButton && !isPlaying && onPlay && (
           <button
+            type="button"
             onClick={onPlay}
             className="absolute inset-0 m-auto w-12 h-12 bg-sky-500 rounded-full flex items-center justify-center text-slate-900 opacity-0 hover:opacity-100 transition-opacity"
           >

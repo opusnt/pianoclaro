@@ -54,6 +54,7 @@ export default function ImportXmlPage() {
       </div>
 
       {!score ? (
+        // biome-ignore lint/a11y/useSemanticElements: Needs to be a div because it wraps an input type="file"
         <div
           className={`flex cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed p-16 transition-colors ${
             isDragging

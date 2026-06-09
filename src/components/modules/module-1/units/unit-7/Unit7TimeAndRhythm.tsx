@@ -100,6 +100,7 @@ export function Unit7TimeAndRhythm() {
                 Escucha el pulso de 60 BPM (Latidos por minuto).
               </p>
               <button
+                type="button"
                 onClick={async () => {
                   await Tone.start();
                   await engineRef.current?.prepare();
@@ -116,6 +117,7 @@ export function Unit7TimeAndRhythm() {
               </button>
             </div>
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -144,6 +146,7 @@ export function Unit7TimeAndRhythm() {
             </div>
             {pulseAccuracy !== null && (
               <button
+                type="button"
                 onClick={handleNextStage}
                 className="animate-in fade-in slide-in-from-bottom-4 px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
               >
@@ -162,6 +165,7 @@ export function Unit7TimeAndRhythm() {
 
             <div className="flex gap-8 mb-12">
               <button
+                type="button"
                 onClick={() => playSimulatedSound({ type: "sine", duration: 4, frequency: 440 })}
                 className="w-32 h-32 bg-white rounded-3xl shadow-sm border-2 border-slate-200 flex flex-col items-center justify-center hover:border-fuchsia-300 transition-colors"
               >
@@ -169,6 +173,7 @@ export function Unit7TimeAndRhythm() {
                 <span className="font-bold">Sonido A</span>
               </button>
               <button
+                type="button"
                 onClick={() => playSimulatedSound({ type: "sine", duration: 1, frequency: 523.25 })}
                 className="w-32 h-32 bg-white rounded-3xl shadow-sm border-2 border-slate-200 flex flex-col items-center justify-center hover:border-fuchsia-300 transition-colors"
               >
@@ -185,6 +190,7 @@ export function Unit7TimeAndRhythm() {
               </h3>
               <div className="flex justify-center gap-4">
                 <button
+                  type="button"
                   onClick={() => {
                     if (stage3State === "long") {
                       setStage3State("short");
@@ -198,6 +204,7 @@ export function Unit7TimeAndRhythm() {
                   Sonido A
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     if (stage3State === "short") {
                       setStage3Selection("correct");
@@ -266,6 +273,7 @@ export function Unit7TimeAndRhythm() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -285,12 +293,14 @@ export function Unit7TimeAndRhythm() {
 
             <div className="flex justify-center gap-6 mb-12 bg-slate-50 p-8 rounded-3xl">
               <button
+                type="button"
                 onClick={() => setStage5State(1)}
                 className={`p-6 rounded-2xl bg-white border-2 transition-all ${stage5State === 1 ? "border-rose-300 bg-rose-50" : "border-slate-200 hover:border-slate-600"}`}
               >
                 <RhythmVisualizer figureId="whole" />
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setScore((s) => s + 10);
                   handleNextStage();
@@ -300,6 +310,7 @@ export function Unit7TimeAndRhythm() {
                 <RhythmVisualizer figureId="quarter" />
               </button>
               <button
+                type="button"
                 onClick={() => setStage5State(2)}
                 className={`p-6 rounded-2xl bg-white border-2 transition-all ${stage5State === 2 ? "border-rose-300 bg-rose-50" : "border-slate-200 hover:border-slate-600"}`}
               >
@@ -320,6 +331,7 @@ export function Unit7TimeAndRhythm() {
 
             <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 w-full mb-8 flex flex-col items-center">
               <button
+                type="button"
                 onClick={() => {
                   if (stage6State === 0) {
                     playSimulatedSound({ type: "sine", duration: 4, frequency: 440 });
@@ -338,6 +350,7 @@ export function Unit7TimeAndRhythm() {
 
               <div className="flex justify-center gap-4">
                 <button
+                  type="button"
                   onClick={() => {
                     if (stage6State === 0) {
                       setStage6State(1);
@@ -349,6 +362,7 @@ export function Unit7TimeAndRhythm() {
                   1 Redonda
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     if (stage6State === 1) {
                       setScore((s) => s + 10);
@@ -380,6 +394,7 @@ export function Unit7TimeAndRhythm() {
             />
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="mt-12 px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -432,6 +447,7 @@ export function Unit7TimeAndRhythm() {
             </div>
 
             <button
+              type="button"
               onClick={async () => {
                 await Tone.start();
                 await engineRef.current?.prepare();
@@ -465,6 +481,7 @@ export function Unit7TimeAndRhythm() {
             </button>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -493,6 +510,7 @@ export function Unit7TimeAndRhythm() {
             </div>
 
             <button
+              type="button"
               onClick={async () => {
                 await Tone.start();
                 await engineRef.current?.prepare();
@@ -533,6 +551,7 @@ export function Unit7TimeAndRhythm() {
             </button>
 
             <button
+              type="button"
               onClick={completeUnit}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >

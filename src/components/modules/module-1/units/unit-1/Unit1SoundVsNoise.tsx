@@ -130,6 +130,7 @@ export function Unit1SoundVsNoise() {
         {/* Play Button Area */}
         <div className="flex flex-col items-center mb-10">
           <button
+            type="button"
             onClick={handlePlay}
             className={`group relative flex items-center justify-center w-28 h-28 sm:w-32 sm:h-32 rounded-full transition-all duration-300 ${
               hasPlayed
@@ -152,6 +153,7 @@ export function Unit1SoundVsNoise() {
           className={`grid gap-4 sm:grid-cols-2 transition-opacity duration-300 ${!hasPlayed ? "opacity-30 pointer-events-none" : "opacity-100"}`}
         >
           <button
+            type="button"
             onClick={() => handleSelect("musical")}
             disabled={selectedType !== null}
             className={`relative overflow-hidden p-6 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center justify-center gap-2 ${
@@ -166,6 +168,7 @@ export function Unit1SoundVsNoise() {
           </button>
 
           <button
+            type="button"
             onClick={() => handleSelect("noise")}
             disabled={selectedType !== null}
             className={`relative overflow-hidden p-6 rounded-2xl border-2 transition-all duration-300 flex flex-col items-center justify-center gap-2 ${

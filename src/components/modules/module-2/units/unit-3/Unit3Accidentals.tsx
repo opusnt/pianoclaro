@@ -682,11 +682,18 @@ export function Unit3Accidentals() {
             </div>
           </div>
 
-          <Link href="/modulos">
-            <Button size="lg" className="px-10">
-              Continuar
-            </Button>
-          </Link>
+          <div className="flex justify-center gap-4 mt-8">
+            <Link href="/modulos/2">
+              <Button size="lg" variant="outline" className="px-10">
+                Volver al Módulo 2
+              </Button>
+            </Link>
+            <Link href="/modulos/2/unidad-4">
+              <Button size="lg" className="px-10">
+                Siguiente Lección <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </Card>
     );

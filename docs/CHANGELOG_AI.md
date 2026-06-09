@@ -3,6 +3,13 @@
 Este archivo registra los cambios mayores y refactorizaciones arquitectónicas realizadas por los agentes de IA en el proyecto Piano Claro. 
 *Importante:* Cualquier agente que finalice una tarea de impacto debe añadir una entrada en este archivo.
 
+## [2026-06-08] - Bifurcación del Flujo de Aprendizaje y Motor Acústico (V8)
+- Architecture: **División Teoría vs Práctica**. Se separó la aplicación en dos rutas principales: `/teoria` (Lenguaje Musical) y `/cursos` (Entrenamiento Físico).
+- UI/UX: **Teoría Hub Premium**. Se rediseñó `/teoria/page.tsx` con una interfaz Glassmorphism oscura (Midnight Blue) para listar los Módulos 1 y 2.
+- Feature: **Motor Acústico para Teoría**. Se refactorizó `useAudioSequencer.ts` para que utilice `Tone.Sampler` en lugar de osciladores puros. Ahora la teoría utiliza samples de alta calidad (Piano Salamander Grand y Batería Acústica) descargados vía CDN para Melodía, Armonía y Ritmo.
+- Bugfix: Corrección de color de bordes en figuras huecas (Blanca, Redonda) en `RhythmVisualizer.tsx` que las hacía invisibles contra fondos claros.
+- Bugfix: Restauración del acceso al Módulo 2 dentro del nuevo hub de teoría.
+
 ## [2026-06-07] - Profesionalización del Motor Arcade (V7)
 - Feature: **Alteraciones Visuales**. El motor ahora dibuja los símbolos de Sostenido (♯) y Bemol (♭) junto a las notas extraídas de la etiqueta `<alter>` del MusicXML en la vista de pentagrama.
 - Feature: **Cuenta Regresiva (Count-In)**. Se implementó un estado de espera de 3 segundos al presionar "Iniciar", mostrando una animación de números flotantes (3..2..1) antes de que las notas empiecen a desplazarse.

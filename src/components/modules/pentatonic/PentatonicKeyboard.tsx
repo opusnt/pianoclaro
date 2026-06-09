@@ -67,6 +67,7 @@ export function PentatonicKeyboard({
               );
               return (
                 <button
+                  type="button"
                   key={keyNote.midi}
                   type="button"
                   disabled={disabled || outsideScale}
@@ -114,6 +115,7 @@ export function PentatonicKeyboard({
 
             return (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled || outsideScale}

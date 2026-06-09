@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as Tone from "tone";
 import { useMicrophonePitchDetection } from "@/components/lesson/hooks/useMicrophonePitchDetection";
 import { InteractiveKeyboard } from "@/components/shared/interactive/InteractiveKeyboard";
@@ -51,7 +51,7 @@ export interface ArcadeEngineProps {
   scrollSpeedMultiplier?: number;
 }
 
-const STAFF_LINES = 5;
+const _STAFF_LINES = 5;
 const LINE_SPACING = 20;
 const HIT_ZONE_X = 150;
 const PIXELS_PER_MS = 0.2;
@@ -90,7 +90,7 @@ function getDiatonicOffsetFromC4(midiNote: number): number {
 }
 
 // Convierte un número MIDI a notación estándar (ej. 60 -> "C4", 61 -> "C#4")
-function midiToNoteString(midiNote: number): string {
+function _midiToNoteString(midiNote: number): string {
   const noteNames = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
   const octave = Math.floor(midiNote / 12) - 1;
   const name = noteNames[midiNote % 12];
@@ -119,22 +119,22 @@ export function ArcadeEngine({
   const [internalIsPlaying, setInternalIsPlaying] = useState(false);
   const isPlaying = isPlayingExternal !== undefined ? isPlayingExternal : internalIsPlaying;
 
-  const pixelsPerMs = 0.2 * scrollSpeedMultiplier;
+  const _pixelsPerMs = 0.2 * scrollSpeedMultiplier;
 
   // Calcular octavas dinámicamente según el rango de notas de la canción
   const dynamicStartOctave = Math.max(0, Math.floor(minMidi / 12) - 1);
   const dynamicEndOctave = Math.min(8, Math.floor(maxMidi / 12));
   const dynamicTotalOctaves = dynamicEndOctave - dynamicStartOctave + 1;
   const dynamicTotalWhiteKeys = dynamicTotalOctaves * 7;
-  const dynamicStartMidi = (dynamicStartOctave + 1) * 12;
+  const _dynamicStartMidi = (dynamicStartOctave + 1) * 12;
 
   const [score, setScore] = useState(0);
   const [combo, setCombo] = useState(0);
-  const [maxCombo, setMaxCombo] = useState(0);
+  const [_maxCombo, setMaxCombo] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const metricsRef = useRef({ marvelous: 0, perfect: 0, good: 0, miss: 0, earlyRelease: 0 });
   const [micEnabled, setMicEnabled] = useState(false);
-  const [upcomingNoteStrings, setUpcomingNoteStrings] = useState<string[]>([]);
+  const [upcomingNoteStrings, _setUpcomingNoteStrings] = useState<string[]>([]);
   const [audioLoaded, setAudioLoaded] = useState(false);
 
   // Referencias para el loop de animación
@@ -348,7 +348,7 @@ export function ArcadeEngine({
               if (currentCountdown === 0)
                 metronomeSynthRef.current?.triggerAttackRelease("C5", "16n");
               else metronomeSynthRef.current?.triggerAttackRelease("C4", "16n");
-            } catch (e) {}
+            } catch (_e) {}
           }
         }
       } else if (elapsedMsRef.current > 0) {
@@ -582,13 +582,11 @@ export function ArcadeEngine({
           // Alteraciones
           if (viewMode === "staff" && note.status === "pending") {
             if (note.alter) {
-              ctx.fillStyle = ctx.fillStyle;
               ctx.font = "bold 16px serif";
               ctx.textAlign = "right";
               ctx.textBaseline = "middle";
               ctx.fillText(note.alter > 0 ? "♯" : "♭", x - 15, y);
             } else if (note.natural) {
-              ctx.fillStyle = ctx.fillStyle;
               ctx.font = "bold 16px serif";
               ctx.textAlign = "right";
               ctx.textBaseline = "middle";
@@ -739,6 +737,7 @@ export function ArcadeEngine({
         {!isPlaying && (
           <div className="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center z-20 backdrop-blur-sm">
             <button
+              type="button"
               onClick={startGame}
               className="bg-cyan-500 hover:bg-cyan-400 text-white text-2xl font-black py-4 px-12 rounded-full shadow-[0_0_20px_rgba(6,182,212,0.5)] transition-all hover:scale-105"
             >

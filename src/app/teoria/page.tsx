@@ -1,5 +1,4 @@
-import { ArrowRight, BookOpen, GraduationCap, Lock } from "lucide-react";
-import Image from "next/image";
+import { ArrowRight, BookOpen } from "lucide-react";
 import Link from "next/link";
 
 export default function TeoriaIndexPage() {

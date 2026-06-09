@@ -24,6 +24,7 @@ export function OsmdPlayerControl({
     <div className="flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-900 rounded-2xl p-4 shadow-lg border border-slate-800 w-full">
       <div className="flex items-center gap-3">
         <button
+          type="button"
           onClick={onTogglePlay}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-sky-600 text-white hover:bg-sky-500 transition-colors shadow-md active:scale-95"
           aria-label={isPlaying ? "Pausar" : "Reproducir"}
@@ -35,6 +36,7 @@ export function OsmdPlayerControl({
           )}
         </button>
         <button
+          type="button"
           onClick={onStop}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 transition-colors shadow-inner active:scale-95"
           aria-label="Detener y volver al inicio"
@@ -47,6 +49,7 @@ export function OsmdPlayerControl({
         <span className="text-slate-400 font-bold text-sm uppercase tracking-wider">Tempo</span>
         <div className="flex items-center gap-2">
           <button
+            type="button"
             onClick={handleDecrease}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-colors"
           >
@@ -54,6 +57,7 @@ export function OsmdPlayerControl({
           </button>
           <span className="text-white font-mono font-bold w-12 text-center text-lg">{bpm}</span>
           <button
+            type="button"
             onClick={handleIncrease}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-colors"
           >

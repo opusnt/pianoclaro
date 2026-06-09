@@ -158,6 +158,7 @@ export function RhythmReadingExercise({
 
       {!isPlaying && (
         <button
+          type="button"
           onClick={handleStart}
           className="mt-8 flex items-center gap-2 px-8 py-4 bg-sky-500 hover:bg-sky-400 text-white font-bold rounded-2xl transition-all hover:scale-105 shadow-lg"
         >

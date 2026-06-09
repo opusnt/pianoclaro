@@ -53,12 +53,12 @@ export function parseMusicXMLToArcadeNotes(
 
   // Extraer las divisions globales (suponemos que están en el primer measure)
   const divisionsNode = xmlDoc.querySelector("attributes divisions");
-  if (divisionsNode && divisionsNode.textContent) {
+  if (divisionsNode?.textContent) {
     divisions = parseInt(divisionsNode.textContent, 10);
   }
 
   const beatsNode = xmlDoc.querySelector("attributes time beats");
-  if (beatsNode && beatsNode.textContent) {
+  if (beatsNode?.textContent) {
     beatsPerMeasure = parseInt(beatsNode.textContent, 10);
   }
 
@@ -77,7 +77,7 @@ export function parseMusicXMLToArcadeNotes(
   measures.forEach((measure) => {
     // Buscar armadura (Key Signature)
     const fifthsNode = measure.querySelector("attributes key fifths");
-    if (fifthsNode && fifthsNode.textContent) {
+    if (fifthsNode?.textContent) {
       currentFifths = parseInt(fifthsNode.textContent, 10);
       if (!firstKeySignatureSet) {
         finalKeySignature = { fifths: currentFifths };
@@ -93,7 +93,7 @@ export function parseMusicXMLToArcadeNotes(
 
     // Buscar si hay cambios de tempo en este compás
     const soundNode = measure.querySelector("sound");
-    if (soundNode && soundNode.getAttribute("tempo")) {
+    if (soundNode?.getAttribute("tempo")) {
       currentTempo = parseInt(soundNode.getAttribute("tempo")!, 10);
     }
 
@@ -117,7 +117,7 @@ export function parseMusicXMLToArcadeNotes(
 
       const durationNode = noteNode.querySelector("duration");
       let durationDivs = 0;
-      if (durationNode && durationNode.textContent) {
+      if (durationNode?.textContent) {
         durationDivs = parseInt(durationNode.textContent, 10);
       }
 
@@ -136,16 +136,15 @@ export function parseMusicXMLToArcadeNotes(
       const restNode = noteNode.querySelector("rest");
 
       const staffNode = noteNode.querySelector("staff");
-      const staff = staffNode && staffNode.textContent ? parseInt(staffNode.textContent, 10) : 1;
+      const staff = staffNode?.textContent ? parseInt(staffNode.textContent, 10) : 1;
 
       const fingeringNode = noteNode.querySelector("notations technical fingering");
-      const fingering =
-        fingeringNode && fingeringNode.textContent
-          ? parseInt(fingeringNode.textContent, 10)
-          : undefined;
+      const fingering = fingeringNode?.textContent
+        ? parseInt(fingeringNode.textContent, 10)
+        : undefined;
 
       const lyricNode = noteNode.querySelector("lyric text");
-      const lyric = lyricNode && lyricNode.textContent ? lyricNode.textContent : undefined;
+      const lyric = lyricNode?.textContent ? lyricNode.textContent : undefined;
 
       if (pitchNode) {
         const step = pitchNode.querySelector("step")?.textContent || "C";

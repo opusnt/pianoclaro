@@ -110,6 +110,7 @@ export function AppliedLearningPanel({
 
                   return (
                     <button
+                      type="button"
                       key={item}
                       type="button"
                       onClick={() => toggleItem(item)}

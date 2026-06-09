@@ -102,6 +102,7 @@ export function InteractiveKeyboard({
             >
               {/* Tecla Blanca */}
               <button
+                type="button"
                 data-note={fullNote}
                 disabled={!interactive}
                 onMouseDown={() => handlePlayNote(fullNote)}
@@ -140,6 +141,7 @@ export function InteractiveKeyboard({
               {/* Tecla Negra */}
               {blackNoteName && (
                 <button
+                  type="button"
                   disabled={!interactive}
                   onMouseDown={(e) => {
                     e.stopPropagation();

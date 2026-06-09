@@ -1,21 +1,9 @@
 "use client";
 
-import {
-  BarChart3,
-  BookOpen,
-  ChevronDown,
-  Keyboard,
-  Layers3,
-  Library,
-  Music2,
-  Route,
-  WalletCards,
-} from "lucide-react";
+import { BarChart3, BookOpen, Keyboard, Layers3, Library, Music2, Route } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, useState } from "react";
-
-import { firstFiveNotesModuleId, keyboardNotesLessonSlug } from "@/data/learning-slugs";
 
 const navItems = [
   { href: "/teoria", label: "Teoría", icon: BookOpen },
@@ -24,7 +12,7 @@ const navItems = [
   { href: "/progreso", label: "Progreso", icon: BarChart3 },
 ];
 
-const learningMenuSections = [
+const _learningMenuSections = [
   {
     title: "Módulos de Aprendizaje",
     icon: Layers3,
@@ -94,14 +82,14 @@ const placeholderUserInitials = "PC";
 
 export function SiteHeader() {
   const pathname = usePathname();
-  const [isLearningMenuOpen, setIsLearningMenuOpen] = useState(false);
+  const [_isLearningMenuOpen, setIsLearningMenuOpen] = useState(false);
   const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const isLearningActive =
+  const _isLearningActive =
     pathname.startsWith("/rutas") ||
     pathname.startsWith("/modulos") ||
     pathname.startsWith("/lecciones");
 
-  function openLearningMenu() {
+  function _openLearningMenu() {
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
@@ -109,7 +97,7 @@ export function SiteHeader() {
     setIsLearningMenuOpen(true);
   }
 
-  function scheduleLearningMenuClose() {
+  function _scheduleLearningMenuClose() {
     if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
     closeTimerRef.current = setTimeout(() => {
       setIsLearningMenuOpen(false);
@@ -117,7 +105,7 @@ export function SiteHeader() {
     }, 180);
   }
 
-  function closeLearningMenu() {
+  function _closeLearningMenu() {
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;

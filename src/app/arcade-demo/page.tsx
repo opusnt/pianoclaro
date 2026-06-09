@@ -2,7 +2,7 @@
 
 import { Star } from "lucide-react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import type { ArcadeEngineResult, ArcadeNote } from "@/components/arcade/ArcadeEngine";
 import { ArcadePlayer } from "@/components/arcade/ArcadePlayer";
 import { sightReadingExercises } from "@/data/training/sightReadingExercises";
@@ -116,12 +116,14 @@ export default function ArcadeDemoPage() {
                 <span className="font-bold text-blue-900 text-sm">Vista:</span>
                 <div className="flex bg-white border border-blue-200 rounded text-sm overflow-hidden font-medium">
                   <button
+                    type="button"
                     onClick={() => setViewMode("staff")}
                     className={`px-3 py-1 ${viewMode === "staff" ? "bg-blue-600 text-white" : "text-blue-800 hover:bg-blue-50"}`}
                   >
                     Pentagrama
                   </button>
                   <button
+                    type="button"
                     onClick={() => setViewMode("waterfall")}
                     className={`px-3 py-1 border-l border-blue-200 ${viewMode === "waterfall" ? "bg-blue-600 text-white" : "text-blue-800 hover:bg-blue-50"}`}
                   >
@@ -198,12 +200,14 @@ export default function ArcadeDemoPage() {
 
               <div className="flex gap-4 w-full">
                 <button
+                  type="button"
                   onClick={() => setGameState("idle")}
                   className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-4 px-6 rounded-2xl transition-colors"
                 >
                   Reintentar
                 </button>
                 <button
+                  type="button"
                   onClick={() => {
                     setExerciseIndex((prev) => (prev + 1) % sightReadingExercises.length);
                   }}

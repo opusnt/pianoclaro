@@ -17,16 +17,20 @@ Este documento es una "foto" del estado actual del proyecto al finalizar una ses
   - Renderizado nativo de alteraciones (♯ y ♭) junto a las notas en el pentagrama extrayendo el tag `<alter>`.
   - Animación de "Count-In" (3.. 2.. 1..) introducida antes de que la partitura comience a reproducirse o avanzar.
   - Motor de físicas 2D en Canvas introducido para disparar un sistema de partículas (fuegos artificiales) al obtener calificaciones perfectas.
-- **Siguiente paso lógico:** Avanzar en el roadmap de lecciones, creando los Módulos 2 (Armonía) o puliendo el diseño general de las vistas de cursos.
+- **Bifurcación de Aprendizaje (V8)**:
+  - Estricta separación de responsabilidades: `/teoria` aloja el aprendizaje de Lenguaje Musical (Módulo 1 y 2), y `/cursos` aloja el entrenamiento físico (Memoria Muscular).
+  - Hub de Teoría premium (Midnight Blue) con listado dinámico de Módulos de aprendizaje en lugar del index viejo.
+  - El motor de audio para teoría (`useAudioSequencer.ts`) ahora se apoya enteramente en `Tone.js` utilizando *Samplers* con sonido real de Piano de Cola y Batería Acústica, incrementando drásticamente el valor de la producción.
+- **Siguiente paso lógico:** Iniciar el diseño y desarrollo de las lecciones del Curso Práctico de Piano aprovechando la tecnología desarrollada en el Motor Arcade.
 
 ## Problemas Detectados / Áreas de Atención
-- Existen módulos y componentes dentro de `src/components/legacy` o `src/app/legacy` que referencian importaciones que pueden requerir un escaneo de linters (Biome) para asegurar que nada quedó roto tras el encapsulamiento.
+- El proyecto contiene más de 180 errores y 90 advertencias de accesibilidad (a11y) detectados por el linter Biome. No rompen la aplicación en tiempo real, pero requieren atención (por ejemplo: agregar `type="button"`, usar roles adecuados, agregar manejadores de teclado a divs con `onClick`).
 - Faltan integraciones reales con un proveedor de Auth y Base de Datos (el progreso actualmente solo se guarda en `localStorage`).
 
 ## Deuda Técnica Encontrada
 - **Archivos duplicados y muertos en Legacy:** La carpeta `/legacy/` es un almacén temporal. En el futuro, se debe realizar un esfuerzo de extracción de valor (ej: sacar las lógicas de Tone.js que aún sirvan y borrar los archivos sobrantes).
 
 ## Próximos Pasos Recomendados (Siguiente Agente)
-1. Reemplazar los desafíos de la Unidad 2 (y crear el Módulo 2 de Acordes) con la misma tecnología Arcade desarrollada.
-2. Iniciar la fase de arquitectura de datos (elegir proveedor y conectar base de datos real).
-3. Desarrollar un sistema de Puntos/Experiencia (XP) global conectado al Dashboard del usuario.
+1. Iniciar el desarrollo del "Curso Práctico de Piano" construyendo niveles progresivos guiados por el Motor Arcade.
+2. Hacer un barrido general de limpieza de deuda técnica (Linter Biome a11y) si el usuario así lo autoriza.
+3. Iniciar la fase de arquitectura de datos (elegir proveedor y conectar base de datos real).

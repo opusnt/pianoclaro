@@ -34,6 +34,7 @@ export function NoteCard({
 
   return (
     <button
+      type="button"
       onClick={onClick}
       disabled={!onClick}
       className={`

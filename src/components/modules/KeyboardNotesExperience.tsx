@@ -631,6 +631,7 @@ function ImmersivePageNavigator({
 
           return (
             <button
+              type="button"
               key={page.id}
               type="button"
               onClick={() => onSelect(page.id)}
@@ -835,6 +836,7 @@ function AppliedLearningPath({
 
               return (
                 <button
+                  type="button"
                   key={question}
                   type="button"
                   disabled={!canSelfEvaluate}
@@ -898,6 +900,7 @@ function InteractiveKeyboard({
 
               return (
                 <button
+                  type="button"
                   key={key.id}
                   type="button"
                   onClick={() => onWhiteKeyPress(key)}
@@ -925,6 +928,7 @@ function InteractiveKeyboard({
 
             return (
               <button
+                type="button"
                 key={key.id}
                 type="button"
                 onClick={() => onBlackKeyPress(key)}

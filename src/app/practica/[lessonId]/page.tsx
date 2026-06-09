@@ -1,7 +1,6 @@
 "use client";
 
 import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { ArcadeEngineResult } from "@/components/arcade/ArcadeEngine";
@@ -11,7 +10,7 @@ import { builtInRepertoire } from "@/data/repertoire/songs";
 import { parseMusicXMLToArcadeNotes } from "@/lib/music/xmlParser";
 
 export default function PracticeSessionPage() {
-  const params = useParams();
+  const _params = useParams();
   const router = useRouter();
   const [result, setResult] = useState<ArcadeEngineResult | null>(null);
 
@@ -28,6 +27,7 @@ export default function PracticeSessionPage() {
       {/* Header Minimalista */}
       <div className="bg-[#070b14]/90 backdrop-blur-xl border-b border-white/10 px-4 py-3 flex items-center justify-between z-30">
         <button
+          type="button"
           onClick={() => router.back()}
           className="flex items-center text-slate-400 hover:text-white font-bold gap-1 transition-colors"
         >

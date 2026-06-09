@@ -1,5 +1,5 @@
 import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useProgress } from "@/hooks/useProgress";
 import type { ArcadeEngineResult } from "../ArcadeEngine";
 
@@ -130,12 +130,14 @@ export function ArcadeResultModal({ result, onRetry, onClose }: Props) {
 
         <div className="flex gap-4 w-full">
           <button
+            type="button"
             onClick={onRetry}
             className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-xl transition-colors shadow-lg shadow-blue-900/50"
           >
             Reintentar
           </button>
           <button
+            type="button"
             onClick={onClose}
             className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl transition-colors"
           >

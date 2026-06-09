@@ -53,6 +53,7 @@ export function MajorScaleKeyboard({
           <div className="grid h-full grid-cols-[repeat(15,minmax(34px,1fr))] gap-1 pb-1">
             {whiteKeys.map((key) => (
               <button
+                type="button"
                 key={key.midi}
                 type="button"
                 disabled={disabled}
@@ -85,6 +86,7 @@ export function MajorScaleKeyboard({
 
             return (
               <button
+                type="button"
                 key={key.midi}
                 type="button"
                 disabled={disabled}

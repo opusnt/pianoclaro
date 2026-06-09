@@ -132,6 +132,7 @@ export function Unit8Measures() {
             <div className="flex justify-center gap-4">
               {stage1View === "chaotic" ? (
                 <button
+                  type="button"
                   onClick={() => setStage1View("organized")}
                   className="px-8 py-3 bg-sky-50 text-sky-600 font-bold rounded-xl hover:bg-sky-100 transition-colors"
                 >
@@ -139,6 +140,7 @@ export function Unit8Measures() {
                 </button>
               ) : (
                 <button
+                  type="button"
                   onClick={handleNextStage}
                   className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
                 >
@@ -170,6 +172,7 @@ export function Unit8Measures() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -223,6 +226,7 @@ export function Unit8Measures() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -245,6 +249,7 @@ export function Unit8Measures() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -285,6 +290,7 @@ export function Unit8Measures() {
 
             <div className="flex gap-4">
               <button
+                type="button"
                 onClick={() => {
                   if (isEx6Correct) {
                     setStage6Feedback("correct");
@@ -304,6 +310,7 @@ export function Unit8Measures() {
                 SÍ
               </button>
               <button
+                type="button"
                 onClick={() => {
                   if (!isEx6Correct) {
                     setStage6Feedback("correct");
@@ -393,6 +400,7 @@ export function Unit8Measures() {
             </div>
 
             <button
+              type="button"
               onClick={async () => {
                 await Tone.start();
                 await engineRef.current?.prepare();
@@ -425,6 +433,7 @@ export function Unit8Measures() {
             </button>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -477,6 +486,7 @@ export function Unit8Measures() {
             </div>
 
             <button
+              type="button"
               onClick={async () => {
                 await Tone.start();
                 await engineRef.current?.prepare();
@@ -519,6 +529,7 @@ export function Unit8Measures() {
             </button>
 
             <button
+              type="button"
               onClick={completeUnit}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >

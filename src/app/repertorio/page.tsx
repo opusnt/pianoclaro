@@ -3,8 +3,6 @@
 import { Library, Music, Trash2, Upload } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/Button";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { builtInRepertoire, type RepertoireSong } from "@/data/repertoire/songs";
 import { deleteUserScore, getAllUserScores, saveUserScore } from "@/lib/storage/userScores";
 

@@ -360,6 +360,7 @@ function AnswerOptions({
 
           return (
             <button
+              type="button"
               key={option}
               type="button"
               disabled={disabled}

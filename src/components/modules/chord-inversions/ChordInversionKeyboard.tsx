@@ -50,6 +50,7 @@ export function ChordInversionKeyboard({
           >
             {whiteKeys.map((keyNote) => (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}
@@ -88,6 +89,7 @@ export function ChordInversionKeyboard({
 
             return (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}

@@ -63,6 +63,7 @@ export function DottedNoteVisualizer({ isPlaying, onPlay }: DottedNoteVisualizer
 
       {!isPlaying && onPlay && (
         <button
+          type="button"
           onClick={onPlay}
           className="mt-8 flex items-center gap-2 px-6 py-3 bg-fuchsia-50 text-fuchsia-600 font-bold rounded-full hover:bg-fuchsia-100 transition-colors"
         >

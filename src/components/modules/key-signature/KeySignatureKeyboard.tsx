@@ -60,6 +60,7 @@ export function KeySignatureKeyboard({
           <div className="grid h-full grid-cols-[repeat(17,minmax(34px,1fr))] gap-1 pb-1">
             {whiteKeys.map((keyNote) => (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}
@@ -100,6 +101,7 @@ export function KeySignatureKeyboard({
 
             return (
               <button
+                type="button"
                 key={keyNote.midi}
                 type="button"
                 disabled={disabled}

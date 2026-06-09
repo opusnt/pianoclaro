@@ -75,6 +75,7 @@ export default function RepertoireViewerPage() {
       <div className="p-12 text-center">
         <h2 className="text-xl font-bold text-slate-800">Partitura no encontrada</h2>
         <button
+          type="button"
           onClick={() => router.push("/repertorio")}
           className="mt-4 text-blue-deep font-bold hover:underline"
         >
@@ -88,6 +89,7 @@ export default function RepertoireViewerPage() {
     <div className="mx-auto max-w-7xl space-y-6 pb-20 pt-4 px-4">
       <div className="flex items-center gap-4">
         <button
+          type="button"
           onClick={() => router.push("/repertorio")}
           className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
         >
@@ -101,6 +103,7 @@ export default function RepertoireViewerPage() {
 
       <div className="flex items-center gap-4 border-b border-slate-200 pb-4">
         <button
+          type="button"
           onClick={() => setActiveTab("arcade")}
           className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${activeTab === "arcade" ? "bg-fuchsia-600 text-white shadow-lg shadow-fuchsia-200" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
         >
@@ -108,6 +111,7 @@ export default function RepertoireViewerPage() {
           Modo Interactivo
         </button>
         <button
+          type="button"
           onClick={() => setActiveTab("classic")}
           className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${activeTab === "classic" ? "bg-blue-600 text-white shadow-lg shadow-blue-200" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}`}
         >

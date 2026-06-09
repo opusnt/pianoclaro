@@ -78,6 +78,7 @@ export function Unit3MusicPillars() {
             Etapa 1: La Canción Completa
           </Heading>
           <button
+            type="button"
             onClick={isPlaying ? stopAll : handlePlayAll}
             className={`mx-auto w-32 h-32 rounded-full flex items-center justify-center transition-all ${
               isPlaying
@@ -146,6 +147,7 @@ export function Unit3MusicPillars() {
 
           <div className="flex justify-center mb-8">
             <button
+              type="button"
               onClick={isPlaying ? stopAll : iso.play}
               className={`w-24 h-24 rounded-full flex items-center justify-center transition-all ${iso.bg} ${iso.color} border-2 border-transparent hover:border-current`}
             >
@@ -186,6 +188,7 @@ export function Unit3MusicPillars() {
 
           <div className="mb-12">
             <button
+              type="button"
               onClick={() => {
                 if (isPlaying) stopAll();
                 else playSequence(musicPillarsLayers, ["melody", "harmony", "rhythm"]);
@@ -227,6 +230,7 @@ export function Unit3MusicPillars() {
               const isActive = activeLayers.has(layer.id);
               return (
                 <button
+                  type="button"
                   key={layer.id}
                   onClick={() => {
                     setHasInteractedWithMixer(true);
@@ -307,6 +311,7 @@ export function Unit3MusicPillars() {
           </Heading>
 
           <button
+            type="button"
             onClick={isPlaying ? stopAll : playQuizSound}
             className={`mx-auto w-24 h-24 rounded-full flex items-center justify-center transition-all mb-10 ${
               isPlaying
@@ -328,6 +333,7 @@ export function Unit3MusicPillars() {
 
               return (
                 <button
+                  type="button"
                   key={opt.id}
                   disabled={quizOption !== null}
                   onClick={() => {
@@ -395,6 +401,7 @@ export function Unit3MusicPillars() {
           </Heading>
 
           <button
+            type="button"
             onClick={isPlaying ? stopAll : handlePlayAll}
             className="mx-auto w-24 h-24 rounded-full flex items-center justify-center transition-all mb-8 bg-emerald-500 text-white hover:scale-105 shadow-xl shadow-emerald-500/20"
           >

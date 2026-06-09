@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, CheckCircle2, ChevronLeft, Lock, Music, PlayCircle } from "lucide-react";
+import { CheckCircle2, ChevronLeft, Lock, PlayCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";

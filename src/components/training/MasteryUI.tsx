@@ -119,6 +119,7 @@ export function TrainingModeCard({
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
       className={`flex flex-col items-start p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-transparent hover:shadow-xl transition-all hover:-translate-y-1 text-left w-full group relative overflow-hidden`}
     >

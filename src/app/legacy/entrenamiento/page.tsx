@@ -30,7 +30,10 @@ export default function TrainingDashboardPage() {
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
           <Link href="/modulo-1">
-            <button className="p-3 bg-white rounded-full shadow-sm hover:bg-slate-100 transition-colors">
+            <button
+              type="button"
+              className="p-3 bg-white rounded-full shadow-sm hover:bg-slate-100 transition-colors"
+            >
               <ArrowLeft className="w-6 h-6 text-slate-500" />
             </button>
           </Link>

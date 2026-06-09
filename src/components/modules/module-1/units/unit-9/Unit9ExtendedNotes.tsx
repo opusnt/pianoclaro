@@ -85,6 +85,7 @@ export function Unit9ExtendedNotes() {
               Pero ¿qué ocurre cuando una nota necesita durar más tiempo del que permite su figura?
             </p>
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -101,6 +102,7 @@ export function Unit9ExtendedNotes() {
               <div className="flex flex-col items-center gap-4 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm w-full md:w-1/2">
                 <span className="font-bold text-slate-500 uppercase">Ejemplo A</span>
                 <button
+                  type="button"
                   onClick={() => playNotes([{ pitch: "G", durationMs: 1000 }])}
                   disabled={isPlaying}
                   className="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center hover:bg-slate-700 transition-colors disabled:opacity-50"
@@ -111,6 +113,7 @@ export function Unit9ExtendedNotes() {
               <div className="flex flex-col items-center gap-4 bg-white p-8 rounded-3xl border border-slate-100 shadow-sm w-full md:w-1/2">
                 <span className="font-bold text-fuchsia-500 uppercase">Ejemplo B</span>
                 <button
+                  type="button"
                   onClick={() => playNotes([{ pitch: "G", durationMs: 2000 }])}
                   disabled={isPlaying}
                   className="w-16 h-16 bg-fuchsia-50 rounded-full flex items-center justify-center hover:bg-fuchsia-100 transition-colors disabled:opacity-50"
@@ -123,6 +126,7 @@ export function Unit9ExtendedNotes() {
               ¿Notaste que el Ejemplo B dura exactamente el doble?
             </p>
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -146,6 +150,7 @@ export function Unit9ExtendedNotes() {
             </div>
 
             <button
+              type="button"
               onClick={async () => {
                 const Tone = await import("tone");
                 await Tone.start();
@@ -162,6 +167,7 @@ export function Unit9ExtendedNotes() {
             </button>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -187,12 +193,14 @@ export function Unit9ExtendedNotes() {
 
             <div className="flex flex-col gap-4 w-full max-w-md mb-8">
               <button
+                type="button"
                 onClick={() => setStage4Answer("separated")}
                 className={`p-4 rounded-2xl border-2 font-bold transition-all ${stage4Answer === "separated" ? "border-rose-400 bg-rose-50 text-rose-600" : "border-slate-100 hover:border-slate-200"}`}
               >
                 A) Como dos notas separadas (Ta - Ta)
               </button>
               <button
+                type="button"
                 onClick={() => setStage4Answer("long")}
                 className={`p-4 rounded-2xl border-2 font-bold transition-all ${stage4Answer === "long" ? "border-emerald-400 bg-emerald-50 text-emerald-600" : "border-slate-100 hover:border-slate-200"}`}
               >
@@ -207,6 +215,7 @@ export function Unit9ExtendedNotes() {
             )}
 
             <button
+              type="button"
               onClick={handleNextStage}
               disabled={stage4Answer !== "long"}
               className={`px-8 py-3 font-bold rounded-xl transition-all ${stage4Answer === "long" ? "bg-white hover:bg-slate-800 text-slate-900" : "bg-slate-800 text-slate-500 cursor-not-allowed"}`}
@@ -247,6 +256,7 @@ export function Unit9ExtendedNotes() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -266,6 +276,7 @@ export function Unit9ExtendedNotes() {
 
             <div className="flex gap-4 mb-8">
               <button
+                type="button"
                 onClick={() => playNotes([{ pitch: "G", durationMs: 2000 }])}
                 disabled={isPlaying}
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-slate-800 hover:bg-slate-700 text-slate-600 font-bold rounded-2xl"
@@ -273,6 +284,7 @@ export function Unit9ExtendedNotes() {
                 <Volume2 /> Sonido A
               </button>
               <button
+                type="button"
                 onClick={() => playNotes([{ pitch: "A", durationMs: 3000 }])}
                 disabled={isPlaying}
                 className="flex items-center justify-center gap-2 px-6 py-4 bg-slate-800 hover:bg-slate-700 text-slate-600 font-bold rounded-2xl"
@@ -283,12 +295,14 @@ export function Unit9ExtendedNotes() {
 
             <div className="flex flex-col gap-4 w-full max-w-xs mb-8">
               <button
+                type="button"
                 onClick={() => setStage6Answer("A")}
                 className={`p-4 rounded-2xl border-2 font-bold transition-all ${stage6Answer === "A" ? "border-rose-400 bg-rose-50 text-rose-600" : "border-slate-100 hover:border-slate-200"}`}
               >
                 El Sonido A es más largo
               </button>
               <button
+                type="button"
                 onClick={() => setStage6Answer("B")}
                 className={`p-4 rounded-2xl border-2 font-bold transition-all ${stage6Answer === "B" ? "border-emerald-400 bg-emerald-50 text-emerald-600" : "border-slate-100 hover:border-slate-200"}`}
               >
@@ -297,6 +311,7 @@ export function Unit9ExtendedNotes() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               disabled={stage6Answer !== "B"}
               className={`px-8 py-3 font-bold rounded-xl transition-all ${stage6Answer === "B" ? "bg-white hover:bg-slate-800 text-slate-900" : "bg-slate-800 text-slate-500 cursor-not-allowed opacity-50"}`}
@@ -358,6 +373,7 @@ export function Unit9ExtendedNotes() {
             </div>
 
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-8 py-3 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-xl transition-colors"
             >
@@ -391,6 +407,7 @@ export function Unit9ExtendedNotes() {
             <div className="flex flex-col gap-3 w-full max-w-md mb-8">
               {currentExercise.options.map((opt, idx) => (
                 <button
+                  type="button"
                   key={idx}
                   onClick={() => {
                     setStage9Answer(idx);
@@ -437,6 +454,7 @@ export function Unit9ExtendedNotes() {
               puntillos. Al finalizar, pondremos a prueba tu comprensión.
             </p>
             <button
+              type="button"
               onClick={handleNextStage}
               className="px-10 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black text-lg rounded-full shadow-lg transition-all hover:scale-105"
             >
@@ -488,14 +506,20 @@ export function Unit9ExtendedNotes() {
             </div>
 
             <Link href="/modulos/1/unidad-9">
-              <button className="flex items-center justify-center gap-3 w-full px-10 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-2xl transition-all shadow-lg hover:scale-105">
+              <button
+                type="button"
+                className="flex items-center justify-center gap-3 w-full px-10 py-4 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-2xl transition-all shadow-lg hover:scale-105"
+              >
                 <Star className="w-5 h-5" fill="currentColor" />
                 <span>Ir al Centro de Entrenamiento</span>
               </button>
             </Link>
 
             <Link href="#">
-              <button className="flex items-center justify-center gap-3 w-full px-10 py-4 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-2xl transition-all shadow-lg hover:scale-105">
+              <button
+                type="button"
+                className="flex items-center justify-center gap-3 w-full px-10 py-4 bg-white hover:bg-slate-800 text-slate-900 font-bold rounded-2xl transition-all shadow-lg hover:scale-105"
+              >
                 <span>Comenzar Módulo 2</span>
                 <ArrowRight className="w-5 h-5" />
               </button>

@@ -56,6 +56,7 @@ export function MeasureBuilder({
         <div className="flex justify-between items-center mb-6">
           <h3 className="font-bold text-slate-600">Toca las figuras para agregarlas</h3>
           <button
+            type="button"
             onClick={handleUndo}
             disabled={figures.length === initialFigures.length || isValid}
             className="flex items-center gap-2 text-slate-500 hover:text-slate-500 disabled:opacity-30 transition-colors"
@@ -72,6 +73,7 @@ export function MeasureBuilder({
 
             return (
               <button
+                type="button"
                 key={fig}
                 onClick={() => handleAdd(fig)}
                 disabled={wouldOverfill || isValid}
