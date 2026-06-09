@@ -52,7 +52,6 @@ export function ChordInversionKeyboard({
               <button
                 type="button"
                 key={keyNote.midi}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
                 className={`focus-ring relative flex h-full min-w-14 items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass(
@@ -91,7 +90,6 @@ export function ChordInversionKeyboard({
               <button
                 type="button"
                 key={keyNote.midi}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNoteToggle(keyNote.internalName)}
                 className={`focus-ring absolute top-0 z-10 flex h-28 min-w-8 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(

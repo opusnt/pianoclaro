@@ -58,7 +58,6 @@ export function MinorScaleKeyboard({
               <button
                 type="button"
                 key={key.midi}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.internalName)}
                 className={`focus-ring relative flex h-full min-w-[42px] items-end justify-center rounded-b-2xl border px-1 pb-3 text-xs font-bold shadow-sm transition ${getKeyClass(
@@ -99,7 +98,6 @@ export function MinorScaleKeyboard({
               <button
                 type="button"
                 key={key.midi}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.internalName)}
                 className={`focus-ring absolute top-0 z-10 flex h-28 w-[3.8%] min-w-7 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.62rem] font-bold shadow-md transition ${getBlackKeyClass(

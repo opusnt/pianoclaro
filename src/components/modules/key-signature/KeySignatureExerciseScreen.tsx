@@ -254,7 +254,6 @@ function OptionGrid({
             <button
               type="button"
               key={option}
-              type="button"
               disabled={disabled}
               onClick={() => onAnswer(option)}
               className={`focus-ring min-h-14 rounded-2xl border px-4 py-3 text-sm font-bold transition ${

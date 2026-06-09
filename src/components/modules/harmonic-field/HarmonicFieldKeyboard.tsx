@@ -66,7 +66,6 @@ export function HarmonicFieldKeyboard({
                 <button
                   type="button"
                   key={note.internalName}
-                  type="button"
                   disabled={disabled}
                   onClick={() => onNoteToggle(note.internalName)}
                   className={`focus-ring relative flex h-44 flex-col justify-end rounded-b-2xl border px-1 pb-3 text-center text-xs font-bold transition ${
@@ -111,7 +110,6 @@ export function HarmonicFieldKeyboard({
                 <button
                   type="button"
                   key={blackNote.internalName}
-                  type="button"
                   disabled={disabled}
                   onClick={(event) => {
                     event.stopPropagation();

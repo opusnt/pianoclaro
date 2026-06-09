@@ -633,7 +633,6 @@ function ImmersivePageNavigator({
             <button
               type="button"
               key={page.id}
-              type="button"
               onClick={() => onSelect(page.id)}
               className={`focus-ring min-h-24 rounded-2xl border p-3 text-left transition ${
                 active
@@ -838,7 +837,6 @@ function AppliedLearningPath({
                 <button
                   type="button"
                   key={question}
-                  type="button"
                   disabled={!canSelfEvaluate}
                   onClick={() => onToggleSelfCheck(question)}
                   className={`focus-ring flex w-full items-start gap-2 rounded-xl border p-2 text-left text-xs font-bold leading-5 transition ${
@@ -902,7 +900,6 @@ function InteractiveKeyboard({
                 <button
                   type="button"
                   key={key.id}
-                  type="button"
                   onClick={() => onWhiteKeyPress(key)}
                   className={`focus-ring relative flex flex-1 items-end justify-center border-r border-blue-deep/15 pb-5 text-sm font-bold transition last:border-r-0 ${
                     isTarget || showCGuide
@@ -930,7 +927,6 @@ function InteractiveKeyboard({
               <button
                 type="button"
                 key={key.id}
-                type="button"
                 onClick={() => onBlackKeyPress(key)}
                 style={{ left: `${key.leftPercent}%` }}
                 className={`focus-ring absolute top-0 z-10 flex h-[58%] w-[5.7%] -translate-x-1/2 items-end justify-center rounded-b-lg pb-3 text-[10px] font-bold shadow-lg transition ${

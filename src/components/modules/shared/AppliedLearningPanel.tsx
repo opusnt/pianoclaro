@@ -112,7 +112,6 @@ export function AppliedLearningPanel({
                     <button
                       type="button"
                       key={item}
-                      type="button"
                       onClick={() => toggleItem(item)}
                       className={`focus-ring flex w-full items-start gap-3 rounded-2xl border p-3 text-left text-sm font-bold leading-6 transition ${
                         checked

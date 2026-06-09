@@ -75,7 +75,6 @@ export function IntervalKeyboard({
               <button
                 type="button"
                 key={key.id}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.id)}
                 className={`focus-ring relative flex h-full items-end justify-center rounded-b-2xl border px-1 pb-3 text-sm font-bold shadow-sm transition ${getKeyClass(
@@ -113,7 +112,6 @@ export function IntervalKeyboard({
               <button
                 type="button"
                 key={key.id}
-                type="button"
                 disabled={disabled}
                 onClick={() => onNotePress(key.id)}
                 className={`focus-ring absolute top-0 z-10 flex h-28 w-[7.5%] min-w-8 max-w-14 -translate-x-1/2 items-end justify-center rounded-b-xl border border-blue-deep/30 px-1 pb-2 text-[0.68rem] font-bold shadow-md transition ${getBlackKeyClass(

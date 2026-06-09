@@ -432,7 +432,6 @@ export function ModuleFirstFiveNotesScreen({
                   <button
                     type="button"
                     key={option}
-                    type="button"
                     onClick={() => answerExercise(option)}
                     className="focus-ring min-h-12 rounded-2xl border border-blue-deep/10 bg-white px-4 py-3 text-sm font-bold text-blue-deep transition hover:bg-blue-soft/35"
                   >

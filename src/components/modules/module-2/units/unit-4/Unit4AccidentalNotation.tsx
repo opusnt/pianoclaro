@@ -585,7 +585,7 @@ function Stage10FinalChallenge({ onNext }: { onNext: () => void }) {
           onClick={onNext}
           className="px-12 py-6 text-xl rounded-full shadow-lg hover:shadow-xl transition-all"
         >
-          Continuar
+          Finalizar Módulo 2
         </Button>
       </div>
     </div>
